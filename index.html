@@ -1,0 +1,903 @@
+
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>GroundControl API - Spacion GmbH</title>
+
+    <style>
+      .highlight table td { padding: 5px; }
+.highlight table pre { margin: 0; }
+.highlight .gh {
+  color: #999999;
+}
+.highlight .sr {
+  color: #f6aa11;
+}
+.highlight .go {
+  color: #888888;
+}
+.highlight .gp {
+  color: #555555;
+}
+.highlight .gs {
+}
+.highlight .gu {
+  color: #aaaaaa;
+}
+.highlight .nb {
+  color: #f6aa11;
+}
+.highlight .cm {
+  color: #75715e;
+}
+.highlight .cp {
+  color: #75715e;
+}
+.highlight .c1 {
+  color: #75715e;
+}
+.highlight .cs {
+  color: #75715e;
+}
+.highlight .c, .highlight .cd {
+  color: #75715e;
+}
+.highlight .err {
+  color: #960050;
+}
+.highlight .gr {
+  color: #960050;
+}
+.highlight .gt {
+  color: #960050;
+}
+.highlight .gd {
+  color: #49483e;
+}
+.highlight .gi {
+  color: #49483e;
+}
+.highlight .ge {
+  color: #49483e;
+}
+.highlight .kc {
+  color: #66d9ef;
+}
+.highlight .kd {
+  color: #66d9ef;
+}
+.highlight .kr {
+  color: #66d9ef;
+}
+.highlight .no {
+  color: #66d9ef;
+}
+.highlight .kt {
+  color: #66d9ef;
+}
+.highlight .mf {
+  color: #ae81ff;
+}
+.highlight .mh {
+  color: #ae81ff;
+}
+.highlight .il {
+  color: #ae81ff;
+}
+.highlight .mi {
+  color: #ae81ff;
+}
+.highlight .mo {
+  color: #ae81ff;
+}
+.highlight .m, .highlight .mb, .highlight .mx {
+  color: #ae81ff;
+}
+.highlight .sc {
+  color: #ae81ff;
+}
+.highlight .se {
+  color: #ae81ff;
+}
+.highlight .ss {
+  color: #ae81ff;
+}
+.highlight .sd {
+  color: #e6db74;
+}
+.highlight .s2 {
+  color: #e6db74;
+}
+.highlight .sb {
+  color: #e6db74;
+}
+.highlight .sh {
+  color: #e6db74;
+}
+.highlight .si {
+  color: #e6db74;
+}
+.highlight .sx {
+  color: #e6db74;
+}
+.highlight .s1 {
+  color: #e6db74;
+}
+.highlight .s {
+  color: #e6db74;
+}
+.highlight .na {
+  color: #a6e22e;
+}
+.highlight .nc {
+  color: #a6e22e;
+}
+.highlight .nd {
+  color: #a6e22e;
+}
+.highlight .ne {
+  color: #a6e22e;
+}
+.highlight .nf {
+  color: #a6e22e;
+}
+.highlight .vc {
+  color: #ffffff;
+}
+.highlight .nn {
+  color: #ffffff;
+}
+.highlight .nl {
+  color: #ffffff;
+}
+.highlight .ni {
+  color: #ffffff;
+}
+.highlight .bp {
+  color: #ffffff;
+}
+.highlight .vg {
+  color: #ffffff;
+}
+.highlight .vi {
+  color: #ffffff;
+}
+.highlight .nv {
+  color: #ffffff;
+}
+.highlight .w {
+  color: #ffffff;
+}
+.highlight {
+  color: #ffffff;
+}
+.highlight .n, .highlight .py, .highlight .nx {
+  color: #ffffff;
+}
+.highlight .ow {
+  color: #f92672;
+}
+.highlight .nt {
+  color: #f92672;
+}
+.highlight .k, .highlight .kv {
+  color: #f92672;
+}
+.highlight .kn {
+  color: #f92672;
+}
+.highlight .kp {
+  color: #f92672;
+}
+.highlight .o {
+  color: #f92672;
+}
+    </style>
+    <link href="stylesheets/screen.css" rel="stylesheet" media="screen" />
+    <link href="stylesheets/print.css" rel="stylesheet" media="print" />
+      <script src="javascripts/all_nosearch.js"></script>
+  </head>
+
+  <body class="index" data-languages="[&quot;php&quot;]">
+    <a href="#" id="nav-button">
+      <span>
+        NAV
+        <img src="images/navbar.png" alt="Navbar" />
+      </span>
+    </a>
+    <div class="toc-wrapper">
+      <img src="images/logo.png" class="logo" alt="Logo" />
+        <div class="lang-selector">
+              <a href="#" data-language-name="php">php</a>
+        </div>
+      <ul id="toc" class="toc-list-h1">
+          <li>
+            <a href="#introduction" class="toc-h1 toc-link" data-title="Introduction">Introduction</a>
+          </li>
+          <li>
+            <a href="#return-values-amp-error-handling" class="toc-h1 toc-link" data-title="Return values &amp; error handling">Return values &amp; error handling</a>
+          </li>
+          <li>
+            <a href="#headers" class="toc-h1 toc-link" data-title="Headers">Headers</a>
+          </li>
+          <li>
+            <a href="#authentication" class="toc-h1 toc-link" data-title="Authentication">Authentication</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#api-endpoint" class="toc-h2 toc-link" data-title="API endpoint">API endpoint</a>
+                  </li>
+                  <li>
+                    <a href="#query-parameters" class="toc-h2 toc-link" data-title="Query Parameters">Query Parameters</a>
+                  </li>
+                  <li>
+                    <a href="#return-values" class="toc-h2 toc-link" data-title="Return values">Return values</a>
+                  </li>
+                  <li>
+                    <a href="#failure-codes" class="toc-h2 toc-link" data-title="Failure codes">Failure codes</a>
+                  </li>
+                  <li>
+                    <a href="#logout" class="toc-h2 toc-link" data-title="Logout">Logout</a>
+                  </li>
+              </ul>
+          </li>
+          <li>
+            <a href="#system" class="toc-h1 toc-link" data-title="System">System</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#get-info" class="toc-h2 toc-link" data-title="GET /info">GET /info</a>
+                  </li>
+                  <li>
+                    <a href="#get-products" class="toc-h2 toc-link" data-title="GET /products">GET /products</a>
+                  </li>
+                  <li>
+                    <a href="#get-faq" class="toc-h2 toc-link" data-title="GET /faq">GET /faq</a>
+                  </li>
+                  <li>
+                    <a href="#get-qrcode-content" class="toc-h2 toc-link" data-title="GET /qrcode/{content}">GET /qrcode/{content}</a>
+                  </li>
+              </ul>
+          </li>
+          <li>
+            <a href="#users" class="toc-h1 toc-link" data-title="Users">Users</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#put-register" class="toc-h2 toc-link" data-title="PUT /register">PUT /register</a>
+                  </li>
+                  <li>
+                    <a href="#put-password" class="toc-h2 toc-link" data-title="PUT /password">PUT /password</a>
+                  </li>
+                  <li>
+                    <a href="#post-password-email" class="toc-h2 toc-link" data-title="POST /password/email">POST /password/email</a>
+                  </li>
+                  <li>
+                    <a href="#post-password-check" class="toc-h2 toc-link" data-title="POST /password/check">POST /password/check</a>
+                  </li>
+                  <li>
+                    <a href="#post-password-reset" class="toc-h2 toc-link" data-title="POST /password/reset">POST /password/reset</a>
+                  </li>
+                  <li>
+                    <a href="#get-users" class="toc-h2 toc-link" data-title="GET /users">GET /users</a>
+                  </li>
+                  <li>
+                    <a href="#get-user-id" class="toc-h2 toc-link" data-title="GET /user/{id}">GET /user/{id}</a>
+                  </li>
+                  <li>
+                    <a href="#put-user-id" class="toc-h2 toc-link" data-title="PUT /user/{id}">PUT /user/{id}</a>
+                  </li>
+                  <li>
+                    <a href="#delete-user-id" class="toc-h2 toc-link" data-title="DELETE /user/{id}">DELETE /user/{id}</a>
+                  </li>
+                  <li>
+                    <a href="#post-user" class="toc-h2 toc-link" data-title="POST /user">POST /user</a>
+                  </li>
+              </ul>
+          </li>
+          <li>
+            <a href="#preregistrations" class="toc-h1 toc-link" data-title="Preregistrations">Preregistrations</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#post-preregister" class="toc-h2 toc-link" data-title="POST /preregister">POST /preregister</a>
+                  </li>
+                  <li>
+                    <a href="#get-preregister-confirm-token" class="toc-h2 toc-link" data-title="GET /preregister/confirm/{token}">GET /preregister/confirm/{token}</a>
+                  </li>
+                  <li>
+                    <a href="#put-preregister" class="toc-h2 toc-link" data-title="PUT /preregister">PUT /preregister</a>
+                  </li>
+                  <li>
+                    <a href="#get-preregistrations" class="toc-h2 toc-link" data-title="GET /preregistrations">GET /preregistrations</a>
+                  </li>
+                  <li>
+                    <a href="#put-preregistrations-id" class="toc-h2 toc-link" data-title="PUT /preregistrations/{id}">PUT /preregistrations/{id}</a>
+                  </li>
+                  <li>
+                    <a href="#post-preregistrations-id" class="toc-h2 toc-link" data-title="POST /preregistrations/{id}">POST /preregistrations/{id}</a>
+                  </li>
+                  <li>
+                    <a href="#delete-preregistrations-id" class="toc-h2 toc-link" data-title="DELETE /preregistrations/{id}">DELETE /preregistrations/{id}</a>
+                  </li>
+              </ul>
+          </li>
+          <li>
+            <a href="#events" class="toc-h1 toc-link" data-title="Events">Events</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#get-events" class="toc-h2 toc-link" data-title="GET /events">GET /events</a>
+                  </li>
+                  <li>
+                    <a href="#get-events-slug" class="toc-h2 toc-link" data-title="GET /events/{slug}">GET /events/{slug}</a>
+                  </li>
+              </ul>
+          </li>
+          <li>
+            <a href="#galleries" class="toc-h1 toc-link" data-title="Galleries">Galleries</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#get-galleries" class="toc-h2 toc-link" data-title="GET /galleries">GET /galleries</a>
+                  </li>
+                  <li>
+                    <a href="#get-galleries-slug" class="toc-h2 toc-link" data-title="GET /galleries/{slug}">GET /galleries/{slug}</a>
+                  </li>
+                  <li>
+                    <a href="#post-galleries" class="toc-h2 toc-link" data-title="POST /galleries">POST /galleries</a>
+                  </li>
+                  <li>
+                    <a href="#put-galleries-slug" class="toc-h2 toc-link" data-title="PUT /galleries/{slug}">PUT /galleries/{slug}</a>
+                  </li>
+                  <li>
+                    <a href="#delete-galleries-slug" class="toc-h2 toc-link" data-title="DELETE /galleries/{slug}">DELETE /galleries/{slug}</a>
+                  </li>
+                  <li>
+                    <a href="#get-images" class="toc-h2 toc-link" data-title="GET /images">GET /images</a>
+                  </li>
+                  <li>
+                    <a href="#post-images-upload" class="toc-h2 toc-link" data-title="POST /images/upload">POST /images/upload</a>
+                  </li>
+                  <li>
+                    <a href="#post-images" class="toc-h2 toc-link" data-title="POST /images">POST /images</a>
+                  </li>
+                  <li>
+                    <a href="#put-images-id" class="toc-h2 toc-link" data-title="PUT /images/{id}">PUT /images/{id}</a>
+                  </li>
+                  <li>
+                    <a href="#delete-images-id" class="toc-h2 toc-link" data-title="DELETE /images/{id}">DELETE /images/{id}</a>
+                  </li>
+              </ul>
+          </li>
+          <li>
+            <a href="#orders" class="toc-h1 toc-link" data-title="Orders">Orders</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#post-order" class="toc-h2 toc-link" data-title="POST /order">POST /order</a>
+                  </li>
+                  <li>
+                    <a href="#get-order-order_id-token" class="toc-h2 toc-link" data-title="GET /order/{order_id}/{token}">GET /order/{order_id}/{token}</a>
+                  </li>
+                  <li>
+                    <a href="#get-orders" class="toc-h2 toc-link" data-title="GET /orders">GET /orders</a>
+                  </li>
+                  <li>
+                    <a href="#any-order-order_id-token-ipn-payment_method" class="toc-h2 toc-link" data-title="ANY /order/{order_id}/{token}/ipn/{payment_method}">ANY /order/{order_id}/{token}/ipn/{payment_method}</a>
+                  </li>
+                  <li>
+                    <a href="#post-checkout-paypal" class="toc-h2 toc-link" data-title="POST /checkout/paypal">POST /checkout/paypal</a>
+                  </li>
+              </ul>
+          </li>
+          <li>
+            <a href="#payment" class="toc-h1 toc-link" data-title="Payment">Payment</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#get-ideal-banks" class="toc-h2 toc-link" data-title="GET /ideal/banks">GET /ideal/banks</a>
+                  </li>
+              </ul>
+          </li>
+          <li>
+            <a href="#tickets" class="toc-h1 toc-link" data-title="Tickets">Tickets</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#get-tickets" class="toc-h2 toc-link" data-title="GET /tickets">GET /tickets</a>
+                  </li>
+                  <li>
+                    <a href="#post-ticket-id-personalize" class="toc-h2 toc-link" data-title="POST /ticket/{id}/personalize">POST /ticket/{id}/personalize</a>
+                  </li>
+                  <li>
+                    <a href="#get-ticket-id-pdf-token" class="toc-h2 toc-link" data-title="GET /ticket/{id}/pdf/{token}">GET /ticket/{id}/pdf/{token}</a>
+                  </li>
+              </ul>
+          </li>
+          <li>
+            <a href="#ranks" class="toc-h1 toc-link" data-title="Ranks">Ranks</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#get-ranks" class="toc-h2 toc-link" data-title="GET /ranks">GET /ranks</a>
+                  </li>
+                  <li>
+                    <a href="#get-achievements" class="toc-h2 toc-link" data-title="GET /achievements">GET /achievements</a>
+                  </li>
+                  <li>
+                    <a href="#post-achievement" class="toc-h2 toc-link" data-title="POST /achievement">POST /achievement</a>
+                  </li>
+              </ul>
+          </li>
+          <li>
+            <a href="#promoter" class="toc-h1 toc-link" data-title="Promoter">Promoter</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#get-promoter-orders" class="toc-h2 toc-link" data-title="GET /promoter/orders">GET /promoter/orders</a>
+                  </li>
+              </ul>
+          </li>
+          <li>
+            <a href="#affiliate" class="toc-h1 toc-link" data-title="Affiliate">Affiliate</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#get-affiliate" class="toc-h2 toc-link" data-title="GET /affiliate">GET /affiliate</a>
+                  </li>
+                  <li>
+                    <a href="#post-affiliate" class="toc-h2 toc-link" data-title="POST /affiliate">POST /affiliate</a>
+                  </li>
+                  <li>
+                    <a href="#get-reflinks" class="toc-h2 toc-link" data-title="GET /reflinks">GET /reflinks</a>
+                  </li>
+                  <li>
+                    <a href="#put-affiliate-hash" class="toc-h2 toc-link" data-title="PUT /affiliate/{hash}">PUT /affiliate/{hash}</a>
+                  </li>
+                  <li>
+                    <a href="#delete-affiliate-hash" class="toc-h2 toc-link" data-title="DELETE /affiliate/{hash}">DELETE /affiliate/{hash}</a>
+                  </li>
+                  <li>
+                    <a href="#get-affiliate-orders" class="toc-h2 toc-link" data-title="GET /affiliate/orders">GET /affiliate/orders</a>
+                  </li>
+                  <li>
+                    <a href="#post-affiliate-click-hash" class="toc-h2 toc-link" data-title="POST /affiliate/click/{hash}">POST /affiliate/click/{hash}</a>
+                  </li>
+              </ul>
+          </li>
+          <li>
+            <a href="#notifications" class="toc-h1 toc-link" data-title="Notifications">Notifications</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#get-notification-user" class="toc-h2 toc-link" data-title="GET /notification/{user}">GET /notification/{user}</a>
+                  </li>
+                  <li>
+                    <a href="#post-notification-user" class="toc-h2 toc-link" data-title="POST /notification/{user}">POST /notification/{user}</a>
+                  </li>
+                  <li>
+                    <a href="#post-push" class="toc-h2 toc-link" data-title="POST /push">POST /push</a>
+                  </li>
+                  <li>
+                    <a href="#delete-push" class="toc-h2 toc-link" data-title="DELETE /push">DELETE /push</a>
+                  </li>
+              </ul>
+          </li>
+          <li>
+            <a href="#terminals" class="toc-h1 toc-link" data-title="Terminals">Terminals</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#get-terminal-device_id-rfid_tag" class="toc-h2 toc-link" data-title="GET /terminal/{device_id}/{rfid_tag}">GET /terminal/{device_id}/{rfid_tag}</a>
+                  </li>
+                  <li>
+                    <a href="#get-entry-hash" class="toc-h2 toc-link" data-title="GET /entry/{hash}">GET /entry/{hash}</a>
+                  </li>
+                  <li>
+                    <a href="#get-entry-hash-details" class="toc-h2 toc-link" data-title="GET /entry/{hash}/details">GET /entry/{hash}/details</a>
+                  </li>
+                  <li>
+                    <a href="#delete-entry-hash" class="toc-h2 toc-link" data-title="DELETE /entry/{hash}">DELETE /entry/{hash}</a>
+                  </li>
+              </ul>
+          </li>
+          <li>
+            <a href="#settings" class="toc-h1 toc-link" data-title="Settings">Settings</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#get-settings" class="toc-h2 toc-link" data-title="GET /settings">GET /settings</a>
+                  </li>
+                  <li>
+                    <a href="#put-settings" class="toc-h2 toc-link" data-title="PUT /settings">PUT /settings</a>
+                  </li>
+              </ul>
+          </li>
+      </ul>
+        <ul class="toc-footer">
+            <li><a href='https://my.hyperspace.one/contact'>Imprint</a></li>
+        </ul>
+    </div>
+    <div class="page-wrapper">
+      <div class="dark-box"></div>
+      <div class="content">
+        <h1 id='introduction'>Introduction</h1>
+<p>GroundControl API is the backend of GroundControl by Spacion GmbH. This documentation covers all available API actions, from authentication to endpoints. GroundControl API is a RESTful API.</p>
+
+<p>We use <code>https://api.hyperspace.one</code> as an example URL. This URL has to be replaced by your URL where GroundControl API is hosted.</p>
+
+<p>We provide example codes in PHP. You can view code examples in the dark area to the right, and you can switch the programming language of the examples with the tabs in the top right.</p>
+<h1 id='return-values-amp-error-handling'>Return values &amp; error handling</h1>
+<blockquote>
+<p>Successful request (HTTP status code <code>200</code>) without data</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"success"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<blockquote>
+<p>Failed request (HTTP status code != <code>200</code>)</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"success"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"errorCode"</span><span class="p">:</span><span class="w"> </span><span class="mi">403</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"error"</span><span class="p">:</span><span class="w"> </span><span class="s2">"No access to this resource"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<p>GroundControl returns data in JSON format.</p>
+
+<p>In case of a successful request, you will get a JSON element <code>success</code> containing <code>true</code>. The HTTP status code will be <code>200</code>.</p>
+
+<p>If your request fails, the HTTP status code will not be <code>200</code>. GroundControl API uses the default HTTP status codes (<code>403 Forbidden</code>, <code>404 Not Found</code>, ...) and own status codes (<code>1xxx</code>). You can also find the error code in the JSON element <code>errorCode</code>. Sometimes, there is additional information available in the <code>error</code> element.</p>
+<h1 id='headers'>Headers</h1>
+<p>You can send several headers to GroundControl API:</p>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>Authorization</td>
+<td>-</td>
+<td>Header for providing session token (currently supported: <code>Bearer xxx</code>)</td>
+</tr>
+<tr>
+<td>X-Gc-Language</td>
+<td>en</td>
+<td>Language that should be used (currently supported: <code>de</code>, <code>en</code>)</td>
+</tr>
+</tbody></table>
+<h1 id='authentication'>Authentication</h1>
+<p>For non-publicly endpoints or actions, GroundControl uses Bearer authentication with tokens. The login should be performed against the endpoint <code>POST /login</code>.</p>
+
+<p>Please note that GroundControl API uses a blacklist to identify malicious IP addresses and blocks them after a defineable amount of failed tries (setting <code>blacklistTries</code>) in a defineable amount of time (setting <code>blacklistTime</code>).</p>
+
+<p>The API discloses if the user with the given email address exists. This is intentional.</p>
+<h3 id='api-endpoint'>API endpoint</h3><pre class="highlight php tab-php"><code><span class="cp">&lt;?php</span>
+<span class="nv">$req</span> <span class="o">=</span> <span class="p">[</span>
+  <span class="s2">"email"</span> <span class="o">=&gt;</span> <span class="s2">"john.doe@example.com"</span><span class="p">,</span>
+  <span class="s2">"password"</span> <span class="o">=&gt;</span> <span class="s2">"Secret123!"</span><span class="p">,</span>
+<span class="p">];</span>
+
+<span class="nv">$ch</span> <span class="o">=</span> <span class="nb">curl_init</span><span class="p">(</span><span class="s2">"https://api.hyperspace.one/login"</span><span class="p">);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_RETURNTRANSFER</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_POSTFIELDS</span><span class="p">,</span> <span class="nb">http_build_query</span><span class="p">(</span><span class="nv">$req</span><span class="p">));</span>
+<span class="nv">$res</span> <span class="o">=</span> <span class="nb">curl_exec</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="nb">curl_errno</span><span class="p">(</span><span class="nv">$ch</span><span class="p">))</span> <span class="p">{</span>
+  <span class="k">die</span><span class="p">(</span><span class="nb">curl_error</span><span class="p">(</span><span class="nv">$ch</span><span class="p">));</span>
+<span class="p">}</span>
+
+<span class="nb">curl_close</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
+<span class="nv">$res</span> <span class="o">=</span> <span class="nb">json_decode</span><span class="p">(</span><span class="nv">$res</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+
+<span class="nb">print_r</span><span class="p">(</span><span class="nv">$res</span><span class="p">);</span>
+</code></pre>
+<blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"success"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"token"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1533921b8b134efmk7ccbfa19a2c9f2d02919304017004f258daa71326aa2db3454db0405ee53de72a3d523b3b22ed54e4341424bcd014527de69fe745fe4fa0"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"info"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="err">//</span><span class="w"> </span><span class="err">Info</span><span class="w"> </span><span class="err">endpoint</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<p><code>POST /login</code></p>
+<h3 id='query-parameters'>Query Parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>email</td>
+<td>-</td>
+<td><strong>Required</strong> Email address</td>
+</tr>
+<tr>
+<td>password</td>
+<td>-</td>
+<td><strong>Required</strong> Password</td>
+</tr>
+</tbody></table>
+<h3 id='return-values'>Return values</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>token</td>
+<td>Bearer token to use in further requests</td>
+</tr>
+<tr>
+<td>info</td>
+<td>Info endpoint data for authenticated user</td>
+</tr>
+</tbody></table>
+<h3 id='failure-codes'>Failure codes</h3>
+<table><thead>
+<tr>
+<th>Failure Code</th>
+<th>Meaning</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>1000</td>
+<td>IP address in blacklist (too many failed attempts)</td>
+</tr>
+<tr>
+<td>1001</td>
+<td>Unknown email address</td>
+</tr>
+<tr>
+<td>1002</td>
+<td>Wrong password</td>
+</tr>
+</tbody></table>
+<h3 id='logout'>Logout</h3>
+<p>To terminate a session / make a bearer token invalid, just call <code>GET /logout</code> with the bearer token in <code>Authentication</code> header.</p>
+<h1 id='system'>System</h1><h2 id='get-info'>GET /info</h2><pre class="highlight php tab-php"><code><span class="cp">&lt;?php</span>
+<span class="nv">$ch</span> <span class="o">=</span> <span class="nb">curl_init</span><span class="p">(</span><span class="s2">"https://api.hyperspace.one/info"</span><span class="p">);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_RETURNTRANSFER</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+<span class="nv">$res</span> <span class="o">=</span> <span class="nb">curl_exec</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="nb">curl_errno</span><span class="p">(</span><span class="nv">$ch</span><span class="p">))</span> <span class="p">{</span>
+  <span class="k">die</span><span class="p">(</span><span class="nb">curl_error</span><span class="p">(</span><span class="nv">$ch</span><span class="p">));</span>
+<span class="p">}</span>
+
+<span class="nb">curl_close</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
+<span class="nv">$res</span> <span class="o">=</span> <span class="nb">json_decode</span><span class="p">(</span><span class="nv">$res</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+
+<span class="nb">print_r</span><span class="p">(</span><span class="nv">$res</span><span class="p">);</span>
+</code></pre>
+<blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"success"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"pageName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"HYPERSPACE"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"recaptchaPublic"</span><span class="p">:</span><span class="w"> </span><span class="s2">"6Leti3QUAAAAADyMymEKWfyBymJ4t0HdWHPMTPNr"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"orderTimeout"</span><span class="p">:</span><span class="w"> </span><span class="s2">"30"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"currencyCode"</span><span class="p">:</span><span class="w"> </span><span class="s2">"EUR"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"maintenanceMode"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<p>The info endpoint is an central endpoint of GC API. It returns information about the configuration and - if logged in - about the authenticated user.</p>
+<h3 id='query-parameters-2'>Query Parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>products</td>
+<td>0</td>
+<td>Include available products in response</td>
+</tr>
+</tbody></table>
+<h3 id='return-values-2'>Return values</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>pageName</td>
+<td>Name of the page</td>
+</tr>
+<tr>
+<td>recaptchaPublic</td>
+<td><strong>If enabled</strong> reCaptcha public key</td>
+</tr>
+<tr>
+<td>orderTimeout</td>
+<td>Timeout for orders in minutes</td>
+</tr>
+<tr>
+<td>currencyCode</td>
+<td>Default currency code</td>
+</tr>
+<tr>
+<td>maintenanceMode</td>
+<td>Maintenance mode active</td>
+</tr>
+<tr>
+<td>user</td>
+<td><strong>If authenticated</strong> Details about user</td>
+</tr>
+</tbody></table>
+
+<aside>Additional values are possible based on your system configuration</aside>
+<h2 id='get-products'>GET /products</h2>
+<p>TODO</p>
+<h2 id='get-faq'>GET /faq</h2><pre class="highlight php tab-php"><code><span class="cp">&lt;?php</span>
+<span class="nv">$ch</span> <span class="o">=</span> <span class="nb">curl_init</span><span class="p">(</span><span class="s2">"https://api.hyperspace.one/faq"</span><span class="p">);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_RETURNTRANSFER</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+<span class="nv">$res</span> <span class="o">=</span> <span class="nb">curl_exec</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="nb">curl_errno</span><span class="p">(</span><span class="nv">$ch</span><span class="p">))</span> <span class="p">{</span>
+  <span class="k">die</span><span class="p">(</span><span class="nb">curl_error</span><span class="p">(</span><span class="nv">$ch</span><span class="p">));</span>
+<span class="p">}</span>
+
+<span class="nb">curl_close</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
+<span class="nv">$res</span> <span class="o">=</span> <span class="nb">json_decode</span><span class="p">(</span><span class="nv">$res</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+
+<span class="nb">print_r</span><span class="p">(</span><span class="nv">$res</span><span class="p">);</span>
+</code></pre>
+<blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"success"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"faq"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"question"</span><span class="p">:</span><span class="s2">"WHERE CAN YOU PARK?"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"answer"</span><span class="p">:</span><span class="s2">"At our PreParty in Music Dome there is free parking."</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<p>This endpoint returns the defined Frequently Asked Questions (FAQ).</p>
+<h3 id='return-values-3'>Return values</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>faq[]</td>
+<td>Array with questions and answer</td>
+</tr>
+</tbody></table>
+<h2 id='get-qrcode-content'>GET /qrcode/{content}</h2>
+<p>TODO</p>
+<h1 id='users'>Users</h1><h2 id='put-register'>PUT /register</h2>
+<p>TODO</p>
+<h2 id='put-password'>PUT /password</h2>
+<p>TODO</p>
+<h2 id='post-password-email'>POST /password/email</h2>
+<p>TODO</p>
+<h2 id='post-password-check'>POST /password/check</h2>
+<p>TODO</p>
+<h2 id='post-password-reset'>POST /password/reset</h2>
+<p>TODO</p>
+<h2 id='get-users'>GET /users</h2>
+<p>TODO</p>
+<h2 id='get-user-id'>GET /user/{id}</h2>
+<p>TODO</p>
+<h2 id='put-user-id'>PUT /user/{id}</h2>
+<p>TODO</p>
+<h2 id='delete-user-id'>DELETE /user/{id}</h2>
+<p>TODO</p>
+<h2 id='post-user'>POST /user</h2>
+<p>TODO</p>
+<h1 id='preregistrations'>Preregistrations</h1><h2 id='post-preregister'>POST /preregister</h2>
+<p>TODO</p>
+<h2 id='get-preregister-confirm-token'>GET /preregister/confirm/{token}</h2>
+<p>TODO</p>
+<h2 id='put-preregister'>PUT /preregister</h2>
+<p>TODO</p>
+<h2 id='get-preregistrations'>GET /preregistrations</h2>
+<p>TODO</p>
+<h2 id='put-preregistrations-id'>PUT /preregistrations/{id}</h2>
+<p>TODO</p>
+<h2 id='post-preregistrations-id'>POST /preregistrations/{id}</h2>
+<p>TODO</p>
+<h2 id='delete-preregistrations-id'>DELETE /preregistrations/{id}</h2>
+<p>TODO</p>
+<h1 id='events'>Events</h1><h2 id='get-events'>GET /events</h2>
+<p>TODO</p>
+<h2 id='get-events-slug'>GET /events/{slug}</h2>
+<p>TODO</p>
+<h1 id='galleries'>Galleries</h1><h2 id='get-galleries'>GET /galleries</h2>
+<p>TODO</p>
+<h2 id='get-galleries-slug'>GET /galleries/{slug}</h2>
+<p>TODO</p>
+<h2 id='post-galleries'>POST /galleries</h2>
+<p>TODO</p>
+<h2 id='put-galleries-slug'>PUT /galleries/{slug}</h2>
+<p>TODO</p>
+<h2 id='delete-galleries-slug'>DELETE /galleries/{slug}</h2>
+<p>TODO</p>
+<h2 id='get-images'>GET /images</h2>
+<p>TODO</p>
+<h2 id='post-images-upload'>POST /images/upload</h2>
+<p>TODO</p>
+<h2 id='post-images'>POST /images</h2>
+<p>TODO</p>
+<h2 id='put-images-id'>PUT /images/{id}</h2>
+<p>TODO</p>
+<h2 id='delete-images-id'>DELETE /images/{id}</h2>
+<p>TODO</p>
+<h1 id='orders'>Orders</h1><h2 id='post-order'>POST /order</h2>
+<p>TODO</p>
+<h2 id='get-order-order_id-token'>GET /order/{order_id}/{token}</h2>
+<p>TODO</p>
+<h2 id='get-orders'>GET /orders</h2>
+<p>TODO</p>
+<h2 id='any-order-order_id-token-ipn-payment_method'>ANY /order/{order_id}/{token}/ipn/{payment_method}</h2>
+<p>TODO</p>
+<h2 id='post-checkout-paypal'>POST /checkout/paypal</h2>
+<p>TODO</p>
+<h1 id='payment'>Payment</h1><h2 id='get-ideal-banks'>GET /ideal/banks</h2>
+<p>TODO</p>
+<h1 id='tickets'>Tickets</h1><h2 id='get-tickets'>GET /tickets</h2>
+<p>TODO</p>
+<h2 id='post-ticket-id-personalize'>POST /ticket/{id}/personalize</h2>
+<p>TODO</p>
+<h2 id='get-ticket-id-pdf-token'>GET /ticket/{id}/pdf/{token}</h2>
+<p>TODO</p>
+<h1 id='ranks'>Ranks</h1><h2 id='get-ranks'>GET /ranks</h2>
+<p>TODO</p>
+<h2 id='get-achievements'>GET /achievements</h2>
+<p>TODO</p>
+<h2 id='post-achievement'>POST /achievement</h2>
+<p>TODO</p>
+<h1 id='promoter'>Promoter</h1><h2 id='get-promoter-orders'>GET /promoter/orders</h2>
+<p>TODO</p>
+<h1 id='affiliate'>Affiliate</h1><h2 id='get-affiliate'>GET /affiliate</h2>
+<p>TODO</p>
+<h2 id='post-affiliate'>POST /affiliate</h2>
+<p>TODO</p>
+<h2 id='get-reflinks'>GET /reflinks</h2>
+<p>TODO</p>
+<h2 id='put-affiliate-hash'>PUT /affiliate/{hash}</h2>
+<p>TODO</p>
+<h2 id='delete-affiliate-hash'>DELETE /affiliate/{hash}</h2>
+<p>TODO</p>
+<h2 id='get-affiliate-orders'>GET /affiliate/orders</h2>
+<p>TODO</p>
+<h2 id='post-affiliate-click-hash'>POST /affiliate/click/{hash}</h2>
+<p>TODO</p>
+<h1 id='notifications'>Notifications</h1><h2 id='get-notification-user'>GET /notification/{user}</h2>
+<p>TODO</p>
+<h2 id='post-notification-user'>POST /notification/{user}</h2>
+<p>TODO</p>
+<h2 id='post-push'>POST /push</h2>
+<p>TODO</p>
+<h2 id='delete-push'>DELETE /push</h2>
+<p>TODO</p>
+<h1 id='terminals'>Terminals</h1><h2 id='get-terminal-device_id-rfid_tag'>GET /terminal/{device_id}/{rfid_tag}</h2>
+<p>TODO</p>
+<h2 id='get-entry-hash'>GET /entry/{hash}</h2>
+<p>TODO</p>
+<h2 id='get-entry-hash-details'>GET /entry/{hash}/details</h2>
+<p>TODO</p>
+<h2 id='delete-entry-hash'>DELETE /entry/{hash}</h2>
+<p>TODO</p>
+<h1 id='settings'>Settings</h1><h2 id='get-settings'>GET /settings</h2>
+<p>TODO</p>
+<h2 id='put-settings'>PUT /settings</h2>
+<p>TODO</p>
+
+      </div>
+      <div class="dark-box">
+          <div class="lang-selector">
+                <a href="#" data-language-name="php">php</a>
+          </div>
+      </div>
+    </div>
+  </body>
+</html>
