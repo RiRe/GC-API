@@ -739,8 +739,124 @@
 </tbody></table>
 
 <aside style="color: white;">Additional values are possible based on your system configuration</aside>
-<h2 id='get-products'>GET /products</h2>
-<p>TODO</p>
+<h2 id='get-products'>GET /products</h2><pre class="highlight php tab-php"><code><span class="cp">&lt;?php</span>
+<span class="nv">$ch</span> <span class="o">=</span> <span class="nb">curl_init</span><span class="p">(</span><span class="s2">"https://api.hyperspace.one/products"</span><span class="p">);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_RETURNTRANSFER</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+<span class="nv">$res</span> <span class="o">=</span> <span class="nb">curl_exec</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="nb">curl_errno</span><span class="p">(</span><span class="nv">$ch</span><span class="p">))</span> <span class="p">{</span>
+  <span class="k">die</span><span class="p">(</span><span class="nb">curl_error</span><span class="p">(</span><span class="nv">$ch</span><span class="p">));</span>
+<span class="p">}</span>
+
+<span class="nb">curl_close</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
+<span class="nv">$res</span> <span class="o">=</span> <span class="nb">json_decode</span><span class="p">(</span><span class="nv">$res</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+
+<span class="nb">print_r</span><span class="p">(</span><span class="nv">$res</span><span class="p">);</span>
+</code></pre>
+<blockquote>
+<p>The above request returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">[</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"id"</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"name"</span><span class="p">:</span><span class="s2">"Early Bird"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"description"</span><span class="p">:</span><span class="s2">"What do you get with this ticket?</span><span class="se">\r\n\r\n</span><span class="s2">+ Access to the festival</span><span class="se">\r\n</span><span class="s2">+ Wristband</span><span class="se">\r\n</span><span class="s2">+ Parking</span><span class="se">\r\n</span><span class="s2">+ Some more stuff</span><span class="se">\r\n</span><span class="s2">- Some more stuff"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"net_price"</span><span class="p">:</span><span class="mf">4.2</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"gross_price"</span><span class="p">:</span><span class="mi">5</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"price"</span><span class="p">:</span><span class="mi">5</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"taxrate"</span><span class="p">:</span><span class="mi">19</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"tax"</span><span class="p">:</span><span class="mf">0.8</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"net_shipping"</span><span class="p">:</span><span class="mf">0.04</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"gross_shipping"</span><span class="p">:</span><span class="mf">0.05</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"tax_shipping"</span><span class="p">:</span><span class="mf">0.01</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"pricePrefix"</span><span class="p">:</span><span class="s2">""</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"priceSuffix"</span><span class="p">:</span><span class="s2">"</span><span class="se">\u</span><span class="s2">20ac"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"end_personalization"</span><span class="p">:</span><span class="s2">"0000-00-00 00:00:00"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"sale_start"</span><span class="p">:</span><span class="s2">"0000-00-00 00:00:00"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"sale_end"</span><span class="p">:</span><span class="s2">"0000-00-00 00:00:00"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"available"</span><span class="p">:</span><span class="kc">true</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">]</span><span class="w">
+</span></code></pre>
+<p>This endpoint returns the products defined in GroundControl.</p>
+<h3 id='return-values-3'>Return values</h3>
+<p>Each product has the following parameters:</p>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>id</td>
+<td>Product ID</td>
+</tr>
+<tr>
+<td>name</td>
+<td>Product name (localized)</td>
+</tr>
+<tr>
+<td>description</td>
+<td>Product description (localized)</td>
+</tr>
+<tr>
+<td>net_price </td>
+<td>Price without tax</td>
+</tr>
+<tr>
+<td>gross_price</td>
+<td>Price with tax</td>
+</tr>
+<tr>
+<td>price</td>
+<td>End price</td>
+</tr>
+<tr>
+<td>taxrate</td>
+<td>Tax rate in percent</td>
+</tr>
+<tr>
+<td>tax</td>
+<td>Tax included in price</td>
+</tr>
+<tr>
+<td>net_shipping</td>
+<td>Shipping costs without tax</td>
+</tr>
+<tr>
+<td>gross_shipping</td>
+<td>Shipping costs including tax</td>
+</tr>
+<tr>
+<td>tax_shipping</td>
+<td>Tax included in shipping</td>
+</tr>
+<tr>
+<td>pricePrefix</td>
+<td>Prefix for pricing (e.g. $)</td>
+</tr>
+<tr>
+<td>priceSuffix </td>
+<td>Suffix for pricing (e.g. €)</td>
+</tr>
+<tr>
+<td>end_personalization</td>
+<td>End of ticket personalization timeframe</td>
+</tr>
+<tr>
+<td>sale_start</td>
+<td>Start date of sale (can be in future)</td>
+</tr>
+<tr>
+<td>sale_end</td>
+<td>End date of sale (can be in past)</td>
+</tr>
+<tr>
+<td>available </td>
+<td>Product in stock</td>
+</tr>
+</tbody></table>
 <h2 id='get-faq'>GET /faq</h2><pre class="highlight php tab-php"><code><span class="cp">&lt;?php</span>
 <span class="nv">$ch</span> <span class="o">=</span> <span class="nb">curl_init</span><span class="p">(</span><span class="s2">"https://api.hyperspace.one/faq"</span><span class="p">);</span>
 <span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_RETURNTRANSFER</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
@@ -769,7 +885,7 @@
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
 <p>This endpoint returns the defined Frequently Asked Questions (FAQ).</p>
-<h3 id='return-values-3'>Return values</h3>
+<h3 id='return-values-4'>Return values</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -813,26 +929,852 @@
 <td>Value that QR code should represent</td>
 </tr>
 </tbody></table>
-<h1 id='users'>Users</h1><h2 id='put-register'>PUT /register</h2>
-<p>TODO</p>
-<h2 id='put-password'>PUT /password</h2>
-<p>TODO</p>
-<h2 id='post-password-email'>POST /password/email</h2>
-<p>TODO</p>
-<h2 id='post-password-check'>POST /password/check</h2>
-<p>TODO</p>
-<h2 id='post-password-reset'>POST /password/reset</h2>
-<p>TODO</p>
-<h2 id='get-users'>GET /users</h2>
-<p>TODO</p>
-<h2 id='get-user-id'>GET /user/{id}</h2>
-<p>TODO</p>
-<h2 id='put-user-id'>PUT /user/{id}</h2>
-<p>TODO</p>
-<h2 id='delete-user-id'>DELETE /user/{id}</h2>
-<p>TODO</p>
-<h2 id='post-user'>POST /user</h2>
-<p>TODO</p>
+<h1 id='users'>Users</h1><h2 id='put-register'>PUT /register</h2><pre class="highlight php tab-php"><code><span class="cp">&lt;?php</span>
+<span class="nv">$ch</span> <span class="o">=</span> <span class="nb">curl_init</span><span class="p">(</span><span class="s2">"https://api.hyperspace.one/register"</span><span class="p">);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_RETURNTRANSFER</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_POSTFIELDS</span><span class="p">,</span> <span class="nb">http_build_query</span><span class="p">([</span>
+  <span class="s2">"captcha"</span> <span class="o">=&gt;</span> <span class="s2">"xxx"</span><span class="p">,</span>
+  <span class="s2">"email"</span> <span class="o">=&gt;</span> <span class="s2">"john.doe@example.com"</span><span class="p">,</span>
+  <span class="s2">"firstname"</span> <span class="o">=&gt;</span> <span class="s2">"John"</span><span class="p">,</span>
+  <span class="s2">"lastname"</span> <span class="o">=&gt;</span> <span class="s2">"Doe"</span><span class="p">,</span>
+<span class="p">]));</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_CUSTOMREQUEST</span><span class="p">,</span> <span class="s2">"PUT"</span><span class="p">);</span>
+<span class="nv">$res</span> <span class="o">=</span> <span class="nb">curl_exec</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="nb">curl_errno</span><span class="p">(</span><span class="nv">$ch</span><span class="p">))</span> <span class="p">{</span>
+  <span class="k">die</span><span class="p">(</span><span class="nb">curl_error</span><span class="p">(</span><span class="nv">$ch</span><span class="p">));</span>
+<span class="p">}</span>
+
+<span class="nb">curl_close</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
+<span class="nv">$res</span> <span class="o">=</span> <span class="nb">json_decode</span><span class="p">(</span><span class="nv">$res</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+
+<span class="nb">print_r</span><span class="p">(</span><span class="nv">$res</span><span class="p">);</span>
+</code></pre>
+<blockquote>
+<p>The above request returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"success"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<p>New registrations by users should be handled using this endpoint.</p>
+
+<p>As soon as a captcha has been solved correctly, this information is saved within the browser session on the API server. This means if there is an error in the registration process (excluding captcha error), the captcha must not be solved again. The information is reset as soon as the registration was successful. Therefore, another registration requires a new captcha.</p>
+
+<p>During a successful registration, the user gets an email from GC-API containing his password he can login with.</p>
+<h3 id='query-parameters-4'>Query parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>captcha</td>
+<td><strong>If captcha activated</strong> Captcha token</td>
+</tr>
+<tr>
+<td>email</td>
+<td>Email address</td>
+</tr>
+<tr>
+<td>firstname</td>
+<td>First name</td>
+</tr>
+<tr>
+<td>lastname</td>
+<td>Last name</td>
+</tr>
+</tbody></table>
+<h3 id='failure-codes-2'>Failure codes</h3>
+<table><thead>
+<tr>
+<th>Failure Code</th>
+<th>Meaning</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>1000</td>
+<td>Invalid captcha token</td>
+</tr>
+<tr>
+<td>1001</td>
+<td>Invalid email</td>
+</tr>
+<tr>
+<td>1002</td>
+<td>Email already registered</td>
+</tr>
+<tr>
+<td>1003</td>
+<td>No first name specified</td>
+</tr>
+<tr>
+<td>1004</td>
+<td>No last name specified</td>
+</tr>
+</tbody></table>
+<h2 id='put-password'>PUT /password</h2><pre class="highlight php tab-php"><code><span class="cp">&lt;?php</span>
+<span class="nv">$ch</span> <span class="o">=</span> <span class="nb">curl_init</span><span class="p">(</span><span class="s2">"https://api.hyperspace.one/password"</span><span class="p">);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_RETURNTRANSFER</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_POSTFIELDS</span><span class="p">,</span> <span class="nb">http_build_query</span><span class="p">([</span>
+  <span class="s2">"new_pwd"</span> <span class="o">=&gt;</span> <span class="s2">"xxx"</span><span class="p">,</span>
+  <span class="s2">"old_pwd"</span> <span class="o">=&gt;</span> <span class="s2">"xxx"</span><span class="p">,</span>
+<span class="p">]));</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_CUSTOMREQUEST</span><span class="p">,</span> <span class="s2">"PUT"</span><span class="p">);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_HTTPHEADER</span><span class="p">,</span> <span class="p">[</span>
+  <span class="s2">"Authorization: Bearer xxx"</span><span class="p">,</span>
+<span class="p">]);</span>
+<span class="nv">$res</span> <span class="o">=</span> <span class="nb">curl_exec</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="nb">curl_errno</span><span class="p">(</span><span class="nv">$ch</span><span class="p">))</span> <span class="p">{</span>
+  <span class="k">die</span><span class="p">(</span><span class="nb">curl_error</span><span class="p">(</span><span class="nv">$ch</span><span class="p">));</span>
+<span class="p">}</span>
+
+<span class="nb">curl_close</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
+<span class="nv">$res</span> <span class="o">=</span> <span class="nb">json_decode</span><span class="p">(</span><span class="nv">$res</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+
+<span class="nb">print_r</span><span class="p">(</span><span class="nv">$res</span><span class="p">);</span>
+</code></pre>
+<blockquote>
+<p>The above request returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"success"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<aside style="color: white;">User authentication required</aside>
+
+<p>This endpoint allows users to change their account password. Requesting a password confirmation and checking for parity should be done in frontend.</p>
+<h3 id='query-parameters-5'>Query parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>new_pwd</td>
+<td>New password</td>
+</tr>
+<tr>
+<td>old_pwd</td>
+<td>Old password</td>
+</tr>
+</tbody></table>
+<h3 id='failure-codes-3'>Failure codes</h3>
+<table><thead>
+<tr>
+<th>Failure Code</th>
+<th>Meaning</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>1000</td>
+<td>New password does not met requirements</td>
+</tr>
+<tr>
+<td>1001</td>
+<td>Old password is invalid</td>
+</tr>
+</tbody></table>
+<h2 id='post-password-email'>POST /password/email</h2><pre class="highlight php tab-php"><code><span class="cp">&lt;?php</span>
+<span class="nv">$ch</span> <span class="o">=</span> <span class="nb">curl_init</span><span class="p">(</span><span class="s2">"https://api.hyperspace.one/password/email"</span><span class="p">);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_RETURNTRANSFER</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_POSTFIELDS</span><span class="p">,</span> <span class="nb">http_build_query</span><span class="p">([</span>
+  <span class="s2">"captcha"</span> <span class="o">=&gt;</span> <span class="s2">"xxx"</span><span class="p">,</span>
+  <span class="s2">"email"</span> <span class="o">=&gt;</span> <span class="s2">"john.doe@example.com"</span><span class="p">,</span>
+<span class="p">]));</span>
+<span class="nv">$res</span> <span class="o">=</span> <span class="nb">curl_exec</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="nb">curl_errno</span><span class="p">(</span><span class="nv">$ch</span><span class="p">))</span> <span class="p">{</span>
+  <span class="k">die</span><span class="p">(</span><span class="nb">curl_error</span><span class="p">(</span><span class="nv">$ch</span><span class="p">));</span>
+<span class="p">}</span>
+
+<span class="nb">curl_close</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
+<span class="nv">$res</span> <span class="o">=</span> <span class="nb">json_decode</span><span class="p">(</span><span class="nv">$res</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+
+<span class="nb">print_r</span><span class="p">(</span><span class="nv">$res</span><span class="p">);</span>
+</code></pre>
+<blockquote>
+<p>The above request returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"success"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<p>If a user has lost his password, a reset email can be requested using this endpoint.</p>
+
+<p>As soon as a captcha has been solved correctly, this information is saved within the browser session on the API server. This means if there is an error in the password request process (excluding captcha error), the captcha must not be solved again. The information is reset as soon as the reset request was successful. Therefore, another reset request requires a new captcha.</p>
+
+<p>After a successful reset request, the user gets an email from GC-API containing a reset link leading to the frontend configured in GroundControl.</p>
+<h3 id='query-parameters-6'>Query parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>captcha</td>
+<td><strong>If captcha activated</strong> Captcha token</td>
+</tr>
+<tr>
+<td>email</td>
+<td>Email address</td>
+</tr>
+</tbody></table>
+<h3 id='failure-codes-4'>Failure codes</h3>
+<table><thead>
+<tr>
+<th>Failure Code</th>
+<th>Meaning</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>1000</td>
+<td>Invalid captcha token</td>
+</tr>
+<tr>
+<td>1001</td>
+<td>No user with this email found</td>
+</tr>
+</tbody></table>
+<h2 id='post-password-check'>POST /password/check</h2><pre class="highlight php tab-php"><code><span class="cp">&lt;?php</span>
+<span class="nv">$ch</span> <span class="o">=</span> <span class="nb">curl_init</span><span class="p">(</span><span class="s2">"https://api.hyperspace.one/password/check"</span><span class="p">);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_RETURNTRANSFER</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_POSTFIELDS</span><span class="p">,</span> <span class="nb">http_build_query</span><span class="p">([</span>
+  <span class="s2">"email"</span> <span class="o">=&gt;</span> <span class="s2">"john.doe@example.com"</span><span class="p">,</span>
+  <span class="s2">"token"</span> <span class="o">=&gt;</span> <span class="s2">"xxx"</span><span class="p">,</span>
+<span class="p">]));</span>
+<span class="nv">$res</span> <span class="o">=</span> <span class="nb">curl_exec</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="nb">curl_errno</span><span class="p">(</span><span class="nv">$ch</span><span class="p">))</span> <span class="p">{</span>
+  <span class="k">die</span><span class="p">(</span><span class="nb">curl_error</span><span class="p">(</span><span class="nv">$ch</span><span class="p">));</span>
+<span class="p">}</span>
+
+<span class="nb">curl_close</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
+<span class="nv">$res</span> <span class="o">=</span> <span class="nb">json_decode</span><span class="p">(</span><span class="nv">$res</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+
+<span class="nb">print_r</span><span class="p">(</span><span class="nv">$res</span><span class="p">);</span>
+</code></pre>
+<blockquote>
+<p>If the token is valid, the response is:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"success"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<blockquote>
+<p>If the token is invalid or expired, the response is:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"success"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<p>This endpoint can be used to verify a password reset token. This is useful to pre-check the token before actually requesting a new password from the user.</p>
+
+<p>Please note that the reset token has a validity of 30 minutes.</p>
+<h3 id='query-parameters-7'>Query parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>email</td>
+<td>Email address</td>
+</tr>
+<tr>
+<td>token</td>
+<td>Password reset token</td>
+</tr>
+</tbody></table>
+<h2 id='post-password-reset'>POST /password/reset</h2><pre class="highlight php tab-php"><code><span class="cp">&lt;?php</span>
+<span class="nv">$ch</span> <span class="o">=</span> <span class="nb">curl_init</span><span class="p">(</span><span class="s2">"https://api.hyperspace.one/password/reset"</span><span class="p">);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_RETURNTRANSFER</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_POSTFIELDS</span><span class="p">,</span> <span class="nb">http_build_query</span><span class="p">([</span>
+  <span class="s2">"captcha"</span> <span class="o">=&gt;</span> <span class="s2">"xxx"</span><span class="p">,</span>
+  <span class="s2">"email"</span> <span class="o">=&gt;</span> <span class="s2">"john.doe@example.com"</span><span class="p">,</span>
+  <span class="s2">"pwd"</span> <span class="o">=&gt;</span> <span class="s2">"xxx"</span><span class="p">,</span>
+<span class="p">]));</span>
+<span class="nv">$res</span> <span class="o">=</span> <span class="nb">curl_exec</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="nb">curl_errno</span><span class="p">(</span><span class="nv">$ch</span><span class="p">))</span> <span class="p">{</span>
+  <span class="k">die</span><span class="p">(</span><span class="nb">curl_error</span><span class="p">(</span><span class="nv">$ch</span><span class="p">));</span>
+<span class="p">}</span>
+
+<span class="nb">curl_close</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
+<span class="nv">$res</span> <span class="o">=</span> <span class="nb">json_decode</span><span class="p">(</span><span class="nv">$res</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+
+<span class="nb">print_r</span><span class="p">(</span><span class="nv">$res</span><span class="p">);</span>
+</code></pre>
+<blockquote>
+<p>The above request returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"success"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<p>This endpoint is used to actually reset a users password. Therefore, the reset process data and the new password is needed. The password is instantly saved and a login with the new password is possible. Please note that the password reset token is valid only once and expires 30 minutes after issuance.</p>
+
+<p>As soon as a captcha has been solved correctly, this information is saved within the browser session on the API server. This means if there is an error in the password reset process (excluding captcha error), the captcha must not be solved again. The information is reset as soon as the reset process was successful. Therefore, another reset process requires a new captcha.</p>
+<h3 id='query-parameters-8'>Query parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>captcha</td>
+<td><strong>If captcha activated</strong> Captcha token</td>
+</tr>
+<tr>
+<td>email</td>
+<td>Email address</td>
+</tr>
+<tr>
+<td>token</td>
+<td>Password reset token</td>
+</tr>
+<tr>
+<td>pwd</td>
+<td>New password</td>
+</tr>
+</tbody></table>
+<h3 id='failure-codes-5'>Failure codes</h3>
+<table><thead>
+<tr>
+<th>Failure Code</th>
+<th>Meaning</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>1000</td>
+<td>Invalid captcha token</td>
+</tr>
+<tr>
+<td>1001</td>
+<td>Invalid reset token</td>
+</tr>
+<tr>
+<td>1002</td>
+<td>No user with this email found</td>
+</tr>
+<tr>
+<td>1003</td>
+<td>New password does not met requirements</td>
+</tr>
+</tbody></table>
+<h2 id='get-users'>GET /users</h2><pre class="highlight php tab-php"><code><span class="cp">&lt;?php</span>
+<span class="nv">$ch</span> <span class="o">=</span> <span class="nb">curl_init</span><span class="p">(</span><span class="s2">"https://api.hyperspace.one/users"</span><span class="p">);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_RETURNTRANSFER</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_HTTPHEADER</span><span class="p">,</span> <span class="p">[</span>
+  <span class="s2">"Authorization: Bearer xxx"</span><span class="p">,</span>
+<span class="p">]);</span>
+<span class="nv">$res</span> <span class="o">=</span> <span class="nb">curl_exec</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="nb">curl_errno</span><span class="p">(</span><span class="nv">$ch</span><span class="p">))</span> <span class="p">{</span>
+  <span class="k">die</span><span class="p">(</span><span class="nb">curl_error</span><span class="p">(</span><span class="nv">$ch</span><span class="p">));</span>
+<span class="p">}</span>
+
+<span class="nb">curl_close</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
+<span class="nv">$res</span> <span class="o">=</span> <span class="nb">json_decode</span><span class="p">(</span><span class="nv">$res</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+
+<span class="nb">print_r</span><span class="p">(</span><span class="nv">$res</span><span class="p">);</span>
+</code></pre>
+<blockquote>
+<p>The above request returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"success"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"itemCount"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"items"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"firstname"</span><span class="p">:</span><span class="w"> </span><span class="s2">"John"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"lastname"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Doe"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"email"</span><span class="p">:</span><span class="w"> </span><span class="s2">"john.doe@example.com"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"password"</span><span class="p">:</span><span class="w"> </span><span class="s2">"$2y$10$B/c4MY1JhqZo7HMhZBlkO.AlwoapqH9fLOPfL4QhqhX.x2cdqo01a"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"remember_token"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"created_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2019-03-07 17:09:13"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"updated_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2019-03-07 21:10:49"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"language"</span><span class="p">:</span><span class="w"> </span><span class="s2">"en"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"pw_changed"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2019-03-07 21:10:49"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"contact_person"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"instagram"</span><span class="p">:</span><span class="w"> </span><span class="s2">"johndoe"</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<aside style="color: white;">Requires user authentication with right <b>get_users</b></aside>
+
+<p>This endpoint allows administrators to get a paginated list of all users in the system.</p>
+<h3 id='query-parameters-9'>Query parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>page</td>
+<td>1</td>
+<td>Page number</td>
+</tr>
+<tr>
+<td>per_page</td>
+<td>20</td>
+<td>Items to display per page</td>
+</tr>
+<tr>
+<td>filter</td>
+<td>-</td>
+<td>Wildcard filter for firstname, lastname, email</td>
+</tr>
+<tr>
+<td>sort_field</td>
+<td>created_at</td>
+<td>Field to sort by</td>
+</tr>
+<tr>
+<td>sort_direction</td>
+<td>asc</td>
+<td>Sorting direction</td>
+</tr>
+</tbody></table>
+<h3 id='return-values-5'>Return values</h3>
+<p>The request returns an <code>itemCount</code> which is the number of all users in system. <code>items</code> contains the set of requested users according to pagination. The users have these properties:</p>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>id</td>
+<td>User ID</td>
+</tr>
+<tr>
+<td>firstname</td>
+<td>First name</td>
+</tr>
+<tr>
+<td>lastname</td>
+<td>Last name</td>
+</tr>
+<tr>
+<td>email</td>
+<td>Email address</td>
+</tr>
+<tr>
+<td>password</td>
+<td>Hashed password</td>
+</tr>
+<tr>
+<td>remember_token</td>
+<td>Cookie token</td>
+</tr>
+<tr>
+<td>created_at</td>
+<td>Time of registration</td>
+</tr>
+<tr>
+<td>updated_at</td>
+<td>Time of last change</td>
+</tr>
+<tr>
+<td>language</td>
+<td>Last language used</td>
+</tr>
+<tr>
+<td>pw_changed</td>
+<td>Time of last password change</td>
+</tr>
+<tr>
+<td>contact_person</td>
+<td>User ID of contact person</td>
+</tr>
+<tr>
+<td>instagram</td>
+<td>Instagram handle</td>
+</tr>
+</tbody></table>
+<h2 id='get-user-id'>GET /user/{id}</h2><pre class="highlight php tab-php"><code><span class="cp">&lt;?php</span>
+<span class="nv">$ch</span> <span class="o">=</span> <span class="nb">curl_init</span><span class="p">(</span><span class="s2">"https://api.hyperspace.one/user/</span><span class="si">{</span><span class="nv">id</span><span class="si">}</span><span class="s2">"</span><span class="p">);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_RETURNTRANSFER</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_HTTPHEADER</span><span class="p">,</span> <span class="p">[</span>
+  <span class="s2">"Authorization: Bearer xxx"</span><span class="p">,</span>
+<span class="p">]);</span>
+<span class="nv">$res</span> <span class="o">=</span> <span class="nb">curl_exec</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="nb">curl_errno</span><span class="p">(</span><span class="nv">$ch</span><span class="p">))</span> <span class="p">{</span>
+  <span class="k">die</span><span class="p">(</span><span class="nb">curl_error</span><span class="p">(</span><span class="nv">$ch</span><span class="p">));</span>
+<span class="p">}</span>
+
+<span class="nb">curl_close</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
+<span class="nv">$res</span> <span class="o">=</span> <span class="nb">json_decode</span><span class="p">(</span><span class="nv">$res</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+
+<span class="nb">print_r</span><span class="p">(</span><span class="nv">$res</span><span class="p">);</span>
+</code></pre>
+<blockquote>
+<p>The above request returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"success"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"firstname"</span><span class="p">:</span><span class="w"> </span><span class="s2">"John"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"lastname"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Doe"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"email"</span><span class="p">:</span><span class="w"> </span><span class="s2">"john.doe@example.com"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"password"</span><span class="p">:</span><span class="w"> </span><span class="s2">"$2y$10$B/c4MY1JhqZo7HMhZBlkO.AlwoapqH9fLOPfL4QhqhX.x2cdqo01a"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"remember_token"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"created_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2019-03-07 17:09:13"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"updated_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2019-03-07 21:10:49"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"language"</span><span class="p">:</span><span class="w"> </span><span class="s2">"en"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"pw_changed"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2019-03-07 21:10:49"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"contact_person"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"instagram"</span><span class="p">:</span><span class="w"> </span><span class="s2">"johndoe"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<aside style="color: white;">Requires user authentication with right <b>get_user</b></aside>
+
+<p>This endpoint allows administrators to get details of a user.</p>
+
+<p>Administrators are only allowed to access users who have less or equal amount of rights. Administrator with wildcard right are allowed to access every user.</p>
+<h3 id='query-parameters-10'>Query parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>id</td>
+<td>-</td>
+<td>User ID</td>
+</tr>
+</tbody></table>
+<h3 id='return-values-6'>Return values</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>id</td>
+<td>User ID</td>
+</tr>
+<tr>
+<td>firstname</td>
+<td>First name</td>
+</tr>
+<tr>
+<td>lastname</td>
+<td>Last name</td>
+</tr>
+<tr>
+<td>email</td>
+<td>Email address</td>
+</tr>
+<tr>
+<td>password</td>
+<td>Hashed password</td>
+</tr>
+<tr>
+<td>remember_token</td>
+<td>Cookie token</td>
+</tr>
+<tr>
+<td>created_at</td>
+<td>Time of registration</td>
+</tr>
+<tr>
+<td>updated_at</td>
+<td>Time of last change</td>
+</tr>
+<tr>
+<td>language</td>
+<td>Last language used</td>
+</tr>
+<tr>
+<td>pw_changed</td>
+<td>Time of last password change</td>
+</tr>
+<tr>
+<td>contact_person</td>
+<td>User ID of contact person</td>
+</tr>
+<tr>
+<td>instagram</td>
+<td>Instagram handle</td>
+</tr>
+</tbody></table>
+<h3 id='failure-codes-6'>Failure codes</h3>
+<table><thead>
+<tr>
+<th>Failure Code</th>
+<th>Meaning</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>1000</td>
+<td>User not found</td>
+</tr>
+<tr>
+<td>1001</td>
+<td>No user access</td>
+</tr>
+</tbody></table>
+<h2 id='put-user-id'>PUT /user/{id}</h2><pre class="highlight php tab-php"><code><span class="cp">&lt;?php</span>
+<span class="nv">$ch</span> <span class="o">=</span> <span class="nb">curl_init</span><span class="p">(</span><span class="s2">"https://api.hyperspace.one/user/</span><span class="si">{</span><span class="nv">id</span><span class="si">}</span><span class="s2">"</span><span class="p">);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_RETURNTRANSFER</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_POSTFIELDS</span><span class="p">,</span> <span class="nb">http_build_query</span><span class="p">([</span>
+  <span class="s2">"instagram"</span> <span class="o">=&gt;</span> <span class="s2">"johndoe.new"</span><span class="p">,</span>
+<span class="p">]));</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_HTTPHEADER</span><span class="p">,</span> <span class="p">[</span>
+  <span class="s2">"Authorization: Bearer xxx"</span><span class="p">,</span>
+<span class="p">]);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_CUSTOMREQUEST</span><span class="p">,</span> <span class="s2">"PUT"</span><span class="p">);</span>
+<span class="nv">$res</span> <span class="o">=</span> <span class="nb">curl_exec</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="nb">curl_errno</span><span class="p">(</span><span class="nv">$ch</span><span class="p">))</span> <span class="p">{</span>
+  <span class="k">die</span><span class="p">(</span><span class="nb">curl_error</span><span class="p">(</span><span class="nv">$ch</span><span class="p">));</span>
+<span class="p">}</span>
+
+<span class="nb">curl_close</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
+<span class="nv">$res</span> <span class="o">=</span> <span class="nb">json_decode</span><span class="p">(</span><span class="nv">$res</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+
+<span class="nb">print_r</span><span class="p">(</span><span class="nv">$res</span><span class="p">);</span>
+</code></pre>
+<blockquote>
+<p>The above request returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"success"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<aside style="color: white;">Requires user authentication with right <b>create_user</b></aside>
+
+<p>This endpoint allows administrators to edit user details.</p>
+
+<p>Administrators are only allowed to access users who have less or equal amount of rights. Administrator with wildcard right are allowed to access every user.</p>
+<h3 id='query-parameters-11'>Query parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>id</td>
+<td>-</td>
+<td>User ID</td>
+</tr>
+</tbody></table>
+
+<p>You can also use the parameters <code>email</code>, <code>firstname</code>, <code>lastname</code>, <code>password</code> and <code>instagram</code> to update these properties. Parameters not specified are ignored and cannot throw any errors.</p>
+
+<p>If you specify an array named <code>rights</code>, you can set the rights of a user. All rights granted to the user before not included in this array are deleted.</p>
+<h3 id='failure-codes-7'>Failure codes</h3>
+<table><thead>
+<tr>
+<th>Failure Code</th>
+<th>Meaning</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>1001</td>
+<td>Invalid email specified</td>
+</tr>
+<tr>
+<td>1002</td>
+<td>Email already in use</td>
+</tr>
+<tr>
+<td>1005</td>
+<td>Password does not met requirements</td>
+</tr>
+</tbody></table>
+<h2 id='delete-user-id'>DELETE /user/{id}</h2><pre class="highlight php tab-php"><code><span class="cp">&lt;?php</span>
+<span class="nv">$ch</span> <span class="o">=</span> <span class="nb">curl_init</span><span class="p">(</span><span class="s2">"https://api.hyperspace.one/user/</span><span class="si">{</span><span class="nv">id</span><span class="si">}</span><span class="s2">"</span><span class="p">);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_RETURNTRANSFER</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_HTTPHEADER</span><span class="p">,</span> <span class="p">[</span>
+  <span class="s2">"Authorization: Bearer xxx"</span><span class="p">,</span>
+<span class="p">]);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_CUSTOMREQUEST</span><span class="p">,</span> <span class="s2">"DELETE"</span><span class="p">);</span>
+<span class="nv">$res</span> <span class="o">=</span> <span class="nb">curl_exec</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="nb">curl_errno</span><span class="p">(</span><span class="nv">$ch</span><span class="p">))</span> <span class="p">{</span>
+  <span class="k">die</span><span class="p">(</span><span class="nb">curl_error</span><span class="p">(</span><span class="nv">$ch</span><span class="p">));</span>
+<span class="p">}</span>
+
+<span class="nb">curl_close</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
+<span class="nv">$res</span> <span class="o">=</span> <span class="nb">json_decode</span><span class="p">(</span><span class="nv">$res</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+
+<span class="nb">print_r</span><span class="p">(</span><span class="nv">$res</span><span class="p">);</span>
+</code></pre>
+<blockquote>
+<p>The above request returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"success"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<aside style="color: white;">Requires user authentication with right <b>delete_user</b></aside>
+
+<p>This endpoint allows administrators to delete a user.</p>
+
+<p>Administrators are only allowed to access users who have less or equal amount of rights. Administrator with wildcard right are allowed to access every user.</p>
+<h3 id='query-parameters-12'>Query parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>id</td>
+<td>-</td>
+<td>User ID</td>
+</tr>
+</tbody></table>
+<h2 id='post-user'>POST /user</h2><pre class="highlight php tab-php"><code><span class="cp">&lt;?php</span>
+<span class="nv">$ch</span> <span class="o">=</span> <span class="nb">curl_init</span><span class="p">(</span><span class="s2">"https://api.hyperspace.one/user"</span><span class="p">);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_RETURNTRANSFER</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_HTTPHEADER</span><span class="p">,</span> <span class="p">[</span>
+  <span class="s2">"Authorization: Bearer xxx"</span><span class="p">,</span>
+<span class="p">]);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_POSTFIELDS</span><span class="p">,</span> <span class="nb">http_build_query</span><span class="p">([</span>
+  <span class="s2">"email"</span> <span class="o">=&gt;</span> <span class="s2">"john.doe@example.com"</span><span class="p">,</span>
+  <span class="s2">"firstname"</span> <span class="o">=&gt;</span> <span class="s2">"John"</span><span class="p">,</span>
+  <span class="s2">"lastname"</span> <span class="o">=&gt;</span> <span class="s2">"Doe"</span><span class="p">,</span>
+  <span class="s2">"password"</span> <span class="o">=&gt;</span> <span class="s2">"xxx"</span><span class="p">,</span>
+  <span class="s2">"instagram"</span> <span class="o">=&gt;</span> <span class="s2">"johndoe"</span><span class="p">,</span>
+  <span class="s2">"rights"</span> <span class="o">=&gt;</span> <span class="p">[</span><span class="s2">"promoter"</span><span class="p">],</span>
+  <span class="s2">"send_mail"</span> <span class="o">=&gt;</span> <span class="kc">true</span><span class="p">,</span>
+  <span class="s2">"send_promoter_mail"</span> <span class="o">=&gt;</span> <span class="kc">true</span><span class="p">,</span>
+<span class="p">]));</span>
+<span class="nv">$res</span> <span class="o">=</span> <span class="nb">curl_exec</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="nb">curl_errno</span><span class="p">(</span><span class="nv">$ch</span><span class="p">))</span> <span class="p">{</span>
+  <span class="k">die</span><span class="p">(</span><span class="nb">curl_error</span><span class="p">(</span><span class="nv">$ch</span><span class="p">));</span>
+<span class="p">}</span>
+
+<span class="nb">curl_close</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
+<span class="nv">$res</span> <span class="o">=</span> <span class="nb">json_decode</span><span class="p">(</span><span class="nv">$res</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+
+<span class="nb">print_r</span><span class="p">(</span><span class="nv">$res</span><span class="p">);</span>
+</code></pre>
+<blockquote>
+<p>The above request returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"success"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<aside style="color: white;">Requires user authentication with right <b>create_user</b></aside>
+
+<p>This endpoint allows administrators to create new users.</p>
+<h3 id='query-parameters-13'>Query parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>email</td>
+<td>-</td>
+<td>Email address</td>
+</tr>
+<tr>
+<td>firstname</td>
+<td>-</td>
+<td>First name</td>
+</tr>
+<tr>
+<td>lastname</td>
+<td>-</td>
+<td>Last name</td>
+</tr>
+<tr>
+<td>password</td>
+<td>-</td>
+<td>Password</td>
+</tr>
+<tr>
+<td>instagram</td>
+<td>-</td>
+<td><strong>Optional</strong> Instagram handle</td>
+</tr>
+<tr>
+<td>rights</td>
+<td>[]</td>
+<td>Array of rights</td>
+</tr>
+<tr>
+<td>send_mail</td>
+<td>false</td>
+<td>Send welcome mail</td>
+</tr>
+<tr>
+<td>send_promoter_mail</td>
+<td>false</td>
+<td>Send promoter welcome mail</td>
+</tr>
+</tbody></table>
+
+<p>The welcome mails are being sent with the users password.</p>
+<h3 id='return-values-7'>Return values</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>id</td>
+<td>ID of newly created user</td>
+</tr>
+</tbody></table>
+<h3 id='failure-codes-8'>Failure codes</h3>
+<table><thead>
+<tr>
+<th>Failure Code</th>
+<th>Meaning</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>1001</td>
+<td>Invalid email specified</td>
+</tr>
+<tr>
+<td>1002</td>
+<td>Email already in use</td>
+</tr>
+<tr>
+<td>1003 </td>
+<td>No firstname specified</td>
+</tr>
+<tr>
+<td>1004</td>
+<td>No lastname specified</td>
+</tr>
+<tr>
+<td>1005</td>
+<td>Password does not met requirements</td>
+</tr>
+</tbody></table>
 <h1 id='preregistrations'>Preregistrations</h1><h2 id='post-preregister'>POST /preregister</h2>
 <p>TODO</p>
 <h2 id='get-preregister-confirm-token'>GET /preregister/confirm/{token}</h2>
@@ -932,7 +1874,7 @@
 <td>Name of the bank</td>
 </tr>
 </tbody></table>
-<h3 id='failure-codes-2'>Failure codes</h3>
+<h3 id='failure-codes-9'>Failure codes</h3>
 <table><thead>
 <tr>
 <th>Failure Code</th>
@@ -1024,9 +1966,9 @@
 <aside style="color: white;">Requires user authentication</aside>
 
 <p>Gives back all tickets the user have, grouped by order</p>
-<h3 id='query-parameters-4'>Query parameters</h3>
+<h3 id='query-parameters-14'>Query parameters</h3>
 <p>None</p>
-<h3 id='return-values-4'>Return values</h3>
+<h3 id='return-values-8'>Return values</h3>
 <p>The request returns a list of orders containing order information and the tickets assigned with the order.</p>
 
 <table><thead>
@@ -1142,7 +2084,7 @@
 <p>You should use this endpoint to personalize a ticket which needs personalization. A ticket can be personalized as long as defined in the ticket product. Unlimited name changes are allowed.</p>
 
 <p>By default, a ticket is personalized to the buyers name.</p>
-<h3 id='query-parameters-5'>Query parameters</h3>
+<h3 id='query-parameters-15'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -1158,7 +2100,7 @@
 <td>Name of ticket owner</td>
 </tr>
 </tbody></table>
-<h3 id='failure-codes-3'>Failure codes</h3>
+<h3 id='failure-codes-10'>Failure codes</h3>
 <table><thead>
 <tr>
 <th>Failure Code</th>
@@ -1182,14 +2124,406 @@
 <p>This endpoint returns a Wallet file (mostly used by Apple) for a ticket directly as download. The only authentication is done by ticket <code>id</code> and <code>token</code>, this data can be found in endpoint <code>GET /tickets</code>.</p>
 
 <p>You can send a user who wants to download his wallet file directly to this URL filled with his ticket information. If a user calls this URL e.g. with an iPhone, he will be asked directly to add the ticket to his wallet app. This also means that the user gets a notification by his app before the event.</p>
-<h1 id='ranks'>Ranks</h1><h2 id='get-ranks'>GET /ranks</h2>
-<p>TODO</p>
-<h2 id='get-achievements'>GET /achievements</h2>
-<p>TODO</p>
-<h2 id='post-achievement'>POST /achievement</h2>
-<p>TODO</p>
-<h1 id='promoter'>Promoter</h1><h2 id='get-promoter-orders'>GET /promoter/orders</h2>
-<p>TODO</p>
+<h1 id='ranks'>Ranks</h1><h2 id='get-ranks'>GET /ranks</h2><pre class="highlight php tab-php"><code><span class="cp">&lt;?php</span>
+<span class="nv">$ch</span> <span class="o">=</span> <span class="nb">curl_init</span><span class="p">(</span><span class="s2">"https://api.hyperspace.one/ranks"</span><span class="p">);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_RETURNTRANSFER</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+<span class="nv">$res</span> <span class="o">=</span> <span class="nb">curl_exec</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="nb">curl_errno</span><span class="p">(</span><span class="nv">$ch</span><span class="p">))</span> <span class="p">{</span>
+  <span class="k">die</span><span class="p">(</span><span class="nb">curl_error</span><span class="p">(</span><span class="nv">$ch</span><span class="p">));</span>
+<span class="p">}</span>
+
+<span class="nb">curl_close</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
+<span class="nv">$res</span> <span class="o">=</span> <span class="nb">json_decode</span><span class="p">(</span><span class="nv">$res</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+
+<span class="nb">print_r</span><span class="p">(</span><span class="nv">$res</span><span class="p">);</span>
+</code></pre>
+<blockquote>
+<p>The above request returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">[</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"name"</span><span class="p">:</span><span class="s2">"Visitor"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"points"</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"features"</span><span class="p">:[]</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"name"</span><span class="p">:</span><span class="s2">"Flight Engineer"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"points"</span><span class="p">:</span><span class="mi">100</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"features"</span><span class="p">:[]</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"name"</span><span class="p">:</span><span class="s2">"Commander"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"points"</span><span class="p">:</span><span class="mi">300</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"features"</span><span class="p">:[</span><span class="s2">"Free entry"</span><span class="p">]</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">]</span><span class="w">
+</span></code></pre>
+<p>This endpoint returns all ranks configured with GroundControl.</p>
+<h3 id='return-values-9'>Return values</h3>
+<p>Each rank has the following properties:</p>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>name</td>
+<td>Name of rank</td>
+</tr>
+<tr>
+<td>points</td>
+<td> Points required</td>
+</tr>
+<tr>
+<td>features[]</td>
+<td>List of features coming with rank</td>
+</tr>
+</tbody></table>
+<h2 id='get-achievements'>GET /achievements</h2><pre class="highlight php tab-php"><code><span class="cp">&lt;?php</span>
+<span class="nv">$ch</span> <span class="o">=</span> <span class="nb">curl_init</span><span class="p">(</span><span class="s2">"https://api.hyperspace.one/achievements"</span><span class="p">);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_RETURNTRANSFER</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_HTTPHEADER</span><span class="p">,</span> <span class="p">[</span>
+  <span class="s2">"Authorization: Bearer xxx"</span><span class="p">,</span>
+<span class="p">]);</span>
+<span class="nv">$res</span> <span class="o">=</span> <span class="nb">curl_exec</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="nb">curl_errno</span><span class="p">(</span><span class="nv">$ch</span><span class="p">))</span> <span class="p">{</span>
+  <span class="k">die</span><span class="p">(</span><span class="nb">curl_error</span><span class="p">(</span><span class="nv">$ch</span><span class="p">));</span>
+<span class="p">}</span>
+
+<span class="nb">curl_close</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
+<span class="nv">$res</span> <span class="o">=</span> <span class="nb">json_decode</span><span class="p">(</span><span class="nv">$res</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+
+<span class="nb">print_r</span><span class="p">(</span><span class="nv">$res</span><span class="p">);</span>
+</code></pre>
+<blockquote>
+<p>The above request returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">[</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">15</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"achievement"</span><span class="p">:</span><span class="w"> </span><span class="s2">"promoter_order"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"points"</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"date"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+          </span><span class="s2">"date"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2019-02-08 17:48:28.000000"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"timezone_type"</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"timezone"</span><span class="p">:</span><span class="w"> </span><span class="s2">"UTC"</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">13</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"achievement"</span><span class="p">:</span><span class="w"> </span><span class="s2">"promoter_order"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"points"</span><span class="p">:</span><span class="w"> </span><span class="mi">8</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"date"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+          </span><span class="s2">"date"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2019-02-08 17:48:18.000000"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"timezone_type"</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"timezone"</span><span class="p">:</span><span class="w"> </span><span class="s2">"UTC"</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">]</span><span class="w">
+</span></code></pre>
+<aside style="color: white;">Requires user authentication</aside>
+
+<p>This endpoint returns all achievements reached with pagination. The last achievements are shown first.</p>
+<h3 id='query-parameters-16'>Query parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>page</td>
+<td>1</td>
+<td>Page number</td>
+</tr>
+<tr>
+<td>per_page</td>
+<td>20</td>
+<td>Items to display per page</td>
+</tr>
+</tbody></table>
+<h3 id='return-values-10'>Return values</h3>
+<p>Each achievement has the following properties:</p>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>id</td>
+<td>ID of achievement</td>
+</tr>
+<tr>
+<td>achievement</td>
+<td>Achievement type</td>
+</tr>
+<tr>
+<td>points</td>
+<td>Points assigned</td>
+</tr>
+<tr>
+<td>date</td>
+<td>Date of achievement</td>
+</tr>
+</tbody></table>
+<h2 id='post-achievement'>POST /achievement</h2><pre class="highlight php tab-php"><code><span class="cp">&lt;?php</span>
+<span class="nv">$ch</span> <span class="o">=</span> <span class="nb">curl_init</span><span class="p">(</span><span class="s2">"https://api.hyperspace.one/achievement"</span><span class="p">);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_RETURNTRANSFER</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_HTTPHEADER</span><span class="p">,</span> <span class="p">[</span>
+  <span class="s2">"Authorization: Bearer xxx"</span><span class="p">,</span>
+<span class="p">]);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_POSTFIELDS</span><span class="p">,</span> <span class="nb">http_build_query</span><span class="p">([</span>
+  <span class="s2">"user"</span> <span class="o">=&gt;</span> <span class="mi">1</span><span class="p">,</span>
+  <span class="s2">"achievement"</span> <span class="o">=&gt;</span> <span class="s2">"promoter_order"</span><span class="p">,</span>
+  <span class="s2">"points"</span> <span class="o">=&gt;</span> <span class="mi">5</span><span class="p">,</span>
+<span class="p">]));</span>
+<span class="nv">$res</span> <span class="o">=</span> <span class="nb">curl_exec</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="nb">curl_errno</span><span class="p">(</span><span class="nv">$ch</span><span class="p">))</span> <span class="p">{</span>
+  <span class="k">die</span><span class="p">(</span><span class="nb">curl_error</span><span class="p">(</span><span class="nv">$ch</span><span class="p">));</span>
+<span class="p">}</span>
+
+<span class="nb">curl_close</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
+<span class="nv">$res</span> <span class="o">=</span> <span class="nb">json_decode</span><span class="p">(</span><span class="nv">$res</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+
+<span class="nb">print_r</span><span class="p">(</span><span class="nv">$res</span><span class="p">);</span>
+</code></pre>
+<blockquote>
+<p>The above request returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"success"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"pushTokens"</span><span class="p">:</span><span class="w"> </span><span class="p">[]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<aside style="color: white;">Requires user authentication with right <b>create_achievements</b></aside>
+
+<p>This endpoint allows administrators to create new achievements for a user.</p>
+<h3 id='query-parameters-17'>Query parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>user</td>
+<td>-</td>
+<td>User ID or email address</td>
+</tr>
+<tr>
+<td>achievement</td>
+<td>-</td>
+<td>Achievement type</td>
+</tr>
+<tr>
+<td>points</td>
+<td>-</td>
+<td>Points to be assigned</td>
+</tr>
+</tbody></table>
+<h3 id='return-values-11'>Return values</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>pushTokens</td>
+<td>Array of push tokens (strings) of user</td>
+</tr>
+</tbody></table>
+<h3 id='failure-codes-11'>Failure codes</h3>
+<table><thead>
+<tr>
+<th>Failure Code</th>
+<th>Meaning</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>1000</td>
+<td>User not found</td>
+</tr>
+<tr>
+<td>1001</td>
+<td>No achievement specified</td>
+</tr>
+<tr>
+<td>1002</td>
+<td>Invalid points</td>
+</tr>
+</tbody></table>
+<h1 id='promoter'>Promoter</h1><h2 id='get-promoter-orders'>GET /promoter/orders</h2><pre class="highlight php tab-php"><code><span class="cp">&lt;?php</span>
+<span class="nv">$ch</span> <span class="o">=</span> <span class="nb">curl_init</span><span class="p">(</span><span class="s2">"https://api.hyperspace.one/promoter/orders"</span><span class="p">);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_RETURNTRANSFER</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_HTTPHEADER</span><span class="p">,</span> <span class="p">[</span>
+  <span class="s2">"Authorization: Bearer xxx"</span><span class="p">,</span>
+<span class="p">]);</span>
+<span class="nv">$res</span> <span class="o">=</span> <span class="nb">curl_exec</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="nb">curl_errno</span><span class="p">(</span><span class="nv">$ch</span><span class="p">))</span> <span class="p">{</span>
+  <span class="k">die</span><span class="p">(</span><span class="nb">curl_error</span><span class="p">(</span><span class="nv">$ch</span><span class="p">));</span>
+<span class="p">}</span>
+
+<span class="nb">curl_close</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
+<span class="nv">$res</span> <span class="o">=</span> <span class="nb">json_decode</span><span class="p">(</span><span class="nv">$res</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+
+<span class="nb">print_r</span><span class="p">(</span><span class="nv">$res</span><span class="p">);</span>
+</code></pre>
+<blockquote>
+<p>The above request returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"success"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"itemCount"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"items"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">207</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"paid"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"firstname"</span><span class="p">:</span><span class="w"> </span><span class="s2">"John"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"lastname"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Doe"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"email"</span><span class="p">:</span><span class="w"> </span><span class="s2">"john.doe@example.com"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Roermonder Str. 45"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"postcode"</span><span class="p">:</span><span class="w"> </span><span class="s2">"52134"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"city"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Herzogenrath"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"country"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Germany"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"createdAt"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"date"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2019-02-08 17:47:00.000000"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"timezone_type"</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"timezone"</span><span class="p">:</span><span class="w"> </span><span class="s2">"UTC"</span><span class="w">
+      </span><span class="p">},</span><span class="w">
+      </span><span class="s2">"updatedAt"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"date"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2019-02-08 17:47:00.000000"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"timezone_type"</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"timezone"</span><span class="p">:</span><span class="w"> </span><span class="s2">"UTC"</span><span class="w">
+      </span><span class="p">},</span><span class="w">
+      </span><span class="s2">"reflink"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"amount"</span><span class="p">:</span><span class="w"> </span><span class="mf">5.05</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"items"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+          </span><span class="s2">"productId"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"productName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Early Bird"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"quantity"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"price"</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"singlePrice"</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+      </span><span class="p">]</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<aside style="color: white;">Requires user authentication with right <b>promoter</b></aside>
+
+<p>This endpoint allows promoters to view order they have placed. As they have entered the customer data by theirselves, there is no privacy problem in showing this data to promoters.</p>
+<h3 id='query-parameters-18'>Query parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>page</td>
+<td>1</td>
+<td>Page number</td>
+</tr>
+<tr>
+<td>per_page</td>
+<td>20</td>
+<td>Elements per page</td>
+</tr>
+<tr>
+<td>filter</td>
+<td>-</td>
+<td>Wildcard filter for <code>firstname</code>, <code>lastname</code>, <code>email</code>, <code>token</code> or <code>payment_id</code></td>
+</tr>
+<tr>
+<td>sort_field</td>
+<td>created_at</td>
+<td>Field to sort by</td>
+</tr>
+<tr>
+<td>sort_direction</td>
+<td>asc</td>
+<td>Sort direction</td>
+</tr>
+</tbody></table>
+<h3 id='return-values-12'>Return values</h3>
+<p>The request returns an <code>itemCount</code> which is the number of all orders of this promoter in system. <code>items</code> contains the set of requested orders according to pagination. The orders have these properties:</p>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>id</td>
+<td>Order ID</td>
+</tr>
+<tr>
+<td>status</td>
+<td>Order status (usually <code>paid</code>)</td>
+</tr>
+<tr>
+<td>firstname</td>
+<td>Buyer first name</td>
+</tr>
+<tr>
+<td>lastname</td>
+<td>Buyer last name</td>
+</tr>
+<tr>
+<td>email</td>
+<td>Buyer email address</td>
+</tr>
+<tr>
+<td>address</td>
+<td>Buyer address</td>
+</tr>
+<tr>
+<td>postcode</td>
+<td>Buyer postcode</td>
+</tr>
+<tr>
+<td>city</td>
+<td>Buyer city</td>
+</tr>
+<tr>
+<td>country</td>
+<td>Buyer country</td>
+</tr>
+<tr>
+<td>createdAt</td>
+<td>Date of order placed</td>
+</tr>
+<tr>
+<td>updatedAt</td>
+<td>Date of order modified</td>
+</tr>
+<tr>
+<td>reflink</td>
+<td>Reflink used</td>
+</tr>
+<tr>
+<td>amount</td>
+<td>Order amount</td>
+</tr>
+<tr>
+<td>items[]</td>
+<td>Products ordered</td>
+</tr>
+</tbody></table>
 <h1 id='affiliate'>Affiliate</h1><h2 id='get-affiliate'>GET /affiliate</h2>
 <p>TODO</p>
 <h2 id='post-affiliate'>POST /affiliate</h2>
@@ -1204,14 +2538,293 @@
 <p>TODO</p>
 <h2 id='post-affiliate-click-hash'>POST /affiliate/click/{hash}</h2>
 <p>TODO</p>
-<h1 id='notifications'>Notifications</h1><h2 id='get-notification-user'>GET /notification/{user}</h2>
-<p>TODO</p>
-<h2 id='post-notification-user'>POST /notification/{user}</h2>
-<p>TODO</p>
-<h2 id='post-push'>POST /push</h2>
-<p>TODO</p>
-<h2 id='delete-push'>DELETE /push</h2>
-<p>TODO</p>
+<h1 id='notifications'>Notifications</h1><h2 id='get-notification-user'>GET /notification/{user}</h2><pre class="highlight php tab-php"><code><span class="cp">&lt;?php</span>
+<span class="nv">$ch</span> <span class="o">=</span> <span class="nb">curl_init</span><span class="p">(</span><span class="s2">"https://api.hyperspace.one/notification/</span><span class="si">{</span><span class="nv">user</span><span class="si">}</span><span class="s2">"</span><span class="p">);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_RETURNTRANSFER</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_HTTPHEADER</span><span class="p">,</span> <span class="p">[</span>
+  <span class="s2">"Authorization: Bearer xxx"</span><span class="p">,</span>
+<span class="p">]);</span>
+<span class="nv">$res</span> <span class="o">=</span> <span class="nb">curl_exec</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="nb">curl_errno</span><span class="p">(</span><span class="nv">$ch</span><span class="p">))</span> <span class="p">{</span>
+  <span class="k">die</span><span class="p">(</span><span class="nb">curl_error</span><span class="p">(</span><span class="nv">$ch</span><span class="p">));</span>
+<span class="p">}</span>
+
+<span class="nb">curl_close</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
+<span class="nv">$res</span> <span class="o">=</span> <span class="nb">json_decode</span><span class="p">(</span><span class="nv">$res</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+
+<span class="nb">print_r</span><span class="p">(</span><span class="nv">$res</span><span class="p">);</span>
+</code></pre>
+<blockquote>
+<p>The above request returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"success"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"notifications"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"title"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Test notification"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"text"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Test content"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"deeplink"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"createdAt"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"date"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2019-03-09 21:33:20.000000"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"timezone_type"</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"timezone"</span><span class="p">:</span><span class="w"> </span><span class="s2">"UTC"</span><span class="w">
+      </span><span class="p">},</span><span class="w">
+      </span><span class="s2">"updatedAt"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"date"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2019-03-09 21:33:21.000000"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"timezone_type"</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"timezone"</span><span class="p">:</span><span class="w"> </span><span class="s2">"UTC"</span><span class="w">
+      </span><span class="p">},</span><span class="w">
+      </span><span class="s2">"sent"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<aside style="color: white;">Requires user authentication with right <b>send_notifications</b></aside>
+
+<p>This endpoint allows administrators to see notifications that have been sent to a user. The newest notifications are shown first.</p>
+<h3 id='query-parameters-19'>Query parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>user</td>
+<td>-</td>
+<td>User ID</td>
+</tr>
+<tr>
+<td>page</td>
+<td>1</td>
+<td>Page number</td>
+</tr>
+<tr>
+<td>per_page</td>
+<td>20</td>
+<td>Elements per page</td>
+</tr>
+</tbody></table>
+<h3 id='return-values-13'>Return values</h3>
+<p>Every notification has these properties:</p>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>title</td>
+<td>Title of notification</td>
+</tr>
+<tr>
+<td>text</td>
+<td>Content of notification</td>
+</tr>
+<tr>
+<td>deeplink</td>
+<td>App deeplink</td>
+</tr>
+<tr>
+<td>createdAt</td>
+<td>Notification creation time</td>
+</tr>
+<tr>
+<td>updatedAt</td>
+<td>Notification modification time (usually send time)</td>
+</tr>
+<tr>
+<td>sent</td>
+<td>Notification sent status</td>
+</tr>
+</tbody></table>
+<h2 id='post-notification-user'>POST /notification/{user}</h2><pre class="highlight php tab-php"><code><span class="cp">&lt;?php</span>
+<span class="nv">$ch</span> <span class="o">=</span> <span class="nb">curl_init</span><span class="p">(</span><span class="s2">"https://api.hyperspace.one/notification/</span><span class="si">{</span><span class="nv">user</span><span class="si">}</span><span class="s2">"</span><span class="p">);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_RETURNTRANSFER</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_POSTFIELDS</span><span class="p">,</span> <span class="nb">http_build_query</span><span class="p">([</span>
+  <span class="s2">"title"</span> <span class="o">=&gt;</span> <span class="s2">"Test notification"</span><span class="p">,</span>
+  <span class="s2">"text"</span> <span class="o">=&gt;</span> <span class="s2">"Test content"</span><span class="p">,</span>
+<span class="p">]));</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_HTTPHEADER</span><span class="p">,</span> <span class="p">[</span>
+  <span class="s2">"Authorization: Bearer xxx"</span><span class="p">,</span>
+<span class="p">]);</span>
+<span class="nv">$res</span> <span class="o">=</span> <span class="nb">curl_exec</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="nb">curl_errno</span><span class="p">(</span><span class="nv">$ch</span><span class="p">))</span> <span class="p">{</span>
+  <span class="k">die</span><span class="p">(</span><span class="nb">curl_error</span><span class="p">(</span><span class="nv">$ch</span><span class="p">));</span>
+<span class="p">}</span>
+
+<span class="nb">curl_close</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
+<span class="nv">$res</span> <span class="o">=</span> <span class="nb">json_decode</span><span class="p">(</span><span class="nv">$res</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+
+<span class="nb">print_r</span><span class="p">(</span><span class="nv">$res</span><span class="p">);</span>
+</code></pre>
+<blockquote>
+<p>The above request returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"success"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<aside style="color: white;">Requires user authentication with right <b>send_notifications</b></aside>
+
+<p>This endpoint allows administrators to send a notification to the specified user</p>
+<h3 id='query-parameters-20'>Query parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>user</td>
+<td>User ID or email address</td>
+</tr>
+<tr>
+<td>title</td>
+<td>Notification title</td>
+</tr>
+<tr>
+<td>text</td>
+<td>Notification content</td>
+</tr>
+<tr>
+<td>deeplink</td>
+<td><strong>Optional</strong> App deeplink</td>
+</tr>
+</tbody></table>
+<h3 id='failure-codes-12'>Failure codes</h3>
+<table><thead>
+<tr>
+<th>Failure Code</th>
+<th>Meaning</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>1000</td>
+<td>No title specified</td>
+</tr>
+<tr>
+<td>1001</td>
+<td>No content specified</td>
+</tr>
+</tbody></table>
+<h2 id='post-push'>POST /push</h2><pre class="highlight php tab-php"><code><span class="cp">&lt;?php</span>
+<span class="nv">$ch</span> <span class="o">=</span> <span class="nb">curl_init</span><span class="p">(</span><span class="s2">"https://api.hyperspace.one/push"</span><span class="p">);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_RETURNTRANSFER</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_POSTFIELDS</span><span class="p">,</span> <span class="nb">http_build_query</span><span class="p">([</span>
+  <span class="s2">"token"</span> <span class="o">=&gt;</span> <span class="s2">"xxx"</span><span class="p">,</span>
+<span class="p">]));</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_HTTPHEADER</span><span class="p">,</span> <span class="p">[</span>
+  <span class="s2">"Authorization: Bearer xxx"</span><span class="p">,</span>
+<span class="p">]);</span>
+<span class="nv">$res</span> <span class="o">=</span> <span class="nb">curl_exec</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="nb">curl_errno</span><span class="p">(</span><span class="nv">$ch</span><span class="p">))</span> <span class="p">{</span>
+  <span class="k">die</span><span class="p">(</span><span class="nb">curl_error</span><span class="p">(</span><span class="nv">$ch</span><span class="p">));</span>
+<span class="p">}</span>
+
+<span class="nb">curl_close</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
+<span class="nv">$res</span> <span class="o">=</span> <span class="nb">json_decode</span><span class="p">(</span><span class="nv">$res</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+
+<span class="nb">print_r</span><span class="p">(</span><span class="nv">$res</span><span class="p">);</span>
+</code></pre>
+<blockquote>
+<p>The above request returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"success"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<aside style="color: white;">Requires user authentication</aside>
+
+<p>Assign push token to user profile</p>
+<h3 id='query-parameters-21'>Query parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>token</td>
+<td>Push token</td>
+</tr>
+</tbody></table>
+<h3 id='failure-codes-13'>Failure codes</h3>
+<table><thead>
+<tr>
+<th>Failure Code</th>
+<th>Meaning</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>1000</td>
+<td>No token specified</td>
+</tr>
+</tbody></table>
+<h2 id='delete-push'>DELETE /push</h2><pre class="highlight php tab-php"><code><span class="cp">&lt;?php</span>
+<span class="nv">$ch</span> <span class="o">=</span> <span class="nb">curl_init</span><span class="p">(</span><span class="s2">"https://api.hyperspace.one/push"</span><span class="p">);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_RETURNTRANSFER</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_CUSTOMREQUEST</span><span class="p">,</span> <span class="s2">"DELETE"</span><span class="p">);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_POSTFIELDS</span><span class="p">,</span> <span class="nb">http_build_query</span><span class="p">([</span>
+  <span class="s2">"token"</span> <span class="o">=&gt;</span> <span class="s2">"xxx"</span><span class="p">,</span>
+<span class="p">]));</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_HTTPHEADER</span><span class="p">,</span> <span class="p">[</span>
+  <span class="s2">"Authorization: Bearer xxx"</span><span class="p">,</span>
+<span class="p">]);</span>
+<span class="nv">$res</span> <span class="o">=</span> <span class="nb">curl_exec</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="nb">curl_errno</span><span class="p">(</span><span class="nv">$ch</span><span class="p">))</span> <span class="p">{</span>
+  <span class="k">die</span><span class="p">(</span><span class="nb">curl_error</span><span class="p">(</span><span class="nv">$ch</span><span class="p">));</span>
+<span class="p">}</span>
+
+<span class="nb">curl_close</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
+<span class="nv">$res</span> <span class="o">=</span> <span class="nb">json_decode</span><span class="p">(</span><span class="nv">$res</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+
+<span class="nb">print_r</span><span class="p">(</span><span class="nv">$res</span><span class="p">);</span>
+</code></pre>
+<blockquote>
+<p>The above request returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"success"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<aside style="color: white;">Requires user authentication</aside>
+
+<p>Remove push token from user profile</p>
+<h3 id='query-parameters-22'>Query parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>token</td>
+<td>Push token</td>
+</tr>
+</tbody></table>
+<h3 id='failure-codes-14'>Failure codes</h3>
+<table><thead>
+<tr>
+<th>Failure Code</th>
+<th>Meaning</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>1000</td>
+<td>No token specified</td>
+</tr>
+<tr>
+<td>1001</td>
+<td>Token not found</td>
+</tr>
+</tbody></table>
 <h1 id='terminals'>Terminals</h1><h2 id='get-terminal-device_id-rfid_tag'>GET /terminal/{device_id}/{rfid_tag}</h2><pre class="highlight php tab-php"><code><span class="cp">&lt;?php</span>
 <span class="nv">$ch</span> <span class="o">=</span> <span class="nb">curl_init</span><span class="p">(</span><span class="s2">"https://api.hyperspace.one/terminal/</span><span class="nv">$device_id</span><span class="s2">/</span><span class="nv">$rfid_tag</span><span class="s2">"</span><span class="p">);</span>
 <span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_RETURNTRANSFER</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
@@ -1246,7 +2859,7 @@
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
 <p>This endpoint returns information about the requested RFID tag.</p>
-<h3 id='query-parameters-6'>Query parameters</h3>
+<h3 id='query-parameters-23'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -1262,7 +2875,7 @@
 <td>The ID of the RFID tag scanned</td>
 </tr>
 </tbody></table>
-<h3 id='return-values-5'>Return values</h3>
+<h3 id='return-values-14'>Return values</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -1278,7 +2891,7 @@
 <td>LED color (age based)</td>
 </tr>
 </tbody></table>
-<h3 id='failure-codes-4'>Failure codes</h3>
+<h3 id='failure-codes-15'>Failure codes</h3>
 <table><thead>
 <tr>
 <th>Failure Code</th>
@@ -1320,7 +2933,7 @@
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
 <p>This endpoint returns all tags available for a specific device. Also, it returns config options for the requesting device.</p>
-<h3 id='query-parameters-7'>Query parameters</h3>
+<h3 id='query-parameters-24'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -1332,7 +2945,7 @@
 <td>The UUID of the device requesting</td>
 </tr>
 </tbody></table>
-<h3 id='return-values-6'>Return values</h3>
+<h3 id='return-values-15'>Return values</h3>
 <p>The return value is a list of tags available and the device options:</p>
 
 <table><thead>
@@ -1346,7 +2959,7 @@
 <td>Specifies if the device should beep when RFID scan is finished</td>
 </tr>
 </tbody></table>
-<h3 id='failure-codes-5'>Failure codes</h3>
+<h3 id='failure-codes-16'>Failure codes</h3>
 <table><thead>
 <tr>
 <th>Failure Code</th>
@@ -1385,7 +2998,7 @@
 <aside style="color: white;">Requires user authentication with right <b>scan_tickets</b></aside>
 
 <p>This endpoint is used to scan tickets at entry. It either returns a success response or a failure if the ticket is invalid or was already scanned. If the scan was successful, it saves the time of the scan and the staff member who has scanned.</p>
-<h3 id='query-parameters-8'>Query parameters</h3>
+<h3 id='query-parameters-25'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -1397,7 +3010,7 @@
 <td>QR code content / hash of ticket</td>
 </tr>
 </tbody></table>
-<h3 id='failure-codes-6'>Failure codes</h3>
+<h3 id='failure-codes-17'>Failure codes</h3>
 <table><thead>
 <tr>
 <th>Failure Code</th>
@@ -1458,7 +3071,7 @@
 <aside style="color: white;">Requires user authentication with right <b>view_tickets</b></aside>
 
 <p>This endpoint returns details about the ticket scanned and any associated entry.</p>
-<h3 id='query-parameters-9'>Query parameters</h3>
+<h3 id='query-parameters-26'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -1470,7 +3083,7 @@
 <td>QR code content / hash of ticket</td>
 </tr>
 </tbody></table>
-<h3 id='return-values-7'>Return values</h3>
+<h3 id='return-values-16'>Return values</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -1494,7 +3107,7 @@
 <td><strong>If entry</strong> Name of staff member <strong>Otherwise</strong> <em>null</em></td>
 </tr>
 </tbody></table>
-<h3 id='failure-codes-7'>Failure codes</h3>
+<h3 id='failure-codes-18'>Failure codes</h3>
 <table><thead>
 <tr>
 <th>Failure Code</th>
@@ -1542,7 +3155,7 @@
 <aside style="color: white;">Requires user authentication with right <b>reset_tickets</b></aside>
 
 <p>This endpoint resets any scan of the specified ticket.</p>
-<h3 id='query-parameters-10'>Query parameters</h3>
+<h3 id='query-parameters-27'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -1554,7 +3167,7 @@
 <td>QR code content / hash of ticket</td>
 </tr>
 </tbody></table>
-<h3 id='failure-codes-8'>Failure codes</h3>
+<h3 id='failure-codes-19'>Failure codes</h3>
 <table><thead>
 <tr>
 <th>Failure Code</th>
@@ -1644,7 +3257,7 @@
 <aside style="color: white;">Requires user authentication with right <b>settings</b></aside>
 
 <p>This endpoint can be used to update settings. It expects as many key-value pairs as you want. Only elements which exists in the <code>settings</code> table are updated, there are no elements newly created.</p>
-<h3 id='return-values-8'>Return values</h3>
+<h3 id='return-values-17'>Return values</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
