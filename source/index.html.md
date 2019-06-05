@@ -901,33 +901,549 @@ Failure Code | Meaning
 # Preregistrations
 
 ## POST /preregister
-TODO
+```php
+<?php
+$ch = curl_init("https://api.hyperspace.one/preregister");
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query([
+  "captcha" => "xxx",
+  "firstname" => "John",
+  "lastname" => "Doe",
+  "email" => "john.doe@example.com",
+  "age" => "16",
+]));
+$res = curl_exec($ch);
+
+if (curl_errno($ch)) {
+  die(curl_error($ch));
+}
+
+curl_close($ch);
+$res = json_decode($res, true);
+
+print_r($res);
+```
+
+> The above request returns JSON structured like this:
+
+```json
+{
+  "success": true
+}
+```
+
+This endpoint handles new preregistrations by end user.
+
+As soon as a captcha has been solved correctly, this information is saved within the browser session on the API server. This means if there is an error in the registration process (excluding captcha error), the captcha must not be solved again. The information is reset as soon as the registration was successful. Therefore, another registration requires a new captcha.
+
+To confirm a preregistration, the user gets an email with a link to do this. The link uses the frontend configured in GroundControl.
+
+### Query parameters
+
+Parameter | Description
+--------- | -----------
+captcha | **If captcha activated** Captcha token
+email | Email address
+firstname | First name
+lastname | Last name
+age | Age (currently: `16` or `18`)
+
+### Failure codes
+
+Failure Code | Meaning
+---------- | -------
+1000 | Invalid captcha token
+1001 | Invalid email
+1002 | Email already registered
+1003 | No first name specified
+1004 | No last name specified
+1005 | Invalid age
 
 ## GET /preregister/confirm/{token}
-TODO
+```php
+<?php
+$ch = curl_init("https://api.hyperspace.one/preregister/confirm/{token}");
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$res = curl_exec($ch);
+
+if (curl_errno($ch)) {
+  die(curl_error($ch));
+}
+
+curl_close($ch);
+$res = json_decode($res, true);
+
+print_r($res);
+```
+
+> The above request returns JSON structured like this:
+
+```json
+{
+  "success": true
+}
+```
+
+This endpoint is used to confirm pending preregistrations with the token from the registration email sent to the user.
+
+### Query parameters
+
+Parameter | Description
+--------- | -----------
+token | Confirmation token
+
+### Failure codes
+
+Failure Code | Meaning
+---------- | -------
+1000 | Invalid token length
+1001 | Unknown token
+1002 | Already confirmed
 
 ## PUT /preregister
-TODO
+```php
+<?php
+$ch = curl_init("https://api.hyperspace.one/preregister");
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query([
+  "captcha" => "xxx",
+  "email" => "john.doe@example.com",
+]));
+curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
+$res = curl_exec($ch);
+
+if (curl_errno($ch)) {
+  die(curl_error($ch));
+}
+
+curl_close($ch);
+$res = json_decode($res, true);
+
+print_r($res);
+```
+
+> The above request returns JSON structured like this:
+
+```json
+{
+  "success": true
+}
+```
+
+This endpoint is used to resend an email for an existing preregistration and is called by the end user.
+
+As soon as a captcha has been solved correctly, this information is saved within the browser session on the API server. This means if there is an error in the resend process (excluding captcha error), the captcha must not be solved again. The information is reset as soon as the resend was successful. Therefore, another resend requires a new captcha.
+
+### Query parameters
+
+Parameter | Description
+--------- | -----------
+captcha | **If captcha activated** Captcha token
+email | Email address
+
+### Failure codes
+
+Failure Code | Meaning
+---------- | -------
+1000 | Invalid captcha token
+1001 | Invalid email
+1002 | Email not found
+1003 | Already confirmed
 
 ## GET /preregistrations
-TODO
+```php
+<?php
+$ch = curl_init("https://api.hyperspace.one/preregistrations");
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+  "Authorization: Bearer xxx",
+]);
+$res = curl_exec($ch);
 
-## PUT /preregistrations/{id}
-TODO
+if (curl_errno($ch)) {
+  die(curl_error($ch));
+}
 
-## POST /preregistrations/{id}
-TODO
+curl_close($ch);
+$res = json_decode($res, true);
 
-## DELETE /preregistrations/{id}
-TODO
+print_r($res);
+```
+
+> The above request returns JSON structured like this:
+
+```json
+{
+  "success": true,
+  "itemCount": 1,
+  "items": [
+    {
+      "email": "john.doe@example.com",
+      "firstname": "John",
+      "lastname": "Doe",
+      "age": 18,
+      "verified": 1,
+      "token": "jKbCNxgggOLao5dc",
+      "created_at": "2018-12-04 00:58:37",
+      "updated_at": "2019-01-13 21:22:04"
+    }
+  ]
+}
+```
+
+<aside style="color: white;">Requires user authentication with right <b>get_preregistrations</b></aside>
+
+This endpoint allows administrators to get a paginated list of all preregistrations in the system.
+
+### Query parameters
+
+Parameter | Default | Description
+--------- | ------- | -----------
+page | 1 | Page number
+per_page | 20 | Items to display per page
+filter | - | Wildcard filter for firstname, lastname, email
+sort_field | created_at | Field to sort by
+sort_direction | asc | Sorting direction
+
+### Return values
+
+The request returns an `itemCount` which is the number of all preregistrations in system. `items` contains the set of requested preregistrations according to pagination. The preregistrations have these properties:
+
+Parameter | Description
+--------- | -----------
+email | Email address
+firstname | First name
+lastname | Last name
+age | Age
+verified | Email address confirmed
+token | Confirm token
+created_at | Time of registration
+updated_at | Time of last change (usually time of confirmation)
+
+## PUT /preregistrations/{email}
+```php
+<?php
+$ch = curl_init("https://api.hyperspace.one/preregistrations/{email}");
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query([
+  "firstname" => "John",
+]));
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+  "Authorization: Bearer xxx",
+]);
+curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
+$res = curl_exec($ch);
+
+if (curl_errno($ch)) {
+  die(curl_error($ch));
+}
+
+curl_close($ch);
+$res = json_decode($res, true);
+
+print_r($res);
+```
+
+> The above request returns JSON structured like this:
+
+```json
+{
+  "success": true
+}
+```
+
+<aside style="color: white;">Requires user authentication with right <b>edit_preregistrations</b></aside>
+
+This endpoint is used by staff to edit existing preregistrations.
+
+### Query parameters
+
+Parameter | Description
+--------- | -----------
+email | Email address
+
+The body can contain any parameter you want to change included in `GET /preregistrations`.
+
+### Failure codes
+
+Failure Code | Meaning
+---------- | -------
+1000 | Email not found
+
+## POST /preregistrations/{email}
+```php
+<?php
+$ch = curl_init("https://api.hyperspace.one/preregistrations/{email}");
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+  "Authorization: Bearer xxx",
+]);
+curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+$res = curl_exec($ch);
+
+if (curl_errno($ch)) {
+  die(curl_error($ch));
+}
+
+curl_close($ch);
+$res = json_decode($res, true);
+
+print_r($res);
+```
+
+> The above request returns JSON structured like this:
+
+```json
+{
+  "success": true
+}
+```
+
+<aside style="color: white;">Requires user authentication with right <b>edit_preregistrations</b></aside>
+
+This endpoint is used by staff to resend email for unconfirmed preregistrations.
+
+### Query parameters
+
+Parameter | Description
+--------- | -----------
+email | Email address
+
+### Failure codes
+
+Failure Code | Meaning
+---------- | -------
+1000 | Email not found
+
+## DELETE /preregistrations/{email}
+```php
+<?php
+$ch = curl_init("https://api.hyperspace.one/preregistrations/{email}");
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+  "Authorization: Bearer xxx",
+]);
+curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "DELETE");
+$res = curl_exec($ch);
+
+if (curl_errno($ch)) {
+  die(curl_error($ch));
+}
+
+curl_close($ch);
+$res = json_decode($res, true);
+
+print_r($res);
+```
+
+> The above request returns JSON structured like this:
+
+```json
+{
+  "success": true
+}
+```
+
+<aside style="color: white;">Requires user authentication with right <b>edit_preregistrations</b></aside>
+
+This endpoint is used by staff to remove preregistrations.
+
+### Query parameters
+
+Parameter | Description
+--------- | -----------
+email | Email address
+
+### Failure codes
+
+Failure Code | Meaning
+---------- | -------
+1000 | Email not found
+1001 | Deletion failed
 
 # Events
 
 ## GET /events
-TODO
+```php
+<?php
+$ch = curl_init("https://api.hyperspace.one/events");
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$res = curl_exec($ch);
+
+if (curl_errno($ch)) {
+  die(curl_error($ch));
+}
+
+curl_close($ch);
+$res = json_decode($res, true);
+
+print_r($res);
+```
+
+> The above request returns JSON structured like this:
+
+```json
+{  
+  "success":true,
+  "data": {  
+    "all": {  
+      "1": {  
+        "id": 1,
+        "slug": "the-abandoned-dome",
+        "date": "2019-03-30 22:00:00",
+        "name": "The Abandoned Dome",
+        "name2": "HYPERSPACE",
+        "location": "Music Dome Kerkrade",
+        "img": "assets/bg.jpg",
+        "design": 1,
+        "artists": [  
+          {  
+            "name": "D-Block & S-te-fan",
+            "img": "assets/artists/dblock_stefan.jpg",
+            "set_time": "xx:xx - xx:xx",
+            "tier": 1
+          },
+          {  
+            "name": "Frequencerz",
+            "img": "assets/artists/frequencerz.jpg",
+            "set_time": "xx:xx - xx:xx",
+            "tier": 1
+          }
+          {  
+            "name": "Le Shuuk",
+            "img": "assets/artists/leshuuk.jpg",
+            "set_time": "xx:xx - xx:xx",
+            "tier": 1
+          }
+        ],
+        "products": [  
+
+        ],
+        "galleries": [  
+          {  
+            "slug": "the-abandoned-dome",
+            "title": "The Abandoned Dome",
+            "imageCount": 128
+          }
+        ]
+      }
+    }
+  }
+}
+```
+
+This endpoint returns the events defined in GroundControl.
+
+### Return values
+
+In the `data` element, there is a key `all` containing all events with their ID as key. If you have a featured event configured, there will be also a key `featured` in `data` containing the details of the featured event like the events in `all` are listed.
+
+Each event has the following parameters:
+
+Parameter | Description
+--------- | -----------
+id | Event ID
+slug | Event slug
+date | Event date
+name | Event name
+name2 | Event sub name
+location | Event location
+img | Background image for website
+design | ID of website design
+artists[] | List of artists performing
+products[] | List of tickets/products available
+galleries[] | List of assigned galleries
 
 ## GET /events/{slug}
-TODO
+```php
+<?php
+$ch = curl_init("https://api.hyperspace.one/events/{slug}");
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$res = curl_exec($ch);
+
+if (curl_errno($ch)) {
+  die(curl_error($ch));
+}
+
+curl_close($ch);
+$res = json_decode($res, true);
+
+print_r($res);
+```
+
+> The above request returns JSON structured like this:
+
+```json
+{  
+  "success":true,
+  "data": {  
+    "id": 1,
+    "slug": "the-abandoned-dome",
+    "date": "2019-03-30 22:00:00",
+    "name": "The Abandoned Dome",
+    "name2": "HYPERSPACE",
+    "location": "Music Dome Kerkrade",
+    "img": "assets/bg.jpg",
+    "design": 1,
+    "artists": [  
+      {  
+        "name": "D-Block & S-te-fan",
+        "img": "assets/artists/dblock_stefan.jpg",
+        "set_time": "xx:xx - xx:xx",
+        "tier": 1
+      },
+      {  
+        "name": "Frequencerz",
+        "img": "assets/artists/frequencerz.jpg",
+        "set_time": "xx:xx - xx:xx",
+        "tier": 1
+      }
+      {  
+        "name": "Le Shuuk",
+        "img": "assets/artists/leshuuk.jpg",
+        "set_time": "xx:xx - xx:xx",
+        "tier": 1
+      }
+    ],
+    "products": [  
+
+    ],
+    "galleries": [  
+      {  
+        "slug": "the-abandoned-dome",
+        "title": "The Abandoned Dome",
+        "imageCount": 128
+      }
+    ]
+  }
+}
+```
+
+This endpoint returns the event requested by slug.
+
+### Query parameters
+
+Parameter | Description
+--------- | -----------
+slug | Event slug
+
+### Return values
+
+The event properties are in the `data` element:
+
+Parameter | Description
+--------- | -----------
+id | Event ID
+slug | Event slug
+date | Event date
+name | Event name
+name2 | Event sub name
+location | Event location
+img | Background image for website
+design | ID of website design
+artists[] | List of artists performing
+products[] | List of tickets/products available
+galleries[] | List of assigned galleries
 
 # Galleries
 
