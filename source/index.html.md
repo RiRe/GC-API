@@ -179,8 +179,73 @@ user | **If authenticated** Details about user
 <aside style="color: white;">Additional values are possible based on your system configuration</aside>
 
 ## GET /products
+```php
+<?php
+$ch = curl_init("https://api.hyperspace.one/products");
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$res = curl_exec($ch);
 
-TODO
+if (curl_errno($ch)) {
+  die(curl_error($ch));
+}
+
+curl_close($ch);
+$res = json_decode($res, true);
+
+print_r($res);
+```
+
+> The above request returns JSON structured like this:
+
+```json
+[
+  {
+    "id":1,
+    "name":"Early Bird",
+    "description":"What do you get with this ticket?\r\n\r\n+ Access to the festival\r\n+ Wristband\r\n+ Parking\r\n+ Some more stuff\r\n- Some more stuff",
+    "net_price":4.2,
+    "gross_price":5,
+    "price":5,
+    "taxrate":19,
+    "tax":0.8,
+    "net_shipping":0.04,
+    "gross_shipping":0.05,
+    "tax_shipping":0.01,
+    "pricePrefix":"",
+    "priceSuffix":"\u20ac",
+    "end_personalization":"0000-00-00 00:00:00",
+    "sale_start":"0000-00-00 00:00:00",
+    "sale_end":"0000-00-00 00:00:00",
+    "available":true
+  }
+]
+```
+
+This endpoint returns the products defined in GroundControl.
+
+### Return values
+
+Each product has the following parameters:
+
+Parameter | Description
+--------- | -----------
+id | Product ID
+name | Product name (localized)
+description | Product description (localized)
+net_price | Price without tax
+gross_price | Price with tax
+price | End price
+taxrate | Tax rate in percent
+tax | Tax included in price
+net_shipping | Shipping costs without tax
+gross_shipping | Shipping costs including tax
+tax_shipping | Tax included in shipping
+pricePrefix | Prefix for pricing (e.g. $)
+priceSuffix | Suffix for pricing (e.g. €)
+end_personalization | End of ticket personalization timeframe
+sale_start | Start date of sale (can be in future)
+sale_end | End date of sale (can be in past)
+available | Product in stock
 
 ## GET /faq
 ```php
@@ -252,34 +317,586 @@ content | Value that QR code should represent
 # Users
 
 ## PUT /register
-TODO
+```php
+<?php
+$ch = curl_init("https://api.hyperspace.one/register");
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query([
+  "captcha" => "xxx",
+  "email" => "john.doe@example.com",
+  "firstname" => "John",
+  "lastname" => "Doe",
+]));
+curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
+$res = curl_exec($ch);
+
+if (curl_errno($ch)) {
+  die(curl_error($ch));
+}
+
+curl_close($ch);
+$res = json_decode($res, true);
+
+print_r($res);
+```
+
+> The above request returns JSON structured like this:
+
+```json
+{
+  "success": true
+}
+```
+
+New registrations by users should be handled using this endpoint.
+
+As soon as a captcha has been solved correctly, this information is saved within the browser session on the API server. This means if there is an error in the registration process (excluding captcha error), the captcha must not be solved again. The information is reset as soon as the registration was successful. Therefore, another registration requires a new captcha.
+
+During a successful registration, the user gets an email from GC-API containing his password he can login with.
+
+### Query parameters
+
+Parameter | Description
+--------- | -----------
+captcha | **If captcha activated** Captcha token
+email | Email address
+firstname | First name
+lastname | Last name
+
+### Failure codes
+
+Failure Code | Meaning
+---------- | -------
+1000 | Invalid captcha token
+1001 | Invalid email
+1002 | Email already registered
+1003 | No first name specified
+1004 | No last name specified
 
 ## PUT /password
-TODO
+```php
+<?php
+$ch = curl_init("https://api.hyperspace.one/password");
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query([
+  "new_pwd" => "xxx",
+  "old_pwd" => "xxx",
+]));
+curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+  "Authorization: Bearer xxx",
+]);
+$res = curl_exec($ch);
+
+if (curl_errno($ch)) {
+  die(curl_error($ch));
+}
+
+curl_close($ch);
+$res = json_decode($res, true);
+
+print_r($res);
+```
+
+> The above request returns JSON structured like this:
+
+```json
+{
+  "success": true
+}
+```
+
+<aside style="color: white;">User authentication required</aside>
+
+This endpoint allows users to change their account password. Requesting a password confirmation and checking for parity should be done in frontend.
+
+### Query parameters
+
+Parameter | Description
+--------- | -----------
+new_pwd | New password
+old_pwd | Old password
+
+### Failure codes
+
+Failure Code | Meaning
+---------- | -------
+1000 | New password does not met requirements
+1001 | Old password is invalid
 
 ## POST /password/email
-TODO
+```php
+<?php
+$ch = curl_init("https://api.hyperspace.one/password/email");
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query([
+  "captcha" => "xxx",
+  "email" => "john.doe@example.com",
+]));
+$res = curl_exec($ch);
+
+if (curl_errno($ch)) {
+  die(curl_error($ch));
+}
+
+curl_close($ch);
+$res = json_decode($res, true);
+
+print_r($res);
+```
+
+> The above request returns JSON structured like this:
+
+```json
+{
+  "success": true
+}
+```
+
+If a user has lost his password, a reset email can be requested using this endpoint.
+
+As soon as a captcha has been solved correctly, this information is saved within the browser session on the API server. This means if there is an error in the password request process (excluding captcha error), the captcha must not be solved again. The information is reset as soon as the reset request was successful. Therefore, another reset request requires a new captcha.
+
+After a successful reset request, the user gets an email from GC-API containing a reset link leading to the frontend configured in GroundControl.
+
+### Query parameters
+
+Parameter | Description
+--------- | -----------
+captcha | **If captcha activated** Captcha token
+email | Email address
+
+### Failure codes
+
+Failure Code | Meaning
+---------- | -------
+1000 | Invalid captcha token
+1001 | No user with this email found
 
 ## POST /password/check
-TODO
+```php
+<?php
+$ch = curl_init("https://api.hyperspace.one/password/check");
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query([
+  "email" => "john.doe@example.com",
+  "token" => "xxx",
+]));
+$res = curl_exec($ch);
+
+if (curl_errno($ch)) {
+  die(curl_error($ch));
+}
+
+curl_close($ch);
+$res = json_decode($res, true);
+
+print_r($res);
+```
+
+> If the token is valid, the response is:
+
+```json
+{
+  "success": true
+}
+```
+
+> If the token is invalid or expired, the response is:
+
+```json
+{
+  "success": false
+}
+```
+
+This endpoint can be used to verify a password reset token. This is useful to pre-check the token before actually requesting a new password from the user.
+
+Please note that the reset token has a validity of 30 minutes.
+
+### Query parameters
+
+Parameter | Description
+--------- | -----------
+email | Email address
+token | Password reset token
 
 ## POST /password/reset
-TODO
+```php
+<?php
+$ch = curl_init("https://api.hyperspace.one/password/reset");
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query([
+  "captcha" => "xxx",
+  "email" => "john.doe@example.com",
+  "pwd" => "xxx",
+]));
+$res = curl_exec($ch);
+
+if (curl_errno($ch)) {
+  die(curl_error($ch));
+}
+
+curl_close($ch);
+$res = json_decode($res, true);
+
+print_r($res);
+```
+
+> The above request returns JSON structured like this:
+
+```json
+{
+  "success": true
+}
+```
+
+This endpoint is used to actually reset a users password. Therefore, the reset process data and the new password is needed. The password is instantly saved and a login with the new password is possible. Please note that the password reset token is valid only once and expires 30 minutes after issuance.
+
+As soon as a captcha has been solved correctly, this information is saved within the browser session on the API server. This means if there is an error in the password reset process (excluding captcha error), the captcha must not be solved again. The information is reset as soon as the reset process was successful. Therefore, another reset process requires a new captcha.
+
+### Query parameters
+
+Parameter | Description
+--------- | -----------
+captcha | **If captcha activated** Captcha token
+email | Email address
+token | Password reset token
+pwd | New password
+
+### Failure codes
+
+Failure Code | Meaning
+---------- | -------
+1000 | Invalid captcha token
+1001 | Invalid reset token
+1002 | No user with this email found
+1003 | New password does not met requirements
 
 ## GET /users
-TODO
+```php
+<?php
+$ch = curl_init("https://api.hyperspace.one/users");
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+  "Authorization: Bearer xxx",
+]);
+$res = curl_exec($ch);
+
+if (curl_errno($ch)) {
+  die(curl_error($ch));
+}
+
+curl_close($ch);
+$res = json_decode($res, true);
+
+print_r($res);
+```
+
+> The above request returns JSON structured like this:
+
+```json
+{
+  "success": true,
+  "itemCount": 1,
+  "items": [
+    {
+      "id": 1,
+      "firstname": "John",
+      "lastname": "Doe",
+      "email": "john.doe@example.com",
+      "password": "$2y$10$B/c4MY1JhqZo7HMhZBlkO.AlwoapqH9fLOPfL4QhqhX.x2cdqo01a",
+      "remember_token": null,
+      "created_at": "2019-03-07 17:09:13",
+      "updated_at": "2019-03-07 21:10:49",
+      "language": "en",
+      "pw_changed": "2019-03-07 21:10:49",
+      "contact_person": 1,
+      "instagram": "johndoe"
+    }
+  ]
+}
+```
+
+<aside style="color: white;">Requires user authentication with right <b>get_users</b></aside>
+
+This endpoint allows administrators to get a paginated list of all users in the system.
+
+### Query parameters
+
+Parameter | Default | Description
+--------- | ------- | -----------
+page | 1 | Page number
+per_page | 20 | Items to display per page
+filter | - | Wildcard filter for firstname, lastname, email
+sort_field | created_at | Field to sort by
+sort_direction | asc | Sorting direction
+
+### Return values
+
+The request returns an `itemCount` which is the number of all users in system. `items` contains the set of requested users according to pagination. The users have these properties:
+
+Parameter | Description
+--------- | -----------
+id | User ID
+firstname | First name
+lastname | Last name
+email | Email address
+password | Hashed password
+remember_token | Cookie token
+created_at | Time of registration
+updated_at | Time of last change
+language | Last language used
+pw_changed | Time of last password change
+contact_person | User ID of contact person
+instagram | Instagram handle
 
 ## GET /user/{id}
-TODO
+```php
+<?php
+$ch = curl_init("https://api.hyperspace.one/user/{id}");
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+  "Authorization: Bearer xxx",
+]);
+$res = curl_exec($ch);
+
+if (curl_errno($ch)) {
+  die(curl_error($ch));
+}
+
+curl_close($ch);
+$res = json_decode($res, true);
+
+print_r($res);
+```
+
+> The above request returns JSON structured like this:
+
+```json
+{
+  "success": true,
+  "id": 1,
+  "firstname": "John",
+  "lastname": "Doe",
+  "email": "john.doe@example.com",
+  "password": "$2y$10$B/c4MY1JhqZo7HMhZBlkO.AlwoapqH9fLOPfL4QhqhX.x2cdqo01a",
+  "remember_token": null,
+  "created_at": "2019-03-07 17:09:13",
+  "updated_at": "2019-03-07 21:10:49",
+  "language": "en",
+  "pw_changed": "2019-03-07 21:10:49",
+  "contact_person": 1,
+  "instagram": "johndoe"
+}
+```
+
+<aside style="color: white;">Requires user authentication with right <b>get_user</b></aside>
+
+This endpoint allows administrators to get details of a user.
+
+Administrators are only allowed to access users who have less or equal amount of rights. Administrator with wildcard right are allowed to access every user.
+
+### Query parameters
+
+Parameter | Default | Description
+--------- | ------- | -----------
+id | - | User ID
+
+### Return values
+
+Parameter | Description
+--------- | -----------
+id | User ID
+firstname | First name
+lastname | Last name
+email | Email address
+password | Hashed password
+remember_token | Cookie token
+created_at | Time of registration
+updated_at | Time of last change
+language | Last language used
+pw_changed | Time of last password change
+contact_person | User ID of contact person
+instagram | Instagram handle
+
+### Failure codes
+
+Failure Code | Meaning
+---------- | -------
+1000 | User not found
+1001 | No user access
 
 ## PUT /user/{id}
-TODO
+```php
+<?php
+$ch = curl_init("https://api.hyperspace.one/user/{id}");
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query([
+  "instagram" => "johndoe.new",
+]));
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+  "Authorization: Bearer xxx",
+]);
+curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
+$res = curl_exec($ch);
+
+if (curl_errno($ch)) {
+  die(curl_error($ch));
+}
+
+curl_close($ch);
+$res = json_decode($res, true);
+
+print_r($res);
+```
+
+> The above request returns JSON structured like this:
+
+```json
+{
+  "success": true
+}
+```
+
+<aside style="color: white;">Requires user authentication with right <b>create_user</b></aside>
+
+This endpoint allows administrators to edit user details.
+
+Administrators are only allowed to access users who have less or equal amount of rights. Administrator with wildcard right are allowed to access every user.
+
+### Query parameters
+
+Parameter | Default | Description
+--------- | ------- | -----------
+id | - | User ID
+
+You can also use the parameters `email`, `firstname`, `lastname`, `password` and `instagram` to update these properties. Parameters not specified are ignored and cannot throw any errors.
+
+If you specify an array named `rights`, you can set the rights of a user. All rights granted to the user before not included in this array are deleted.
+
+### Failure codes
+
+Failure Code | Meaning
+---------- | -------
+1001 | Invalid email specified
+1002 | Email already in use
+1005 | Password does not met requirements
 
 ## DELETE /user/{id}
-TODO
+```php
+<?php
+$ch = curl_init("https://api.hyperspace.one/user/{id}");
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+  "Authorization: Bearer xxx",
+]);
+curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "DELETE");
+$res = curl_exec($ch);
+
+if (curl_errno($ch)) {
+  die(curl_error($ch));
+}
+
+curl_close($ch);
+$res = json_decode($res, true);
+
+print_r($res);
+```
+
+> The above request returns JSON structured like this:
+
+```json
+{
+  "success": true
+}
+```
+
+<aside style="color: white;">Requires user authentication with right <b>delete_user</b></aside>
+
+This endpoint allows administrators to delete a user.
+
+Administrators are only allowed to access users who have less or equal amount of rights. Administrator with wildcard right are allowed to access every user.
+
+### Query parameters
+
+Parameter | Default | Description
+--------- | ------- | -----------
+id | - | User ID
 
 ## POST /user
-TODO
+```php
+<?php
+$ch = curl_init("https://api.hyperspace.one/user");
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+  "Authorization: Bearer xxx",
+]);
+curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query([
+  "email" => "john.doe@example.com",
+  "firstname" => "John",
+  "lastname" => "Doe",
+  "password" => "xxx",
+  "instagram" => "johndoe",
+  "rights" => ["promoter"],
+  "send_mail" => true,
+  "send_promoter_mail" => true,
+]));
+$res = curl_exec($ch);
+
+if (curl_errno($ch)) {
+  die(curl_error($ch));
+}
+
+curl_close($ch);
+$res = json_decode($res, true);
+
+print_r($res);
+```
+
+> The above request returns JSON structured like this:
+
+```json
+{
+  "success": true,
+  "id": 1
+}
+```
+
+<aside style="color: white;">Requires user authentication with right <b>create_user</b></aside>
+
+This endpoint allows administrators to create new users.
+
+### Query parameters
+
+Parameter | Default | Description
+--------- | ------- | -----------
+email | - | Email address
+firstname | - | First name
+lastname | - | Last name
+password | - | Password
+instagram | - | **Optional** Instagram handle
+rights | [] | Array of rights
+send_mail | false | Send welcome mail
+send_promoter_mail | false | Send promoter welcome mail
+
+The welcome mails are being sent with the users password.
+
+### Return values
+
+Parameter | Description
+--------- | -----------
+id | ID of newly created user
+
+### Failure codes
+
+Failure Code | Meaning
+---------- | -------
+1001 | Invalid email specified
+1002 | Email already in use
+1003 | No firstname specified
+1004 | No lastname specified
+1005 | Password does not met requirements
 
 # Preregistrations
 
@@ -594,18 +1211,284 @@ You can send a user who wants to download his wallet file directly to this URL f
 # Ranks
 
 ## GET /ranks
-TODO
+```php
+<?php
+$ch = curl_init("https://api.hyperspace.one/ranks");
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$res = curl_exec($ch);
+
+if (curl_errno($ch)) {
+  die(curl_error($ch));
+}
+
+curl_close($ch);
+$res = json_decode($res, true);
+
+print_r($res);
+```
+
+> The above request returns JSON structured like this:
+
+```json
+[
+  {
+    "name":"Visitor",
+    "points":0,
+    "features":[]
+  },
+  {
+    "name":"Flight Engineer",
+    "points":100,
+    "features":[]
+  },
+  {
+    "name":"Commander",
+    "points":300,
+    "features":["Free entry"]
+  }
+]
+```
+
+This endpoint returns all ranks configured with GroundControl.
+
+### Return values
+
+Each rank has the following properties:
+
+Parameter | Description
+--------- | -----------
+name | Name of rank
+points | Points required
+features[] | List of features coming with rank
 
 ## GET /achievements
-TODO
+```php
+<?php
+$ch = curl_init("https://api.hyperspace.one/achievements");
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+  "Authorization: Bearer xxx",
+]);
+$res = curl_exec($ch);
+
+if (curl_errno($ch)) {
+  die(curl_error($ch));
+}
+
+curl_close($ch);
+$res = json_decode($res, true);
+
+print_r($res);
+```
+
+> The above request returns JSON structured like this:
+
+```json
+[
+  {
+      "id": 15,
+      "achievement": "promoter_order",
+      "points": 4,
+      "date": {
+          "date": "2019-02-08 17:48:28.000000",
+          "timezone_type": 3,
+          "timezone": "UTC"
+      }
+  },
+  {
+      "id": 13,
+      "achievement": "promoter_order",
+      "points": 8,
+      "date": {
+          "date": "2019-02-08 17:48:18.000000",
+          "timezone_type": 3,
+          "timezone": "UTC"
+      }
+  }
+]
+```
+
+<aside style="color: white;">Requires user authentication</aside>
+
+This endpoint returns all achievements reached with pagination. The last achievements are shown first.
+
+### Query parameters
+
+Parameter | Default | Description
+--------- | ------- | -----------
+page | 1 | Page number
+per_page | 20 | Items to display per page
+
+### Return values
+
+Each achievement has the following properties:
+
+Parameter | Description
+--------- | -----------
+id | ID of achievement
+achievement | Achievement type
+points | Points assigned
+date | Date of achievement
 
 ## POST /achievement
-TODO
+```php
+<?php
+$ch = curl_init("https://api.hyperspace.one/achievement");
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+  "Authorization: Bearer xxx",
+]);
+curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query([
+  "user" => 1,
+  "achievement" => "promoter_order",
+  "points" => 5,
+]));
+$res = curl_exec($ch);
+
+if (curl_errno($ch)) {
+  die(curl_error($ch));
+}
+
+curl_close($ch);
+$res = json_decode($res, true);
+
+print_r($res);
+```
+
+> The above request returns JSON structured like this:
+
+```json
+{
+  "success": true,
+  "pushTokens": []
+}
+```
+
+<aside style="color: white;">Requires user authentication with right <b>create_achievements</b></aside>
+
+This endpoint allows administrators to create new achievements for a user.
+
+### Query parameters
+
+Parameter | Default | Description
+--------- | ------- | -----------
+user | - | User ID or email address
+achievement | - | Achievement type
+points | - | Points to be assigned
+
+### Return values
+
+Parameter | Description
+--------- | -----------
+pushTokens | Array of push tokens (strings) of user
+
+### Failure codes
+
+Failure Code | Meaning
+---------- | -------
+1000 | User not found
+1001 | No achievement specified
+1002 | Invalid points
 
 # Promoter
 
 ## GET /promoter/orders
-TODO
+```php
+<?php
+$ch = curl_init("https://api.hyperspace.one/promoter/orders");
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+  "Authorization: Bearer xxx",
+]);
+$res = curl_exec($ch);
+
+if (curl_errno($ch)) {
+  die(curl_error($ch));
+}
+
+curl_close($ch);
+$res = json_decode($res, true);
+
+print_r($res);
+```
+
+> The above request returns JSON structured like this:
+
+```json
+{
+  "success": true,
+  "itemCount": 1,
+  "items": [
+    {
+      "id": 207,
+      "status": "paid",
+      "firstname": "John",
+      "lastname": "Doe",
+      "email": "john.doe@example.com",
+      "address": "Roermonder Str. 45",
+      "postcode": "52134",
+      "city": "Herzogenrath",
+      "country": "Germany",
+      "createdAt": {
+        "date": "2019-02-08 17:47:00.000000",
+        "timezone_type": 3,
+        "timezone": "UTC"
+      },
+      "updatedAt": {
+        "date": "2019-02-08 17:47:00.000000",
+        "timezone_type": 3,
+        "timezone": "UTC"
+      },
+      "reflink": "",
+      "amount": 5.05,
+      "items": [
+        {
+          "productId": 1,
+          "productName": "Early Bird",
+          "quantity": 1,
+          "price": 5,
+          "singlePrice": 5
+        }
+      ]
+    }
+  ]
+}
+```
+
+<aside style="color: white;">Requires user authentication with right <b>promoter</b></aside>
+
+This endpoint allows promoters to view order they have placed. As they have entered the customer data by theirselves, there is no privacy problem in showing this data to promoters.
+
+### Query parameters
+
+Parameter | Default | Description
+--------- | ------- | -----------
+page | 1 | Page number
+per_page | 20 | Elements per page
+filter | - | Wildcard filter for `firstname`, `lastname`, `email`, `token` or `payment_id`
+sort_field | created_at | Field to sort by
+sort_direction | asc | Sort direction
+
+### Return values
+
+The request returns an `itemCount` which is the number of all orders of this promoter in system. `items` contains the set of requested orders according to pagination. The orders have these properties:
+
+Parameter | Description
+--------- | -----------
+id | Order ID
+status | Order status (usually `paid`)
+firstname | Buyer first name
+lastname | Buyer last name
+email | Buyer email address
+address | Buyer address
+postcode | Buyer postcode
+city | Buyer city
+country | Buyer country
+createdAt | Date of order placed
+updatedAt | Date of order modified
+reflink | Reflink used
+amount | Order amount
+items[] | Products ordered
 
 # Affiliate
 
@@ -633,16 +1516,223 @@ TODO
 # Notifications
 
 ## GET /notification/{user}
-TODO
+```php
+<?php
+$ch = curl_init("https://api.hyperspace.one/notification/{user}");
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+  "Authorization: Bearer xxx",
+]);
+$res = curl_exec($ch);
+
+if (curl_errno($ch)) {
+  die(curl_error($ch));
+}
+
+curl_close($ch);
+$res = json_decode($res, true);
+
+print_r($res);
+```
+
+> The above request returns JSON structured like this:
+
+```json
+{
+  "success": true,
+  "notifications": [
+    {
+      "title": "Test notification",
+      "text": "Test content",
+      "deeplink": "",
+      "createdAt": {
+        "date": "2019-03-09 21:33:20.000000",
+        "timezone_type": 3,
+        "timezone": "UTC"
+      },
+      "updatedAt": {
+        "date": "2019-03-09 21:33:21.000000",
+        "timezone_type": 3,
+        "timezone": "UTC"
+      },
+      "sent": true
+    }
+  ]
+}
+```
+
+<aside style="color: white;">Requires user authentication with right <b>send_notifications</b></aside>
+
+This endpoint allows administrators to see notifications that have been sent to a user. The newest notifications are shown first.
+
+### Query parameters
+
+Parameter | Default | Description
+--------- | ------- | -----------
+user | - | User ID
+page | 1 | Page number
+per_page | 20 | Elements per page
+
+### Return values
+
+Every notification has these properties:
+
+Parameter | Description
+--------- | -----------
+title | Title of notification
+text | Content of notification
+deeplink | App deeplink
+createdAt | Notification creation time
+updatedAt | Notification modification time (usually send time)
+sent | Notification sent status
 
 ## POST /notification/{user}
-TODO
+```php
+<?php
+$ch = curl_init("https://api.hyperspace.one/notification/{user}");
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query([
+  "title" => "Test notification",
+  "text" => "Test content",
+]));
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+  "Authorization: Bearer xxx",
+]);
+$res = curl_exec($ch);
+
+if (curl_errno($ch)) {
+  die(curl_error($ch));
+}
+
+curl_close($ch);
+$res = json_decode($res, true);
+
+print_r($res);
+```
+
+> The above request returns JSON structured like this:
+
+```json
+{
+  "success": true
+}
+```
+
+<aside style="color: white;">Requires user authentication with right <b>send_notifications</b></aside>
+
+This endpoint allows administrators to send a notification to the specified user
+
+### Query parameters
+
+Parameter | Description
+--------- | -----------
+user | User ID or email address
+title | Notification title
+text | Notification content
+deeplink | **Optional** App deeplink
+
+### Failure codes
+
+Failure Code | Meaning
+---------- | -------
+1000 | No title specified
+1001 | No content specified
 
 ## POST /push
-TODO
+```php
+<?php
+$ch = curl_init("https://api.hyperspace.one/push");
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query([
+  "token" => "xxx",
+]));
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+  "Authorization: Bearer xxx",
+]);
+$res = curl_exec($ch);
+
+if (curl_errno($ch)) {
+  die(curl_error($ch));
+}
+
+curl_close($ch);
+$res = json_decode($res, true);
+
+print_r($res);
+```
+
+> The above request returns JSON structured like this:
+
+```json
+{
+  "success": true
+}
+```
+
+<aside style="color: white;">Requires user authentication</aside>
+
+Assign push token to user profile
+
+### Query parameters
+
+Parameter | Description
+--------- | -----------
+token | Push token
+
+### Failure codes
+
+Failure Code | Meaning
+---------- | -------
+1000 | No token specified
 
 ## DELETE /push
-TODO
+```php
+<?php
+$ch = curl_init("https://api.hyperspace.one/push");
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "DELETE");
+curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query([
+  "token" => "xxx",
+]));
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+  "Authorization: Bearer xxx",
+]);
+$res = curl_exec($ch);
+
+if (curl_errno($ch)) {
+  die(curl_error($ch));
+}
+
+curl_close($ch);
+$res = json_decode($res, true);
+
+print_r($res);
+```
+
+> The above request returns JSON structured like this:
+
+```json
+{
+  "success": true
+}
+```
+
+<aside style="color: white;">Requires user authentication</aside>
+
+Remove push token from user profile
+
+### Query parameters
+
+Parameter | Description
+--------- | -----------
+token | Push token
+
+### Failure codes
+
+Failure Code | Meaning
+---------- | -------
+1000 | No token specified
+1001 | Token not found
 
 # Terminals
 
