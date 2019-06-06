@@ -2984,7 +2984,7 @@ print_r($res);
 
 <aside style="color: white;">Requires user authentication with right <b>promoter</b></aside>
 
-This endpoint allows promoters to view order they have placed. As they have entered the customer data by theirselves, there is no privacy problem in showing this data to promoters.
+This endpoint allows promoters to view orders they have placed. As they have entered the customer data by theirselves, there is no privacy problem in showing this data to promoters.
 
 ### Query parameters
 
@@ -3020,25 +3020,387 @@ items[] | Products ordered
 # Affiliate
 
 ## GET /affiliate
-TODO
+```php
+<?php
+$ch = curl_init("https://api.hyperspace.one/affiliate");
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+  "Authorization: Bearer xxx",
+]);
+$res = curl_exec($ch);
+
+if (curl_errno($ch)) {
+  die(curl_error($ch));
+}
+
+curl_close($ch);
+$res = json_decode($res, true);
+
+print_r($res);
+```
+
+> The above request returns JSON structured like this:
+
+```json
+{
+  "success": true,
+  "data": [
+    {
+      "hash": "ylnfc7",
+      "user_id": 9,
+      "clicks": 1,
+      "orders": 1,
+      "products": {
+        "4": 3
+      },
+      "status": true,
+      "description": ""
+    }
+  ]
+}
+```
+
+<aside style="color: white;">Requires user authentication with right <b>affiliate</b></aside>
+
+This endpoint allows affiliates to view their reflinks and statistics.
+
+### Return values
+
+The reflinks are listed in the `data` element. Each reflink has these properties:
+
+Parameter | Description
+--------- | -----------
+hash | Reflink hash
+user_id | Assigned user (logged in user)
+clicks | Performed clicks
+orders | Placed orders (only paid orders are counted)
+products[] | Array of buyed products (by ID; key) and quantities (value)
+status | Reflink active
+description | Reflink description 
 
 ## POST /affiliate
-TODO
+```php
+<?php
+$ch = curl_init("https://api.hyperspace.one/affiliate");
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+  "Authorization: Bearer xxx",
+]);
+curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query([
+  "description" => "My new link",
+]));
+$res = curl_exec($ch);
 
-## GET /reflinks
-TODO
+if (curl_errno($ch)) {
+  die(curl_error($ch));
+}
+
+curl_close($ch);
+$res = json_decode($res, true);
+
+print_r($res);
+```
+
+> The above request returns JSON structured like this:
+
+```json
+{
+  "success": true,
+  "hash": "xxx"
+}
+```
+
+<aside style="color: white;">Requires user authentication with right <b>affiliate</b></aside>
+
+This endpoint allows affiliates to create new reflinks.
+
+### Query parameters
+
+Parameter | Default | Description
+--------- | ------- | -----------
+description | "" | Reflink description
+
+### Return values
+
+Parameter | Description
+--------- | -----------
+hash | Hash of newly created reflink
 
 ## PUT /affiliate/{hash}
-TODO
+```php
+<?php
+$ch = curl_init("https://api.hyperspace.one/affiliate/{hash}");
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+  "Authorization: Bearer xxx",
+]);
+curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query([
+  "description" => "My new description",
+  "status" => true,
+]));
+curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
+$res = curl_exec($ch);
+
+if (curl_errno($ch)) {
+  die(curl_error($ch));
+}
+
+curl_close($ch);
+$res = json_decode($res, true);
+
+print_r($res);
+```
+
+> The above request returns JSON structured like this:
+
+```json
+{
+  "success": true
+}
+```
+
+<aside style="color: white;">Requires user authentication with right <b>affiliate</b></aside>
+
+This endpoint allows affiliates to edit their reflinks.
+
+Administrators with **reflinks** right can use this endpoint to update any reflink.
+
+### Query parameters
+
+Parameter | Default | Description
+--------- | ------- | -----------
+hash | - | Reflink hash
+description | "" | Reflink description
+status | false | Reflink active
 
 ## DELETE /affiliate/{hash}
-TODO
+```php
+<?php
+$ch = curl_init("https://api.hyperspace.one/affiliate/{hash}");
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+  "Authorization: Bearer xxx",
+]);
+curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "DELETE");
+$res = curl_exec($ch);
 
-## GET /affiliate/orders
-TODO
+if (curl_errno($ch)) {
+  die(curl_error($ch));
+}
+
+curl_close($ch);
+$res = json_decode($res, true);
+
+print_r($res);
+```
+
+> The above request returns JSON structured like this:
+
+```json
+{
+  "success": true
+}
+```
+
+<aside style="color: white;">Requires user authentication with right <b>affiliate</b></aside>
+
+This endpoint allows affiliates to delete their reflinks.
+
+Administrators with **reflinks** right can use this endpoint to delete any reflink.
+
+### Query parameters
+
+Parameter | Default | Description
+--------- | ------- | -----------
+hash | - | Reflink hash
 
 ## POST /affiliate/click/{hash}
-TODO
+```php
+<?php
+$ch = curl_init("https://api.hyperspace.one/affiliate/click/{hash}");
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+$res = curl_exec($ch);
+
+if (curl_errno($ch)) {
+  die(curl_error($ch));
+}
+
+curl_close($ch);
+$res = json_decode($res, true);
+
+print_r($res);
+```
+
+> The above request returns JSON structured like this:
+
+```json
+{
+  "success": true
+}
+```
+
+This endpoint increases a reflink click count by 1.
+
+### Query parameters
+
+Parameter | Default | Description
+--------- | ------- | -----------
+hash | - | Reflink hash
+
+### Failure codes
+
+Failure Code | Meaning
+---------- | -------
+1000 | Reflink not found or inactive
+
+## GET /affiliate/orders
+```php
+<?php
+$ch = curl_init("https://api.hyperspace.one/affiliate/orders");
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+  "Authorization: Bearer xxx",
+]);
+$res = curl_exec($ch);
+
+if (curl_errno($ch)) {
+  die(curl_error($ch));
+}
+
+curl_close($ch);
+$res = json_decode($res, true);
+
+print_r($res);
+```
+
+> The above request returns JSON structured like this:
+
+```json
+{
+  "success": true,
+  "itemCount": 1,
+  "items": [
+    {
+      "id": 212,
+      "status": "paid",
+      "firstname": "John",
+      "lastname": "D.",
+      "city": "Herzogenrath",
+      "country": "Germany",
+      "createdAt": {
+        "date": "2019-02-26 20:33:19.000000",
+        "timezone_type": 3,
+        "timezone": "UTC"
+      },
+      "updatedAt": {
+        "date": "2019-02-26 20:33:19.000000",
+        "timezone_type": 3,
+        "timezone": "UTC"
+      },
+      "reflink": "ylnfc7",
+      "amount": 39.98,
+      "items": [
+        {
+          "productId": 4,
+          "productName": "Early Bird",
+          "quantity": 2,
+          "price": 39.98,
+          "singlePrice": 39.98
+        }
+      ]
+    }
+  ]
+}
+```
+
+<aside style="color: white;">Requires user authentication with right <b>promoter</b></aside>
+
+This endpoint allows affiliates to view orders that were placed using their reflink. Only paid orders are shown. The newest orders are shown first.
+
+### Query parameters
+
+Parameter | Default | Description
+--------- | ------- | -----------
+page | 1 | Page number
+per_page | 20 | Elements per page
+
+### Return values
+
+The request returns an `itemCount` which is the number of all paid orders of this affiliate in system. `items` contains the set of requested orders according to pagination. The orders have these properties:
+
+Parameter | Description
+--------- | -----------
+id | Order ID
+status | Order status (can only be `paid`)
+firstname | Buyer first name
+lastname | Buyer last name (only first character for privacy reasons)
+city | Buyer city
+country | Buyer country
+createdAt | Date of order placed
+updatedAt | Date of order modified (usually payment date)
+reflink | Reflink used
+amount | Order amount
+items[] | Products ordered
+
+## GET /reflinks
+```php
+<?php
+$ch = curl_init("https://api.hyperspace.one/reflinks");
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+  "Authorization: Bearer xxx",
+]);
+$res = curl_exec($ch);
+
+if (curl_errno($ch)) {
+  die(curl_error($ch));
+}
+
+curl_close($ch);
+$res = json_decode($res, true);
+
+print_r($res);
+```
+
+> The above request returns JSON structured like this:
+
+```json
+{
+  "success": true,
+  "data": [
+    {
+      "hash": "ylnfc7",
+      "user_id": 9,
+      "clicks": 1,
+      "orders": 1,
+      "products": {
+        "4": 3
+      },
+      "status": true,
+      "description": ""
+    }
+  ]
+}
+```
+
+<aside style="color: white;">Requires user authentication with right <b>reflinks</b></aside>
+
+This endpoint allows administrators to view all reflinks in system and their statistics.
+
+### Return values
+
+The reflinks are listed in the `data` element. Each reflink has these properties:
+
+Parameter | Description
+--------- | -----------
+hash | Reflink hash
+user_id | Assigned user
+clicks | Performed clicks
+orders | Placed orders (only paid orders are counted)
+products[] | Array of buyed products (by ID; key) and quantities (value)
+status | Reflink active
+description | Reflink description
 
 # Notifications
 
