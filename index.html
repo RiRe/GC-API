@@ -361,6 +361,9 @@
                     <a href="#post-images-upload" class="toc-h2 toc-link" data-title="POST /images/upload">POST /images/upload</a>
                   </li>
                   <li>
+                    <a href="#post-images-upload-publish" class="toc-h2 toc-link" data-title="POST /images/upload + publish">POST /images/upload + publish</a>
+                  </li>
+                  <li>
                     <a href="#post-images" class="toc-h2 toc-link" data-title="POST /images">POST /images</a>
                   </li>
                   <li>
@@ -389,11 +392,6 @@
                   <li>
                     <a href="#post-checkout-paypal" class="toc-h2 toc-link" data-title="POST /checkout/paypal">POST /checkout/paypal</a>
                   </li>
-              </ul>
-          </li>
-          <li>
-            <a href="#payment" class="toc-h1 toc-link" data-title="Payment">Payment</a>
-              <ul class="toc-list-h2">
                   <li>
                     <a href="#get-ideal-banks" class="toc-h2 toc-link" data-title="GET /ideal/banks">GET /ideal/banks</a>
                   </li>
@@ -2522,26 +2520,982 @@
 <td>List of assigned galleries</td>
 </tr>
 </tbody></table>
-<h1 id='galleries'>Galleries</h1><h2 id='get-galleries'>GET /galleries</h2>
-<p>TODO</p>
-<h2 id='get-galleries-slug'>GET /galleries/{slug}</h2>
-<p>TODO</p>
-<h2 id='post-galleries'>POST /galleries</h2>
-<p>TODO</p>
-<h2 id='put-galleries-slug'>PUT /galleries/{slug}</h2>
-<p>TODO</p>
-<h2 id='delete-galleries-slug'>DELETE /galleries/{slug}</h2>
-<p>TODO</p>
-<h2 id='get-images'>GET /images</h2>
-<p>TODO</p>
-<h2 id='post-images-upload'>POST /images/upload</h2>
-<p>TODO</p>
-<h2 id='post-images'>POST /images</h2>
-<p>TODO</p>
-<h2 id='put-images-id'>PUT /images/{id}</h2>
-<p>TODO</p>
-<h2 id='delete-images-id'>DELETE /images/{id}</h2>
-<p>TODO</p>
+<h1 id='galleries'>Galleries</h1><h2 id='get-galleries'>GET /galleries</h2><pre class="highlight php tab-php"><code><span class="cp">&lt;?php</span>
+<span class="nv">$ch</span> <span class="o">=</span> <span class="nb">curl_init</span><span class="p">(</span><span class="s2">"https://api.hyperspace.one/galleries"</span><span class="p">);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_RETURNTRANSFER</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+<span class="nv">$res</span> <span class="o">=</span> <span class="nb">curl_exec</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="nb">curl_errno</span><span class="p">(</span><span class="nv">$ch</span><span class="p">))</span> <span class="p">{</span>
+  <span class="k">die</span><span class="p">(</span><span class="nb">curl_error</span><span class="p">(</span><span class="nv">$ch</span><span class="p">));</span>
+<span class="p">}</span>
+
+<span class="nb">curl_close</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
+<span class="nv">$res</span> <span class="o">=</span> <span class="nb">json_decode</span><span class="p">(</span><span class="nv">$res</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+
+<span class="nb">print_r</span><span class="p">(</span><span class="nv">$res</span><span class="p">);</span>
+</code></pre>
+<blockquote>
+<p>The above request returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"success"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"count"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"slug"</span><span class="p">:</span><span class="w"> </span><span class="s2">"the-abandoned-dome"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"title"</span><span class="p">:</span><span class="w"> </span><span class="s2">"The Abandoned Dome"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"event"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"slug"</span><span class="p">:</span><span class="w"> </span><span class="s2">"the-abandoned-dome"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"The Abandoned Dome"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"date"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2019-03-30 22:00:00"</span><span class="w">
+      </span><span class="p">},</span><span class="w">
+      </span><span class="s2">"created"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"date"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2019-06-06 04:06:15.000000"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"timezone_type"</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"timezone"</span><span class="p">:</span><span class="w"> </span><span class="s2">"UTC"</span><span class="w">
+      </span><span class="p">},</span><span class="w">
+      </span><span class="s2">"public"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"imageCount"</span><span class="p">:</span><span class="w"> </span><span class="mi">128</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<aside style="color: white;">Hidden galleries are only shown for authenticated users with right <b>manage_images</b></aside>
+
+<p>This endpoint lists all galleries.</p>
+<h3 id='query-parameters-22'>Query parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>page</td>
+<td>1</td>
+<td>Page number</td>
+</tr>
+<tr>
+<td>per_page</td>
+<td>20</td>
+<td>Items to display per page</td>
+</tr>
+<tr>
+<td>filter</td>
+<td>-</td>
+<td>Wildcard filter for slug, title</td>
+</tr>
+<tr>
+<td>sort_field</td>
+<td>slug</td>
+<td>Field to sort by</td>
+</tr>
+<tr>
+<td>sort_direction</td>
+<td>asc</td>
+<td>Sorting direction</td>
+</tr>
+</tbody></table>
+<h3 id='return-values-11'>Return values</h3>
+<p>The request returns an <code>count</code> which is the number of all galleries in system. <code>data</code> contains the set of requested galleries according to pagination. The galleries have these properties:</p>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>slug</td>
+<td>Gallery slug</td>
+</tr>
+<tr>
+<td>title</td>
+<td>Gallery title</td>
+</tr>
+<tr>
+<td>event</td>
+<td><strong>If event</strong> Event information <strong>otherwise</strong> <em>null</em></td>
+</tr>
+<tr>
+<td>created</td>
+<td>Date of creation</td>
+</tr>
+<tr>
+<td>public</td>
+<td>Gallery is public</td>
+</tr>
+<tr>
+<td>imageCount</td>
+<td>Number of images in gallery</td>
+</tr>
+</tbody></table>
+
+<p>The <code>imageCount</code> includes hidden images only when user is authenticated and has the <code>manage_images</code> right.</p>
+<h2 id='get-galleries-slug'>GET /galleries/{slug}</h2><pre class="highlight php tab-php"><code><span class="cp">&lt;?php</span>
+<span class="nv">$ch</span> <span class="o">=</span> <span class="nb">curl_init</span><span class="p">(</span><span class="s2">"https://api.hyperspace.one/galleries/</span><span class="si">{</span><span class="nv">slug</span><span class="si">}</span><span class="s2">"</span><span class="p">);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_RETURNTRANSFER</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_HTTPHEADER</span><span class="p">,</span> <span class="p">[</span>
+  <span class="s2">"Authorization: Bearer xxx"</span><span class="p">,</span>
+<span class="p">]);</span>
+<span class="nv">$res</span> <span class="o">=</span> <span class="nb">curl_exec</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="nb">curl_errno</span><span class="p">(</span><span class="nv">$ch</span><span class="p">))</span> <span class="p">{</span>
+  <span class="k">die</span><span class="p">(</span><span class="nb">curl_error</span><span class="p">(</span><span class="nv">$ch</span><span class="p">));</span>
+<span class="p">}</span>
+
+<span class="nb">curl_close</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
+<span class="nv">$res</span> <span class="o">=</span> <span class="nb">json_decode</span><span class="p">(</span><span class="nv">$res</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+
+<span class="nb">print_r</span><span class="p">(</span><span class="nv">$res</span><span class="p">);</span>
+</code></pre>
+<blockquote>
+<p>The above request returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"success"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"count"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"slug"</span><span class="p">:</span><span class="w"> </span><span class="s2">"the-abandoned-dome"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"title"</span><span class="p">:</span><span class="w"> </span><span class="s2">"The Abandoned Dome"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"event"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"slug"</span><span class="p">:</span><span class="w"> </span><span class="s2">"the-abandoned-dome"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"The Abandoned Dome"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"date"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2019-03-30 22:00:00"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="s2">"created"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"date"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2019-06-06 04:06:15.000000"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"timezone_type"</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"timezone"</span><span class="p">:</span><span class="w"> </span><span class="s2">"UTC"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="s2">"public"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"imageCount"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"images"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+      </span><span class="p">{</span><span class="w">
+          </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">68</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"title"</span><span class="p">:</span><span class="w"> </span><span class="s2">"the-abandoned-dome-126.jpg"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"url"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://storage.googleapis.com/gc-media-resized/thumb%40512_2019-05-28-00-01-23-47153063.jpg"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"creator"</span><span class="p">:</span><span class="w"> </span><span class="s2">"John Doe"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"created"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+              </span><span class="s2">"date"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2019-05-28 00:01:24.000000"</span><span class="p">,</span><span class="w">
+              </span><span class="s2">"timezone_type"</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w">
+              </span><span class="s2">"timezone"</span><span class="p">:</span><span class="w"> </span><span class="s2">"UTC"</span><span class="w">
+          </span><span class="p">},</span><span class="w">
+          </span><span class="s2">"public"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">]</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<aside style="color: white;">Hidden galleries are only available for authenticated users with right <b>manage_images</b>, hidden images are also shown only to users with this right</aside>
+
+<p>This endpoint get the details and the images of a specific gallery. The images are paginated and can be filtered. </p>
+<h3 id='query-parameters-23'>Query parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>slug</td>
+<td>-</td>
+<td>Gallery slug</td>
+</tr>
+<tr>
+<td>page</td>
+<td>1</td>
+<td>Page number</td>
+</tr>
+<tr>
+<td>per_page</td>
+<td>20</td>
+<td>Items to display per page</td>
+</tr>
+<tr>
+<td>filter</td>
+<td>-</td>
+<td>Wildcard filter for image title</td>
+</tr>
+<tr>
+<td>sort_field</td>
+<td>created_at</td>
+<td>Field to sort by</td>
+</tr>
+<tr>
+<td>sort_direction</td>
+<td>asc</td>
+<td>Sorting direction</td>
+</tr>
+</tbody></table>
+<h3 id='return-values-12'>Return values</h3>
+<p>The response includes a parameter <code>count</code> which is the number of images available in the gallery. In the <code>data</code> object, you can find the gallery details with these properties:</p>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>slug</td>
+<td>Gallery slug</td>
+</tr>
+<tr>
+<td>title</td>
+<td>Gallery title</td>
+</tr>
+<tr>
+<td>event</td>
+<td><strong>If event</strong> Event information <strong>otherwise</strong> <em>null</em></td>
+</tr>
+<tr>
+<td>created</td>
+<td>Date of creation</td>
+</tr>
+<tr>
+<td>public</td>
+<td>Gallery is public</td>
+</tr>
+<tr>
+<td>imageCount</td>
+<td>Number of images in gallery</td>
+</tr>
+<tr>
+<td>images[]</td>
+<td>Array of images according to filter and pagination</td>
+</tr>
+</tbody></table>
+
+<p>Each image has these properties:</p>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>id</td>
+<td>Image ID</td>
+</tr>
+<tr>
+<td>title</td>
+<td>Image title (usually file name)</td>
+</tr>
+<tr>
+<td>url</td>
+<td>Image URL</td>
+</tr>
+<tr>
+<td>creator</td>
+<td><strong>If assigned</strong> Name of creator <strong>otherwise</strong> <em>null</em></td>
+</tr>
+<tr>
+<td>created</td>
+<td>Image upload time</td>
+</tr>
+<tr>
+<td>public</td>
+<td>Image is public</td>
+</tr>
+</tbody></table>
+<h2 id='post-galleries'>POST /galleries</h2><pre class="highlight php tab-php"><code><span class="cp">&lt;?php</span>
+<span class="nv">$ch</span> <span class="o">=</span> <span class="nb">curl_init</span><span class="p">(</span><span class="s2">"https://api.hyperspace.one/galleries"</span><span class="p">);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_RETURNTRANSFER</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_HTTPHEADER</span><span class="p">,</span> <span class="p">[</span>
+  <span class="s2">"Authorization: Bearer xxx"</span><span class="p">,</span>
+<span class="p">]);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_POSTFIELDS</span><span class="p">,</span> <span class="nb">http_build_query</span><span class="p">([</span>
+  <span class="s2">"slug"</span> <span class="o">=&gt;</span> <span class="s2">"my-gallery"</span><span class="p">,</span>
+  <span class="s2">"title"</span> <span class="o">=&gt;</span> <span class="s2">"My first gallery"</span><span class="p">,</span>
+  <span class="s2">"public"</span> <span class="o">=&gt;</span> <span class="kc">true</span><span class="p">,</span>
+  <span class="s2">"event"</span> <span class="o">=&gt;</span> <span class="mi">5</span><span class="p">,</span>
+<span class="p">]));</span>
+<span class="nv">$res</span> <span class="o">=</span> <span class="nb">curl_exec</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="nb">curl_errno</span><span class="p">(</span><span class="nv">$ch</span><span class="p">))</span> <span class="p">{</span>
+  <span class="k">die</span><span class="p">(</span><span class="nb">curl_error</span><span class="p">(</span><span class="nv">$ch</span><span class="p">));</span>
+<span class="p">}</span>
+
+<span class="nb">curl_close</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
+<span class="nv">$res</span> <span class="o">=</span> <span class="nb">json_decode</span><span class="p">(</span><span class="nv">$res</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+
+<span class="nb">print_r</span><span class="p">(</span><span class="nv">$res</span><span class="p">);</span>
+</code></pre>
+<blockquote>
+<p>The above request returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"success"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<aside style="color: white;">Requires user authentication with right <b>manage_images</b></aside>
+
+<p>This endpoint allows administrators to create new galleries.</p>
+<h3 id='query-parameters-24'>Query parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>slug</td>
+<td>-</td>
+<td>Gallery slug</td>
+</tr>
+<tr>
+<td>title</td>
+<td>-</td>
+<td>Gallery title</td>
+</tr>
+<tr>
+<td>public</td>
+<td>0</td>
+<td>Gallery is public</td>
+</tr>
+<tr>
+<td>event</td>
+<td>0</td>
+<td>ID of event</td>
+</tr>
+</tbody></table>
+<h3 id='failure-codes-15'>Failure codes</h3>
+<table><thead>
+<tr>
+<th>Failure Code</th>
+<th>Meaning</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>1001</td>
+<td>No slug specified</td>
+</tr>
+<tr>
+<td>1002</td>
+<td>Slug already in use</td>
+</tr>
+<tr>
+<td>1003 </td>
+<td>No title specified</td>
+</tr>
+</tbody></table>
+<h2 id='put-galleries-slug'>PUT /galleries/{slug}</h2><pre class="highlight php tab-php"><code><span class="cp">&lt;?php</span>
+<span class="nv">$ch</span> <span class="o">=</span> <span class="nb">curl_init</span><span class="p">(</span><span class="s2">"https://api.hyperspace.one/galleries/</span><span class="si">{</span><span class="nv">slug</span><span class="si">}</span><span class="s2">"</span><span class="p">);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_RETURNTRANSFER</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_POSTFIELDS</span><span class="p">,</span> <span class="nb">http_build_query</span><span class="p">([</span>
+  <span class="s2">"title"</span> <span class="o">=&gt;</span> <span class="s2">"New title"</span><span class="p">,</span>
+<span class="p">]));</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_HTTPHEADER</span><span class="p">,</span> <span class="p">[</span>
+  <span class="s2">"Authorization: Bearer xxx"</span><span class="p">,</span>
+<span class="p">]);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_CUSTOMREQUEST</span><span class="p">,</span> <span class="s2">"PUT"</span><span class="p">);</span>
+<span class="nv">$res</span> <span class="o">=</span> <span class="nb">curl_exec</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="nb">curl_errno</span><span class="p">(</span><span class="nv">$ch</span><span class="p">))</span> <span class="p">{</span>
+  <span class="k">die</span><span class="p">(</span><span class="nb">curl_error</span><span class="p">(</span><span class="nv">$ch</span><span class="p">));</span>
+<span class="p">}</span>
+
+<span class="nb">curl_close</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
+<span class="nv">$res</span> <span class="o">=</span> <span class="nb">json_decode</span><span class="p">(</span><span class="nv">$res</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+
+<span class="nb">print_r</span><span class="p">(</span><span class="nv">$res</span><span class="p">);</span>
+</code></pre>
+<blockquote>
+<p>The above request returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"success"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<aside style="color: white;">Requires user authentication with right <b>manage_images</b></aside>
+
+<p>This endpoint allows administrators to edit galleries.</p>
+<h3 id='query-parameters-25'>Query parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>slug</td>
+<td>-</td>
+<td>Gallery slug</td>
+</tr>
+</tbody></table>
+
+<p>You can also use the parameters <code>title</code>, <code>public</code> and <code>event</code> to update these properties. Only the properties specified are updated.</p>
+<h3 id='failure-codes-16'>Failure codes</h3>
+<table><thead>
+<tr>
+<th>Failure Code</th>
+<th>Meaning</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>1000</td>
+<td>Gallery not found</td>
+</tr>
+</tbody></table>
+<h2 id='delete-galleries-slug'>DELETE /galleries/{slug}</h2><pre class="highlight php tab-php"><code><span class="cp">&lt;?php</span>
+<span class="nv">$ch</span> <span class="o">=</span> <span class="nb">curl_init</span><span class="p">(</span><span class="s2">"https://api.hyperspace.one/galleries/</span><span class="si">{</span><span class="nv">slug</span><span class="si">}</span><span class="s2">"</span><span class="p">);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_RETURNTRANSFER</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_HTTPHEADER</span><span class="p">,</span> <span class="p">[</span>
+  <span class="s2">"Authorization: Bearer xxx"</span><span class="p">,</span>
+<span class="p">]);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_CUSTOMREQUEST</span><span class="p">,</span> <span class="s2">"DELETE"</span><span class="p">);</span>
+<span class="nv">$res</span> <span class="o">=</span> <span class="nb">curl_exec</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="nb">curl_errno</span><span class="p">(</span><span class="nv">$ch</span><span class="p">))</span> <span class="p">{</span>
+  <span class="k">die</span><span class="p">(</span><span class="nb">curl_error</span><span class="p">(</span><span class="nv">$ch</span><span class="p">));</span>
+<span class="p">}</span>
+
+<span class="nb">curl_close</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
+<span class="nv">$res</span> <span class="o">=</span> <span class="nb">json_decode</span><span class="p">(</span><span class="nv">$res</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+
+<span class="nb">print_r</span><span class="p">(</span><span class="nv">$res</span><span class="p">);</span>
+</code></pre>
+<blockquote>
+<p>The above request returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"success"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<aside style="color: white;">Requires user authentication with right <b>manage_images</b></aside>
+
+<p>This endpoint allows administrators to delete galleries.</p>
+<h3 id='query-parameters-26'>Query parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>slug</td>
+<td>-</td>
+<td>Gallery slug</td>
+</tr>
+</tbody></table>
+<h3 id='failure-codes-17'>Failure codes</h3>
+<table><thead>
+<tr>
+<th>Failure Code</th>
+<th>Meaning</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>1000</td>
+<td>Gallery not found</td>
+</tr>
+</tbody></table>
+<h2 id='get-images'>GET /images</h2><pre class="highlight php tab-php"><code><span class="cp">&lt;?php</span>
+<span class="nv">$ch</span> <span class="o">=</span> <span class="nb">curl_init</span><span class="p">(</span><span class="s2">"https://api.hyperspace.one/images"</span><span class="p">);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_RETURNTRANSFER</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_HTTPHEADER</span><span class="p">,</span> <span class="p">[</span>
+  <span class="s2">"Authorization: Bearer xxx"</span><span class="p">,</span>
+<span class="p">]);</span>
+<span class="nv">$res</span> <span class="o">=</span> <span class="nb">curl_exec</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="nb">curl_errno</span><span class="p">(</span><span class="nv">$ch</span><span class="p">))</span> <span class="p">{</span>
+  <span class="k">die</span><span class="p">(</span><span class="nb">curl_error</span><span class="p">(</span><span class="nv">$ch</span><span class="p">));</span>
+<span class="p">}</span>
+
+<span class="nb">curl_close</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
+<span class="nv">$res</span> <span class="o">=</span> <span class="nb">json_decode</span><span class="p">(</span><span class="nv">$res</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+
+<span class="nb">print_r</span><span class="p">(</span><span class="nv">$res</span><span class="p">);</span>
+</code></pre>
+<blockquote>
+<p>The above request returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"success"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"count"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"images"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+      </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"title"</span><span class="p">:</span><span class="w"> </span><span class="s2">"My image"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"url"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://storage.googleapis.com/gc-media-resized/thumb%40128_2019-05-26-18-36-43-96907598.png"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"creator"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"created"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"date"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2019-05-26 18:55:14.000000"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"timezone_type"</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"timezone"</span><span class="p">:</span><span class="w"> </span><span class="s2">"UTC"</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="s2">"galleries"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"my-gallery"</span><span class="p">],</span><span class="w">
+        </span><span class="s2">"public"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">]</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<aside style="color: white;">Requires authentication with right <b>manage_images</b></aside>
+
+<p>This endpoint allows administrators to list all images with respect to pagination and filtering.</p>
+<h3 id='query-parameters-27'>Query parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>page</td>
+<td>1</td>
+<td>Page number</td>
+</tr>
+<tr>
+<td>per_page</td>
+<td>20</td>
+<td>Items to display per page</td>
+</tr>
+<tr>
+<td>filter</td>
+<td>-</td>
+<td>Wildcard filter for title</td>
+</tr>
+<tr>
+<td>sort_field</td>
+<td>created_at</td>
+<td>Field to sort by</td>
+</tr>
+<tr>
+<td>sort_direction</td>
+<td>asc</td>
+<td>Sorting direction</td>
+</tr>
+</tbody></table>
+<h3 id='return-values-13'>Return values</h3>
+<p>The request returns an <code>count</code> which is the number of all images in system. <code>data.images</code> contains the set of requested images according to pagination. The images have these properties:</p>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>id</td>
+<td>Image ID</td>
+</tr>
+<tr>
+<td>title</td>
+<td>Image title (usually file name)</td>
+</tr>
+<tr>
+<td>url</td>
+<td>Image URL</td>
+</tr>
+<tr>
+<td>creator</td>
+<td><strong>If assigned</strong> Name of creator <strong>otherwise</strong> <em>null</em></td>
+</tr>
+<tr>
+<td>created</td>
+<td>Image upload time</td>
+</tr>
+<tr>
+<td>galleries[]</td>
+<td>Array of gallery slugs the image is assigned to</td>
+</tr>
+<tr>
+<td>public</td>
+<td>Image is public</td>
+</tr>
+</tbody></table>
+<h2 id='post-images-upload'>POST /images/upload</h2><pre class="highlight php tab-php"><code><span class="cp">&lt;?php</span>
+<span class="nv">$ch</span> <span class="o">=</span> <span class="nb">curl_init</span><span class="p">(</span><span class="s2">"https://api.hyperspace.one/images/upload"</span><span class="p">);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_RETURNTRANSFER</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_HTTPHEADER</span><span class="p">,</span> <span class="p">[</span>
+  <span class="s2">"Authorization: Bearer xxx"</span><span class="p">,</span>
+<span class="p">]);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_POSTFIELDS</span><span class="p">,</span> <span class="nb">http_build_query</span><span class="p">([</span>
+  <span class="s2">"file"</span> <span class="o">=&gt;</span> <span class="k">new</span> <span class="nx">\CurlFile</span><span class="p">(</span><span class="nv">$filePath</span><span class="p">,</span> <span class="s1">'image/png'</span><span class="p">,</span> <span class="s1">'filename.png'</span><span class="p">),</span>
+<span class="p">]));</span>
+<span class="nv">$res</span> <span class="o">=</span> <span class="nb">curl_exec</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="nb">curl_errno</span><span class="p">(</span><span class="nv">$ch</span><span class="p">))</span> <span class="p">{</span>
+  <span class="k">die</span><span class="p">(</span><span class="nb">curl_error</span><span class="p">(</span><span class="nv">$ch</span><span class="p">));</span>
+<span class="p">}</span>
+
+<span class="nb">curl_close</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
+<span class="nv">$res</span> <span class="o">=</span> <span class="nb">json_decode</span><span class="p">(</span><span class="nv">$res</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+
+<span class="nb">print_r</span><span class="p">(</span><span class="nv">$res</span><span class="p">);</span>
+</code></pre>
+<blockquote>
+<p>The above request returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"success"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"url"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://storage.googleapis.com/gc-media-resized/thumb%40512_2019-05-28-00-01-23-47153063.jpg"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<aside style="color: white;">Requires user authentication with right <b>manage_images</b></aside>
+
+<p>This endpoint allows administrators to upload image files and get back the URL.</p>
+<h3 id='query-parameters-28'>Query parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>file</td>
+<td>-</td>
+<td>Image file (as multipart/form-data)</td>
+</tr>
+</tbody></table>
+<h3 id='return-values-14'>Return values</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>url</td>
+<td>Image upload URL</td>
+</tr>
+</tbody></table>
+<h3 id='failure-codes-18'>Failure codes</h3>
+<table><thead>
+<tr>
+<th>Failure Code</th>
+<th>Meaning</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>1001</td>
+<td>No file uploaded</td>
+</tr>
+<tr>
+<td>1002</td>
+<td>Invalid file extension</td>
+</tr>
+</tbody></table>
+<h2 id='post-images-upload-publish'>POST /images/upload + publish</h2><pre class="highlight php tab-php"><code><span class="cp">&lt;?php</span>
+<span class="nv">$ch</span> <span class="o">=</span> <span class="nb">curl_init</span><span class="p">(</span><span class="s2">"https://api.hyperspace.one/images/upload"</span><span class="p">);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_RETURNTRANSFER</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_HTTPHEADER</span><span class="p">,</span> <span class="p">[</span>
+  <span class="s2">"Authorization: Bearer xxx"</span><span class="p">,</span>
+<span class="p">]);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_POSTFIELDS</span><span class="p">,</span> <span class="nb">http_build_query</span><span class="p">([</span>
+  <span class="s2">"file"</span> <span class="o">=&gt;</span> <span class="k">new</span> <span class="nx">\CurlFile</span><span class="p">(</span><span class="nv">$filePath</span><span class="p">,</span> <span class="s1">'image/png'</span><span class="p">,</span> <span class="s1">'filename.png'</span><span class="p">),</span>
+  <span class="s2">"title"</span> <span class="o">=&gt;</span> <span class="s2">"My new image"</span><span class="p">,</span>
+  <span class="s2">"galleries"</span> <span class="o">=&gt;</span> <span class="p">[</span><span class="s2">"my-gallery"</span><span class="p">],</span>
+<span class="p">]));</span>
+<span class="nv">$res</span> <span class="o">=</span> <span class="nb">curl_exec</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="nb">curl_errno</span><span class="p">(</span><span class="nv">$ch</span><span class="p">))</span> <span class="p">{</span>
+  <span class="k">die</span><span class="p">(</span><span class="nb">curl_error</span><span class="p">(</span><span class="nv">$ch</span><span class="p">));</span>
+<span class="p">}</span>
+
+<span class="nb">curl_close</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
+<span class="nv">$res</span> <span class="o">=</span> <span class="nb">json_decode</span><span class="p">(</span><span class="nv">$res</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+
+<span class="nb">print_r</span><span class="p">(</span><span class="nv">$res</span><span class="p">);</span>
+</code></pre>
+<blockquote>
+<p>The above request returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"success"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<aside style="color: white;">Requires user authentication with right <b>manage_images</b></aside>
+
+<p>This is an extension to the previous <code>POST /images/upload</code> endpoint and allows directly creating an image in the system using the uploaded file by specifying more parameters.</p>
+
+<p>The endpoint variants are distinguished by the <code>title</code> element being specified and non-empty.</p>
+<h3 id='query-parameters-29'>Query parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>file</td>
+<td>-</td>
+<td>Image file (as multipart/form-data)</td>
+</tr>
+<tr>
+<td>title</td>
+<td> -</td>
+<td>Image title</td>
+</tr>
+<tr>
+<td>galleries[]</td>
+<td>[]</td>
+<td>Array of galleries the image should be assigned to (can be empty)</td>
+</tr>
+<tr>
+<td>public</td>
+<td>0</td>
+<td>Image is public</td>
+</tr>
+<tr>
+<td>creator</td>
+<td>0</td>
+<td>User ID of image creator</td>
+</tr>
+</tbody></table>
+<h3 id='return-values-15'>Return values</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>id</td>
+<td>ID of newly created image</td>
+</tr>
+</tbody></table>
+<h3 id='failure-codes-19'>Failure codes</h3>
+<table><thead>
+<tr>
+<th>Failure Code</th>
+<th>Meaning</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>1001</td>
+<td>No file uploaded</td>
+</tr>
+<tr>
+<td>1002</td>
+<td>Invalid file extension</td>
+</tr>
+</tbody></table>
+<h2 id='post-images'>POST /images</h2><pre class="highlight php tab-php"><code><span class="cp">&lt;?php</span>
+<span class="nv">$ch</span> <span class="o">=</span> <span class="nb">curl_init</span><span class="p">(</span><span class="s2">"https://api.hyperspace.one/images"</span><span class="p">);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_RETURNTRANSFER</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_HTTPHEADER</span><span class="p">,</span> <span class="p">[</span>
+  <span class="s2">"Authorization: Bearer xxx"</span><span class="p">,</span>
+<span class="p">]);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_POSTFIELDS</span><span class="p">,</span> <span class="nb">http_build_query</span><span class="p">([</span>
+  <span class="s2">"title"</span> <span class="o">=&gt;</span> <span class="s2">"My new image"</span><span class="p">,</span>
+  <span class="s2">"url"</span> <span class="o">=&gt;</span> <span class="s2">"https://storage.googleapis.com/gc-media-resized/thumb%40512_2019-05-28-00-01-23-47153063.jpg"</span><span class="p">,</span>
+  <span class="s2">"public"</span> <span class="o">=&gt;</span> <span class="kc">true</span><span class="p">,</span>
+  <span class="s2">"creator"</span> <span class="o">=&gt;</span> <span class="mi">7</span><span class="p">,</span>
+  <span class="s2">"galleries"</span> <span class="o">=&gt;</span> <span class="p">[</span><span class="s2">"my-gallery"</span><span class="p">],</span>
+<span class="p">]));</span>
+<span class="nv">$res</span> <span class="o">=</span> <span class="nb">curl_exec</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="nb">curl_errno</span><span class="p">(</span><span class="nv">$ch</span><span class="p">))</span> <span class="p">{</span>
+  <span class="k">die</span><span class="p">(</span><span class="nb">curl_error</span><span class="p">(</span><span class="nv">$ch</span><span class="p">));</span>
+<span class="p">}</span>
+
+<span class="nb">curl_close</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
+<span class="nv">$res</span> <span class="o">=</span> <span class="nb">json_decode</span><span class="p">(</span><span class="nv">$res</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+
+<span class="nb">print_r</span><span class="p">(</span><span class="nv">$res</span><span class="p">);</span>
+</code></pre>
+<blockquote>
+<p>The above request returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"success"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<aside style="color: white;">Requires user authentication with right <b>manage_images</b></aside>
+
+<p>This endpoint allows administrators to create an image from an URL.</p>
+<h3 id='query-parameters-30'>Query parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>title</td>
+<td>-</td>
+<td>Image title</td>
+</tr>
+<tr>
+<td>url</td>
+<td>-</td>
+<td>Image URL (can be obtained from <code>POST /images/upload</code>)</td>
+</tr>
+<tr>
+<td>public</td>
+<td>0</td>
+<td>Image is public</td>
+</tr>
+<tr>
+<td>creator</td>
+<td>0</td>
+<td>User ID of creator (optional)</td>
+</tr>
+<tr>
+<td>galleries[]</td>
+<td>[]</td>
+<td>Array of gallery slugs the image should be assigned to</td>
+</tr>
+</tbody></table>
+<h3 id='return-values-16'>Return values</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>id</td>
+<td>ID of the newly created image</td>
+</tr>
+</tbody></table>
+<h3 id='failure-codes-20'>Failure codes</h3>
+<table><thead>
+<tr>
+<th>Failure Code</th>
+<th>Meaning</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>1001</td>
+<td>No title specified</td>
+</tr>
+<tr>
+<td>1002</td>
+<td>Invalid URL specified</td>
+</tr>
+</tbody></table>
+<h2 id='put-images-id'>PUT /images/{id}</h2><pre class="highlight php tab-php"><code><span class="cp">&lt;?php</span>
+<span class="nv">$ch</span> <span class="o">=</span> <span class="nb">curl_init</span><span class="p">(</span><span class="s2">"https://api.hyperspace.one/images/</span><span class="si">{</span><span class="nv">id</span><span class="si">}</span><span class="s2">"</span><span class="p">);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_RETURNTRANSFER</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_POSTFIELDS</span><span class="p">,</span> <span class="nb">http_build_query</span><span class="p">([</span>
+  <span class="s2">"title"</span> <span class="o">=&gt;</span> <span class="s2">"New title"</span><span class="p">,</span>
+<span class="p">]));</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_HTTPHEADER</span><span class="p">,</span> <span class="p">[</span>
+  <span class="s2">"Authorization: Bearer xxx"</span><span class="p">,</span>
+<span class="p">]);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_CUSTOMREQUEST</span><span class="p">,</span> <span class="s2">"PUT"</span><span class="p">);</span>
+<span class="nv">$res</span> <span class="o">=</span> <span class="nb">curl_exec</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="nb">curl_errno</span><span class="p">(</span><span class="nv">$ch</span><span class="p">))</span> <span class="p">{</span>
+  <span class="k">die</span><span class="p">(</span><span class="nb">curl_error</span><span class="p">(</span><span class="nv">$ch</span><span class="p">));</span>
+<span class="p">}</span>
+
+<span class="nb">curl_close</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
+<span class="nv">$res</span> <span class="o">=</span> <span class="nb">json_decode</span><span class="p">(</span><span class="nv">$res</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+
+<span class="nb">print_r</span><span class="p">(</span><span class="nv">$res</span><span class="p">);</span>
+</code></pre>
+<blockquote>
+<p>The above request returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"success"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<aside style="color: white;">Requires user authentication with right <b>manage_images</b></aside>
+
+<p>This endpoint allows administrators to edit images.</p>
+<h3 id='query-parameters-31'>Query parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>id</td>
+<td>-</td>
+<td>Image ID</td>
+</tr>
+</tbody></table>
+
+<p>You can also use the parameters <code>title</code>, <code>url</code>, <code>public</code>, <code>creator</code> and <code>galleries</code> to update these properties. Only the properties specified are updated.</p>
+
+<p>Hereby, <code>creator</code> should be the user ID of the creator or <code>0</code>. <code>galleries</code> should be an array of gallery slugs the image should be assigned to, this array can also be empty if the image should not be assigned to any gallery. To remove an image from a gallery, simply leave out the gallery slug in the array.</p>
+<h3 id='failure-codes-21'>Failure codes</h3>
+<table><thead>
+<tr>
+<th>Failure Code</th>
+<th>Meaning</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>1000</td>
+<td>Image not found</td>
+</tr>
+</tbody></table>
+<h2 id='delete-images-id'>DELETE /images/{id}</h2><pre class="highlight php tab-php"><code><span class="cp">&lt;?php</span>
+<span class="nv">$ch</span> <span class="o">=</span> <span class="nb">curl_init</span><span class="p">(</span><span class="s2">"https://api.hyperspace.one/images/</span><span class="si">{</span><span class="nv">id</span><span class="si">}</span><span class="s2">"</span><span class="p">);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_RETURNTRANSFER</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_HTTPHEADER</span><span class="p">,</span> <span class="p">[</span>
+  <span class="s2">"Authorization: Bearer xxx"</span><span class="p">,</span>
+<span class="p">]);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_CUSTOMREQUEST</span><span class="p">,</span> <span class="s2">"DELETE"</span><span class="p">);</span>
+<span class="nv">$res</span> <span class="o">=</span> <span class="nb">curl_exec</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="nb">curl_errno</span><span class="p">(</span><span class="nv">$ch</span><span class="p">))</span> <span class="p">{</span>
+  <span class="k">die</span><span class="p">(</span><span class="nb">curl_error</span><span class="p">(</span><span class="nv">$ch</span><span class="p">));</span>
+<span class="p">}</span>
+
+<span class="nb">curl_close</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
+<span class="nv">$res</span> <span class="o">=</span> <span class="nb">json_decode</span><span class="p">(</span><span class="nv">$res</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+
+<span class="nb">print_r</span><span class="p">(</span><span class="nv">$res</span><span class="p">);</span>
+</code></pre>
+<blockquote>
+<p>The above request returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"success"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<aside style="color: white;">Requires user authentication with right <b>manage_images</b></aside>
+
+<p>This endpoint allows administrators to delete images.</p>
+<h3 id='query-parameters-32'>Query parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>id</td>
+<td>-</td>
+<td>Image ID</td>
+</tr>
+</tbody></table>
+<h3 id='failure-codes-22'>Failure codes</h3>
+<table><thead>
+<tr>
+<th>Failure Code</th>
+<th>Meaning</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>1000</td>
+<td>Image not found</td>
+</tr>
+</tbody></table>
 <h1 id='orders'>Orders</h1><h2 id='post-order'>POST /order</h2>
 <p>TODO</p>
 <h2 id='get-order-order_id-token'>GET /order/{order_id}/{token}</h2>
@@ -2552,7 +3506,7 @@
 <p>TODO</p>
 <h2 id='post-checkout-paypal'>POST /checkout/paypal</h2>
 <p>TODO</p>
-<h1 id='payment'>Payment</h1><h2 id='get-ideal-banks'>GET /ideal/banks</h2><pre class="highlight php tab-php"><code><span class="cp">&lt;?php</span>
+<h2 id='get-ideal-banks'>GET /ideal/banks</h2><pre class="highlight php tab-php"><code><span class="cp">&lt;?php</span>
 <span class="nv">$ch</span> <span class="o">=</span> <span class="nb">curl_init</span><span class="p">(</span><span class="s2">"https://api.hyperspace.one/ideal/banks"</span><span class="p">);</span>
 <span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_RETURNTRANSFER</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
 <span class="nv">$res</span> <span class="o">=</span> <span class="nb">curl_exec</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
@@ -2603,7 +3557,7 @@
 <td>Name of the bank</td>
 </tr>
 </tbody></table>
-<h3 id='failure-codes-15'>Failure codes</h3>
+<h3 id='failure-codes-23'>Failure codes</h3>
 <table><thead>
 <tr>
 <th>Failure Code</th>
@@ -2695,9 +3649,9 @@
 <aside style="color: white;">Requires user authentication</aside>
 
 <p>Gives back all tickets the user have, grouped by order</p>
-<h3 id='query-parameters-22'>Query parameters</h3>
+<h3 id='query-parameters-33'>Query parameters</h3>
 <p>None</p>
-<h3 id='return-values-11'>Return values</h3>
+<h3 id='return-values-17'>Return values</h3>
 <p>The request returns a list of orders containing order information and the tickets assigned with the order.</p>
 
 <table><thead>
@@ -2813,7 +3767,7 @@
 <p>You should use this endpoint to personalize a ticket which needs personalization. A ticket can be personalized as long as defined in the ticket product. Unlimited name changes are allowed.</p>
 
 <p>By default, a ticket is personalized to the buyers name.</p>
-<h3 id='query-parameters-23'>Query parameters</h3>
+<h3 id='query-parameters-34'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -2829,7 +3783,7 @@
 <td>Name of ticket owner</td>
 </tr>
 </tbody></table>
-<h3 id='failure-codes-16'>Failure codes</h3>
+<h3 id='failure-codes-24'>Failure codes</h3>
 <table><thead>
 <tr>
 <th>Failure Code</th>
@@ -2889,7 +3843,7 @@
 </span><span class="p">]</span><span class="w">
 </span></code></pre>
 <p>This endpoint returns all ranks configured with GroundControl.</p>
-<h3 id='return-values-12'>Return values</h3>
+<h3 id='return-values-18'>Return values</h3>
 <p>Each rank has the following properties:</p>
 
 <table><thead>
@@ -2957,7 +3911,7 @@
 <aside style="color: white;">Requires user authentication</aside>
 
 <p>This endpoint returns all achievements reached with pagination. The last achievements are shown first.</p>
-<h3 id='query-parameters-24'>Query parameters</h3>
+<h3 id='query-parameters-35'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -2976,7 +3930,7 @@
 <td>Items to display per page</td>
 </tr>
 </tbody></table>
-<h3 id='return-values-13'>Return values</h3>
+<h3 id='return-values-19'>Return values</h3>
 <p>Each achievement has the following properties:</p>
 
 <table><thead>
@@ -3035,7 +3989,7 @@
 <aside style="color: white;">Requires user authentication with right <b>create_achievements</b></aside>
 
 <p>This endpoint allows administrators to create new achievements for a user.</p>
-<h3 id='query-parameters-25'>Query parameters</h3>
+<h3 id='query-parameters-36'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -3059,7 +4013,7 @@
 <td>Points to be assigned</td>
 </tr>
 </tbody></table>
-<h3 id='return-values-14'>Return values</h3>
+<h3 id='return-values-20'>Return values</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -3071,7 +4025,7 @@
 <td>Array of push tokens (strings) of user</td>
 </tr>
 </tbody></table>
-<h3 id='failure-codes-17'>Failure codes</h3>
+<h3 id='failure-codes-25'>Failure codes</h3>
 <table><thead>
 <tr>
 <th>Failure Code</th>
@@ -3153,7 +4107,7 @@
 <aside style="color: white;">Requires user authentication with right <b>promoter</b></aside>
 
 <p>This endpoint allows promoters to view order they have placed. As they have entered the customer data by theirselves, there is no privacy problem in showing this data to promoters.</p>
-<h3 id='query-parameters-26'>Query parameters</h3>
+<h3 id='query-parameters-37'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -3187,7 +4141,7 @@
 <td>Sort direction</td>
 </tr>
 </tbody></table>
-<h3 id='return-values-15'>Return values</h3>
+<h3 id='return-values-21'>Return values</h3>
 <p>The request returns an <code>itemCount</code> which is the number of all orders of this promoter in system. <code>items</code> contains the set of requested orders according to pagination. The orders have these properties:</p>
 
 <table><thead>
@@ -3312,7 +4266,7 @@
 <aside style="color: white;">Requires user authentication with right <b>send_notifications</b></aside>
 
 <p>This endpoint allows administrators to see notifications that have been sent to a user. The newest notifications are shown first.</p>
-<h3 id='query-parameters-27'>Query parameters</h3>
+<h3 id='query-parameters-38'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -3336,7 +4290,7 @@
 <td>Elements per page</td>
 </tr>
 </tbody></table>
-<h3 id='return-values-16'>Return values</h3>
+<h3 id='return-values-22'>Return values</h3>
 <p>Every notification has these properties:</p>
 
 <table><thead>
@@ -3401,7 +4355,7 @@
 <aside style="color: white;">Requires user authentication with right <b>send_notifications</b></aside>
 
 <p>This endpoint allows administrators to send a notification to the specified user</p>
-<h3 id='query-parameters-28'>Query parameters</h3>
+<h3 id='query-parameters-39'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -3425,7 +4379,7 @@
 <td><strong>Optional</strong> App deeplink</td>
 </tr>
 </tbody></table>
-<h3 id='failure-codes-18'>Failure codes</h3>
+<h3 id='failure-codes-26'>Failure codes</h3>
 <table><thead>
 <tr>
 <th>Failure Code</th>
@@ -3471,7 +4425,7 @@
 <aside style="color: white;">Requires user authentication</aside>
 
 <p>Assign push token to user profile</p>
-<h3 id='query-parameters-29'>Query parameters</h3>
+<h3 id='query-parameters-40'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -3483,7 +4437,7 @@
 <td>Push token</td>
 </tr>
 </tbody></table>
-<h3 id='failure-codes-19'>Failure codes</h3>
+<h3 id='failure-codes-27'>Failure codes</h3>
 <table><thead>
 <tr>
 <th>Failure Code</th>
@@ -3526,7 +4480,7 @@
 <aside style="color: white;">Requires user authentication</aside>
 
 <p>Remove push token from user profile</p>
-<h3 id='query-parameters-30'>Query parameters</h3>
+<h3 id='query-parameters-41'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -3538,7 +4492,7 @@
 <td>Push token</td>
 </tr>
 </tbody></table>
-<h3 id='failure-codes-20'>Failure codes</h3>
+<h3 id='failure-codes-28'>Failure codes</h3>
 <table><thead>
 <tr>
 <th>Failure Code</th>
@@ -3588,7 +4542,7 @@
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
 <p>This endpoint returns information about the requested RFID tag.</p>
-<h3 id='query-parameters-31'>Query parameters</h3>
+<h3 id='query-parameters-42'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -3604,7 +4558,7 @@
 <td>The ID of the RFID tag scanned</td>
 </tr>
 </tbody></table>
-<h3 id='return-values-17'>Return values</h3>
+<h3 id='return-values-23'>Return values</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -3620,7 +4574,7 @@
 <td>LED color (age based)</td>
 </tr>
 </tbody></table>
-<h3 id='failure-codes-21'>Failure codes</h3>
+<h3 id='failure-codes-29'>Failure codes</h3>
 <table><thead>
 <tr>
 <th>Failure Code</th>
@@ -3662,7 +4616,7 @@
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
 <p>This endpoint returns all tags available for a specific device. Also, it returns config options for the requesting device.</p>
-<h3 id='query-parameters-32'>Query parameters</h3>
+<h3 id='query-parameters-43'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -3674,7 +4628,7 @@
 <td>The UUID of the device requesting</td>
 </tr>
 </tbody></table>
-<h3 id='return-values-18'>Return values</h3>
+<h3 id='return-values-24'>Return values</h3>
 <p>The return value is a list of tags available and the device options:</p>
 
 <table><thead>
@@ -3688,7 +4642,7 @@
 <td>Specifies if the device should beep when RFID scan is finished</td>
 </tr>
 </tbody></table>
-<h3 id='failure-codes-22'>Failure codes</h3>
+<h3 id='failure-codes-30'>Failure codes</h3>
 <table><thead>
 <tr>
 <th>Failure Code</th>
@@ -3727,7 +4681,7 @@
 <aside style="color: white;">Requires user authentication with right <b>scan_tickets</b></aside>
 
 <p>This endpoint is used to scan tickets at entry. It either returns a success response or a failure if the ticket is invalid or was already scanned. If the scan was successful, it saves the time of the scan and the staff member who has scanned.</p>
-<h3 id='query-parameters-33'>Query parameters</h3>
+<h3 id='query-parameters-44'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -3739,7 +4693,7 @@
 <td>QR code content / hash of ticket</td>
 </tr>
 </tbody></table>
-<h3 id='failure-codes-23'>Failure codes</h3>
+<h3 id='failure-codes-31'>Failure codes</h3>
 <table><thead>
 <tr>
 <th>Failure Code</th>
@@ -3800,7 +4754,7 @@
 <aside style="color: white;">Requires user authentication with right <b>view_tickets</b></aside>
 
 <p>This endpoint returns details about the ticket scanned and any associated entry.</p>
-<h3 id='query-parameters-34'>Query parameters</h3>
+<h3 id='query-parameters-45'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -3812,7 +4766,7 @@
 <td>QR code content / hash of ticket</td>
 </tr>
 </tbody></table>
-<h3 id='return-values-19'>Return values</h3>
+<h3 id='return-values-25'>Return values</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -3836,7 +4790,7 @@
 <td><strong>If entry</strong> Name of staff member <strong>Otherwise</strong> <em>null</em></td>
 </tr>
 </tbody></table>
-<h3 id='failure-codes-24'>Failure codes</h3>
+<h3 id='failure-codes-32'>Failure codes</h3>
 <table><thead>
 <tr>
 <th>Failure Code</th>
@@ -3884,7 +4838,7 @@
 <aside style="color: white;">Requires user authentication with right <b>reset_tickets</b></aside>
 
 <p>This endpoint resets any scan of the specified ticket.</p>
-<h3 id='query-parameters-35'>Query parameters</h3>
+<h3 id='query-parameters-46'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -3896,7 +4850,7 @@
 <td>QR code content / hash of ticket</td>
 </tr>
 </tbody></table>
-<h3 id='failure-codes-25'>Failure codes</h3>
+<h3 id='failure-codes-33'>Failure codes</h3>
 <table><thead>
 <tr>
 <th>Failure Code</th>
@@ -3986,7 +4940,7 @@
 <aside style="color: white;">Requires user authentication with right <b>settings</b></aside>
 
 <p>This endpoint can be used to update settings. It expects as many key-value pairs as you want. Only elements which exists in the <code>settings</code> table are updated, there are no elements newly created.</p>
-<h3 id='return-values-20'>Return values</h3>
+<h3 id='return-values-26'>Return values</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
