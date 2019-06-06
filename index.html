@@ -446,19 +446,19 @@
                     <a href="#post-affiliate" class="toc-h2 toc-link" data-title="POST /affiliate">POST /affiliate</a>
                   </li>
                   <li>
-                    <a href="#get-reflinks" class="toc-h2 toc-link" data-title="GET /reflinks">GET /reflinks</a>
-                  </li>
-                  <li>
                     <a href="#put-affiliate-hash" class="toc-h2 toc-link" data-title="PUT /affiliate/{hash}">PUT /affiliate/{hash}</a>
                   </li>
                   <li>
                     <a href="#delete-affiliate-hash" class="toc-h2 toc-link" data-title="DELETE /affiliate/{hash}">DELETE /affiliate/{hash}</a>
                   </li>
                   <li>
+                    <a href="#post-affiliate-click-hash" class="toc-h2 toc-link" data-title="POST /affiliate/click/{hash}">POST /affiliate/click/{hash}</a>
+                  </li>
+                  <li>
                     <a href="#get-affiliate-orders" class="toc-h2 toc-link" data-title="GET /affiliate/orders">GET /affiliate/orders</a>
                   </li>
                   <li>
-                    <a href="#post-affiliate-click-hash" class="toc-h2 toc-link" data-title="POST /affiliate/click/{hash}">POST /affiliate/click/{hash}</a>
+                    <a href="#get-reflinks" class="toc-h2 toc-link" data-title="GET /reflinks">GET /reflinks</a>
                   </li>
               </ul>
           </li>
@@ -4789,7 +4789,7 @@
 </span></code></pre>
 <aside style="color: white;">Requires user authentication with right <b>promoter</b></aside>
 
-<p>This endpoint allows promoters to view order they have placed. As they have entered the customer data by theirselves, there is no privacy problem in showing this data to promoters.</p>
+<p>This endpoint allows promoters to view orders they have placed. As they have entered the customer data by theirselves, there is no privacy problem in showing this data to promoters.</p>
 <h3 id='query-parameters-42'>Query parameters</h3>
 <table><thead>
 <tr>
@@ -4890,20 +4890,502 @@
 <td>Products ordered</td>
 </tr>
 </tbody></table>
-<h1 id='affiliate'>Affiliate</h1><h2 id='get-affiliate'>GET /affiliate</h2>
-<p>TODO</p>
-<h2 id='post-affiliate'>POST /affiliate</h2>
-<p>TODO</p>
-<h2 id='get-reflinks'>GET /reflinks</h2>
-<p>TODO</p>
-<h2 id='put-affiliate-hash'>PUT /affiliate/{hash}</h2>
-<p>TODO</p>
-<h2 id='delete-affiliate-hash'>DELETE /affiliate/{hash}</h2>
-<p>TODO</p>
-<h2 id='get-affiliate-orders'>GET /affiliate/orders</h2>
-<p>TODO</p>
-<h2 id='post-affiliate-click-hash'>POST /affiliate/click/{hash}</h2>
-<p>TODO</p>
+<h1 id='affiliate'>Affiliate</h1><h2 id='get-affiliate'>GET /affiliate</h2><pre class="highlight php tab-php"><code><span class="cp">&lt;?php</span>
+<span class="nv">$ch</span> <span class="o">=</span> <span class="nb">curl_init</span><span class="p">(</span><span class="s2">"https://api.hyperspace.one/affiliate"</span><span class="p">);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_RETURNTRANSFER</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_HTTPHEADER</span><span class="p">,</span> <span class="p">[</span>
+  <span class="s2">"Authorization: Bearer xxx"</span><span class="p">,</span>
+<span class="p">]);</span>
+<span class="nv">$res</span> <span class="o">=</span> <span class="nb">curl_exec</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="nb">curl_errno</span><span class="p">(</span><span class="nv">$ch</span><span class="p">))</span> <span class="p">{</span>
+  <span class="k">die</span><span class="p">(</span><span class="nb">curl_error</span><span class="p">(</span><span class="nv">$ch</span><span class="p">));</span>
+<span class="p">}</span>
+
+<span class="nb">curl_close</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
+<span class="nv">$res</span> <span class="o">=</span> <span class="nb">json_decode</span><span class="p">(</span><span class="nv">$res</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+
+<span class="nb">print_r</span><span class="p">(</span><span class="nv">$res</span><span class="p">);</span>
+</code></pre>
+<blockquote>
+<p>The above request returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"success"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"hash"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ylnfc7"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"user_id"</span><span class="p">:</span><span class="w"> </span><span class="mi">9</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"clicks"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"orders"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"products"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"4"</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="w">
+      </span><span class="p">},</span><span class="w">
+      </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<aside style="color: white;">Requires user authentication with right <b>affiliate</b></aside>
+
+<p>This endpoint allows affiliates to view their reflinks and statistics.</p>
+<h3 id='return-values-26'>Return values</h3>
+<p>The reflinks are listed in the <code>data</code> element. Each reflink has these properties:</p>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>hash</td>
+<td>Reflink hash</td>
+</tr>
+<tr>
+<td>user_id</td>
+<td>Assigned user (logged in user)</td>
+</tr>
+<tr>
+<td>clicks</td>
+<td>Performed clicks</td>
+</tr>
+<tr>
+<td>orders</td>
+<td>Placed orders (only paid orders are counted)</td>
+</tr>
+<tr>
+<td>products[]</td>
+<td>Array of buyed products (by ID; key) and quantities (value)</td>
+</tr>
+<tr>
+<td>status</td>
+<td> Reflink active</td>
+</tr>
+<tr>
+<td>description</td>
+<td>Reflink description</td>
+</tr>
+</tbody></table>
+<h2 id='post-affiliate'>POST /affiliate</h2><pre class="highlight php tab-php"><code><span class="cp">&lt;?php</span>
+<span class="nv">$ch</span> <span class="o">=</span> <span class="nb">curl_init</span><span class="p">(</span><span class="s2">"https://api.hyperspace.one/affiliate"</span><span class="p">);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_RETURNTRANSFER</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_HTTPHEADER</span><span class="p">,</span> <span class="p">[</span>
+  <span class="s2">"Authorization: Bearer xxx"</span><span class="p">,</span>
+<span class="p">]);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_POSTFIELDS</span><span class="p">,</span> <span class="nb">http_build_query</span><span class="p">([</span>
+  <span class="s2">"description"</span> <span class="o">=&gt;</span> <span class="s2">"My new link"</span><span class="p">,</span>
+<span class="p">]));</span>
+<span class="nv">$res</span> <span class="o">=</span> <span class="nb">curl_exec</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="nb">curl_errno</span><span class="p">(</span><span class="nv">$ch</span><span class="p">))</span> <span class="p">{</span>
+  <span class="k">die</span><span class="p">(</span><span class="nb">curl_error</span><span class="p">(</span><span class="nv">$ch</span><span class="p">));</span>
+<span class="p">}</span>
+
+<span class="nb">curl_close</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
+<span class="nv">$res</span> <span class="o">=</span> <span class="nb">json_decode</span><span class="p">(</span><span class="nv">$res</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+
+<span class="nb">print_r</span><span class="p">(</span><span class="nv">$res</span><span class="p">);</span>
+</code></pre>
+<blockquote>
+<p>The above request returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"success"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"hash"</span><span class="p">:</span><span class="w"> </span><span class="s2">"xxx"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<aside style="color: white;">Requires user authentication with right <b>affiliate</b></aside>
+
+<p>This endpoint allows affiliates to create new reflinks.</p>
+<h3 id='query-parameters-43'>Query parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>description</td>
+<td>&quot;&quot;</td>
+<td>Reflink description</td>
+</tr>
+</tbody></table>
+<h3 id='return-values-27'>Return values</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>hash</td>
+<td>Hash of newly created reflink</td>
+</tr>
+</tbody></table>
+<h2 id='put-affiliate-hash'>PUT /affiliate/{hash}</h2><pre class="highlight php tab-php"><code><span class="cp">&lt;?php</span>
+<span class="nv">$ch</span> <span class="o">=</span> <span class="nb">curl_init</span><span class="p">(</span><span class="s2">"https://api.hyperspace.one/affiliate/</span><span class="si">{</span><span class="nv">hash</span><span class="si">}</span><span class="s2">"</span><span class="p">);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_RETURNTRANSFER</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_HTTPHEADER</span><span class="p">,</span> <span class="p">[</span>
+  <span class="s2">"Authorization: Bearer xxx"</span><span class="p">,</span>
+<span class="p">]);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_POSTFIELDS</span><span class="p">,</span> <span class="nb">http_build_query</span><span class="p">([</span>
+  <span class="s2">"description"</span> <span class="o">=&gt;</span> <span class="s2">"My new description"</span><span class="p">,</span>
+  <span class="s2">"status"</span> <span class="o">=&gt;</span> <span class="kc">true</span><span class="p">,</span>
+<span class="p">]));</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_CUSTOMREQUEST</span><span class="p">,</span> <span class="s2">"PUT"</span><span class="p">);</span>
+<span class="nv">$res</span> <span class="o">=</span> <span class="nb">curl_exec</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="nb">curl_errno</span><span class="p">(</span><span class="nv">$ch</span><span class="p">))</span> <span class="p">{</span>
+  <span class="k">die</span><span class="p">(</span><span class="nb">curl_error</span><span class="p">(</span><span class="nv">$ch</span><span class="p">));</span>
+<span class="p">}</span>
+
+<span class="nb">curl_close</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
+<span class="nv">$res</span> <span class="o">=</span> <span class="nb">json_decode</span><span class="p">(</span><span class="nv">$res</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+
+<span class="nb">print_r</span><span class="p">(</span><span class="nv">$res</span><span class="p">);</span>
+</code></pre>
+<blockquote>
+<p>The above request returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"success"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<aside style="color: white;">Requires user authentication with right <b>affiliate</b></aside>
+
+<p>This endpoint allows affiliates to edit their reflinks.</p>
+
+<p>Administrators with <strong>reflinks</strong> right can use this endpoint to update any reflink.</p>
+<h3 id='query-parameters-44'>Query parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>hash</td>
+<td>-</td>
+<td>Reflink hash</td>
+</tr>
+<tr>
+<td>description</td>
+<td>&quot;&quot;</td>
+<td>Reflink description</td>
+</tr>
+<tr>
+<td>status</td>
+<td>false</td>
+<td>Reflink active</td>
+</tr>
+</tbody></table>
+<h2 id='delete-affiliate-hash'>DELETE /affiliate/{hash}</h2><pre class="highlight php tab-php"><code><span class="cp">&lt;?php</span>
+<span class="nv">$ch</span> <span class="o">=</span> <span class="nb">curl_init</span><span class="p">(</span><span class="s2">"https://api.hyperspace.one/affiliate/</span><span class="si">{</span><span class="nv">hash</span><span class="si">}</span><span class="s2">"</span><span class="p">);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_RETURNTRANSFER</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_HTTPHEADER</span><span class="p">,</span> <span class="p">[</span>
+  <span class="s2">"Authorization: Bearer xxx"</span><span class="p">,</span>
+<span class="p">]);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_CUSTOMREQUEST</span><span class="p">,</span> <span class="s2">"DELETE"</span><span class="p">);</span>
+<span class="nv">$res</span> <span class="o">=</span> <span class="nb">curl_exec</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="nb">curl_errno</span><span class="p">(</span><span class="nv">$ch</span><span class="p">))</span> <span class="p">{</span>
+  <span class="k">die</span><span class="p">(</span><span class="nb">curl_error</span><span class="p">(</span><span class="nv">$ch</span><span class="p">));</span>
+<span class="p">}</span>
+
+<span class="nb">curl_close</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
+<span class="nv">$res</span> <span class="o">=</span> <span class="nb">json_decode</span><span class="p">(</span><span class="nv">$res</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+
+<span class="nb">print_r</span><span class="p">(</span><span class="nv">$res</span><span class="p">);</span>
+</code></pre>
+<blockquote>
+<p>The above request returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"success"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<aside style="color: white;">Requires user authentication with right <b>affiliate</b></aside>
+
+<p>This endpoint allows affiliates to delete their reflinks.</p>
+
+<p>Administrators with <strong>reflinks</strong> right can use this endpoint to delete any reflink.</p>
+<h3 id='query-parameters-45'>Query parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>hash</td>
+<td>-</td>
+<td>Reflink hash</td>
+</tr>
+</tbody></table>
+<h2 id='post-affiliate-click-hash'>POST /affiliate/click/{hash}</h2><pre class="highlight php tab-php"><code><span class="cp">&lt;?php</span>
+<span class="nv">$ch</span> <span class="o">=</span> <span class="nb">curl_init</span><span class="p">(</span><span class="s2">"https://api.hyperspace.one/affiliate/click/</span><span class="si">{</span><span class="nv">hash</span><span class="si">}</span><span class="s2">"</span><span class="p">);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_RETURNTRANSFER</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_CUSTOMREQUEST</span><span class="p">,</span> <span class="s2">"POST"</span><span class="p">);</span>
+<span class="nv">$res</span> <span class="o">=</span> <span class="nb">curl_exec</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="nb">curl_errno</span><span class="p">(</span><span class="nv">$ch</span><span class="p">))</span> <span class="p">{</span>
+  <span class="k">die</span><span class="p">(</span><span class="nb">curl_error</span><span class="p">(</span><span class="nv">$ch</span><span class="p">));</span>
+<span class="p">}</span>
+
+<span class="nb">curl_close</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
+<span class="nv">$res</span> <span class="o">=</span> <span class="nb">json_decode</span><span class="p">(</span><span class="nv">$res</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+
+<span class="nb">print_r</span><span class="p">(</span><span class="nv">$res</span><span class="p">);</span>
+</code></pre>
+<blockquote>
+<p>The above request returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"success"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<p>This endpoint increases a reflink click count by 1.</p>
+<h3 id='query-parameters-46'>Query parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>hash</td>
+<td>-</td>
+<td>Reflink hash</td>
+</tr>
+</tbody></table>
+<h3 id='failure-codes-29'>Failure codes</h3>
+<table><thead>
+<tr>
+<th>Failure Code</th>
+<th>Meaning</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>1000</td>
+<td>Reflink not found or inactive</td>
+</tr>
+</tbody></table>
+<h2 id='get-affiliate-orders'>GET /affiliate/orders</h2><pre class="highlight php tab-php"><code><span class="cp">&lt;?php</span>
+<span class="nv">$ch</span> <span class="o">=</span> <span class="nb">curl_init</span><span class="p">(</span><span class="s2">"https://api.hyperspace.one/affiliate/orders"</span><span class="p">);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_RETURNTRANSFER</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_HTTPHEADER</span><span class="p">,</span> <span class="p">[</span>
+  <span class="s2">"Authorization: Bearer xxx"</span><span class="p">,</span>
+<span class="p">]);</span>
+<span class="nv">$res</span> <span class="o">=</span> <span class="nb">curl_exec</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="nb">curl_errno</span><span class="p">(</span><span class="nv">$ch</span><span class="p">))</span> <span class="p">{</span>
+  <span class="k">die</span><span class="p">(</span><span class="nb">curl_error</span><span class="p">(</span><span class="nv">$ch</span><span class="p">));</span>
+<span class="p">}</span>
+
+<span class="nb">curl_close</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
+<span class="nv">$res</span> <span class="o">=</span> <span class="nb">json_decode</span><span class="p">(</span><span class="nv">$res</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+
+<span class="nb">print_r</span><span class="p">(</span><span class="nv">$res</span><span class="p">);</span>
+</code></pre>
+<blockquote>
+<p>The above request returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"success"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"itemCount"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"items"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">212</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"paid"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"firstname"</span><span class="p">:</span><span class="w"> </span><span class="s2">"John"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"lastname"</span><span class="p">:</span><span class="w"> </span><span class="s2">"D."</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"city"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Herzogenrath"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"country"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Germany"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"createdAt"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"date"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2019-02-26 20:33:19.000000"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"timezone_type"</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"timezone"</span><span class="p">:</span><span class="w"> </span><span class="s2">"UTC"</span><span class="w">
+      </span><span class="p">},</span><span class="w">
+      </span><span class="s2">"updatedAt"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"date"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2019-02-26 20:33:19.000000"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"timezone_type"</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"timezone"</span><span class="p">:</span><span class="w"> </span><span class="s2">"UTC"</span><span class="w">
+      </span><span class="p">},</span><span class="w">
+      </span><span class="s2">"reflink"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ylnfc7"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"amount"</span><span class="p">:</span><span class="w"> </span><span class="mf">39.98</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"items"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+          </span><span class="s2">"productId"</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"productName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Early Bird"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"quantity"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"price"</span><span class="p">:</span><span class="w"> </span><span class="mf">39.98</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"singlePrice"</span><span class="p">:</span><span class="w"> </span><span class="mf">39.98</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+      </span><span class="p">]</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<aside style="color: white;">Requires user authentication with right <b>promoter</b></aside>
+
+<p>This endpoint allows affiliates to view orders that were placed using their reflink. Only paid orders are shown. The newest orders are shown first.</p>
+<h3 id='query-parameters-47'>Query parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>page</td>
+<td>1</td>
+<td>Page number</td>
+</tr>
+<tr>
+<td>per_page</td>
+<td>20</td>
+<td>Elements per page</td>
+</tr>
+</tbody></table>
+<h3 id='return-values-28'>Return values</h3>
+<p>The request returns an <code>itemCount</code> which is the number of all paid orders of this affiliate in system. <code>items</code> contains the set of requested orders according to pagination. The orders have these properties:</p>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>id</td>
+<td>Order ID</td>
+</tr>
+<tr>
+<td>status</td>
+<td>Order status (can only be <code>paid</code>)</td>
+</tr>
+<tr>
+<td>firstname</td>
+<td>Buyer first name</td>
+</tr>
+<tr>
+<td>lastname</td>
+<td>Buyer last name (only first character for privacy reasons)</td>
+</tr>
+<tr>
+<td>city</td>
+<td>Buyer city</td>
+</tr>
+<tr>
+<td>country</td>
+<td>Buyer country</td>
+</tr>
+<tr>
+<td>createdAt</td>
+<td>Date of order placed</td>
+</tr>
+<tr>
+<td>updatedAt</td>
+<td>Date of order modified (usually payment date)</td>
+</tr>
+<tr>
+<td>reflink</td>
+<td>Reflink used</td>
+</tr>
+<tr>
+<td>amount</td>
+<td>Order amount</td>
+</tr>
+<tr>
+<td>items[]</td>
+<td>Products ordered</td>
+</tr>
+</tbody></table>
+<h2 id='get-reflinks'>GET /reflinks</h2><pre class="highlight php tab-php"><code><span class="cp">&lt;?php</span>
+<span class="nv">$ch</span> <span class="o">=</span> <span class="nb">curl_init</span><span class="p">(</span><span class="s2">"https://api.hyperspace.one/reflinks"</span><span class="p">);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_RETURNTRANSFER</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_HTTPHEADER</span><span class="p">,</span> <span class="p">[</span>
+  <span class="s2">"Authorization: Bearer xxx"</span><span class="p">,</span>
+<span class="p">]);</span>
+<span class="nv">$res</span> <span class="o">=</span> <span class="nb">curl_exec</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="nb">curl_errno</span><span class="p">(</span><span class="nv">$ch</span><span class="p">))</span> <span class="p">{</span>
+  <span class="k">die</span><span class="p">(</span><span class="nb">curl_error</span><span class="p">(</span><span class="nv">$ch</span><span class="p">));</span>
+<span class="p">}</span>
+
+<span class="nb">curl_close</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
+<span class="nv">$res</span> <span class="o">=</span> <span class="nb">json_decode</span><span class="p">(</span><span class="nv">$res</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+
+<span class="nb">print_r</span><span class="p">(</span><span class="nv">$res</span><span class="p">);</span>
+</code></pre>
+<blockquote>
+<p>The above request returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"success"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"hash"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ylnfc7"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"user_id"</span><span class="p">:</span><span class="w"> </span><span class="mi">9</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"clicks"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"orders"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"products"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"4"</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="w">
+      </span><span class="p">},</span><span class="w">
+      </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<aside style="color: white;">Requires user authentication with right <b>reflinks</b></aside>
+
+<p>This endpoint allows administrators to view all reflinks in system and their statistics.</p>
+<h3 id='return-values-29'>Return values</h3>
+<p>The reflinks are listed in the <code>data</code> element. Each reflink has these properties:</p>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>hash</td>
+<td>Reflink hash</td>
+</tr>
+<tr>
+<td>user_id</td>
+<td>Assigned user</td>
+</tr>
+<tr>
+<td>clicks</td>
+<td>Performed clicks</td>
+</tr>
+<tr>
+<td>orders</td>
+<td>Placed orders (only paid orders are counted)</td>
+</tr>
+<tr>
+<td>products[]</td>
+<td>Array of buyed products (by ID; key) and quantities (value)</td>
+</tr>
+<tr>
+<td>status</td>
+<td> Reflink active</td>
+</tr>
+<tr>
+<td>description</td>
+<td>Reflink description</td>
+</tr>
+</tbody></table>
 <h1 id='notifications'>Notifications</h1><h2 id='get-notification-user'>GET /notification/{user}</h2><pre class="highlight php tab-php"><code><span class="cp">&lt;?php</span>
 <span class="nv">$ch</span> <span class="o">=</span> <span class="nb">curl_init</span><span class="p">(</span><span class="s2">"https://api.hyperspace.one/notification/</span><span class="si">{</span><span class="nv">user</span><span class="si">}</span><span class="s2">"</span><span class="p">);</span>
 <span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_RETURNTRANSFER</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
@@ -4949,7 +5431,7 @@
 <aside style="color: white;">Requires user authentication with right <b>send_notifications</b></aside>
 
 <p>This endpoint allows administrators to see notifications that have been sent to a user. The newest notifications are shown first.</p>
-<h3 id='query-parameters-43'>Query parameters</h3>
+<h3 id='query-parameters-48'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -4973,7 +5455,7 @@
 <td>Elements per page</td>
 </tr>
 </tbody></table>
-<h3 id='return-values-26'>Return values</h3>
+<h3 id='return-values-30'>Return values</h3>
 <p>Every notification has these properties:</p>
 
 <table><thead>
@@ -5038,7 +5520,7 @@
 <aside style="color: white;">Requires user authentication with right <b>send_notifications</b></aside>
 
 <p>This endpoint allows administrators to send a notification to the specified user</p>
-<h3 id='query-parameters-44'>Query parameters</h3>
+<h3 id='query-parameters-49'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -5062,7 +5544,7 @@
 <td><strong>Optional</strong> App deeplink</td>
 </tr>
 </tbody></table>
-<h3 id='failure-codes-29'>Failure codes</h3>
+<h3 id='failure-codes-30'>Failure codes</h3>
 <table><thead>
 <tr>
 <th>Failure Code</th>
@@ -5108,7 +5590,7 @@
 <aside style="color: white;">Requires user authentication</aside>
 
 <p>Assign push token to user profile</p>
-<h3 id='query-parameters-45'>Query parameters</h3>
+<h3 id='query-parameters-50'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -5120,7 +5602,7 @@
 <td>Push token</td>
 </tr>
 </tbody></table>
-<h3 id='failure-codes-30'>Failure codes</h3>
+<h3 id='failure-codes-31'>Failure codes</h3>
 <table><thead>
 <tr>
 <th>Failure Code</th>
@@ -5163,7 +5645,7 @@
 <aside style="color: white;">Requires user authentication</aside>
 
 <p>Remove push token from user profile</p>
-<h3 id='query-parameters-46'>Query parameters</h3>
+<h3 id='query-parameters-51'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -5175,7 +5657,7 @@
 <td>Push token</td>
 </tr>
 </tbody></table>
-<h3 id='failure-codes-31'>Failure codes</h3>
+<h3 id='failure-codes-32'>Failure codes</h3>
 <table><thead>
 <tr>
 <th>Failure Code</th>
@@ -5225,7 +5707,7 @@
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
 <p>This endpoint returns information about the requested RFID tag.</p>
-<h3 id='query-parameters-47'>Query parameters</h3>
+<h3 id='query-parameters-52'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -5241,7 +5723,7 @@
 <td>The ID of the RFID tag scanned</td>
 </tr>
 </tbody></table>
-<h3 id='return-values-27'>Return values</h3>
+<h3 id='return-values-31'>Return values</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -5257,7 +5739,7 @@
 <td>LED color (age based)</td>
 </tr>
 </tbody></table>
-<h3 id='failure-codes-32'>Failure codes</h3>
+<h3 id='failure-codes-33'>Failure codes</h3>
 <table><thead>
 <tr>
 <th>Failure Code</th>
@@ -5299,7 +5781,7 @@
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
 <p>This endpoint returns all tags available for a specific device. Also, it returns config options for the requesting device.</p>
-<h3 id='query-parameters-48'>Query parameters</h3>
+<h3 id='query-parameters-53'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -5311,7 +5793,7 @@
 <td>The UUID of the device requesting</td>
 </tr>
 </tbody></table>
-<h3 id='return-values-28'>Return values</h3>
+<h3 id='return-values-32'>Return values</h3>
 <p>The return value is a list of tags available and the device options:</p>
 
 <table><thead>
@@ -5325,7 +5807,7 @@
 <td>Specifies if the device should beep when RFID scan is finished</td>
 </tr>
 </tbody></table>
-<h3 id='failure-codes-33'>Failure codes</h3>
+<h3 id='failure-codes-34'>Failure codes</h3>
 <table><thead>
 <tr>
 <th>Failure Code</th>
@@ -5364,7 +5846,7 @@
 <aside style="color: white;">Requires user authentication with right <b>scan_tickets</b></aside>
 
 <p>This endpoint is used to scan tickets at entry. It either returns a success response or a failure if the ticket is invalid or was already scanned. If the scan was successful, it saves the time of the scan and the staff member who has scanned.</p>
-<h3 id='query-parameters-49'>Query parameters</h3>
+<h3 id='query-parameters-54'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -5376,7 +5858,7 @@
 <td>QR code content / hash of ticket</td>
 </tr>
 </tbody></table>
-<h3 id='failure-codes-34'>Failure codes</h3>
+<h3 id='failure-codes-35'>Failure codes</h3>
 <table><thead>
 <tr>
 <th>Failure Code</th>
@@ -5437,7 +5919,7 @@
 <aside style="color: white;">Requires user authentication with right <b>view_tickets</b></aside>
 
 <p>This endpoint returns details about the ticket scanned and any associated entry.</p>
-<h3 id='query-parameters-50'>Query parameters</h3>
+<h3 id='query-parameters-55'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -5449,7 +5931,7 @@
 <td>QR code content / hash of ticket</td>
 </tr>
 </tbody></table>
-<h3 id='return-values-29'>Return values</h3>
+<h3 id='return-values-33'>Return values</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -5473,7 +5955,7 @@
 <td><strong>If entry</strong> Name of staff member <strong>Otherwise</strong> <em>null</em></td>
 </tr>
 </tbody></table>
-<h3 id='failure-codes-35'>Failure codes</h3>
+<h3 id='failure-codes-36'>Failure codes</h3>
 <table><thead>
 <tr>
 <th>Failure Code</th>
@@ -5521,7 +6003,7 @@
 <aside style="color: white;">Requires user authentication with right <b>reset_tickets</b></aside>
 
 <p>This endpoint resets any scan of the specified ticket.</p>
-<h3 id='query-parameters-51'>Query parameters</h3>
+<h3 id='query-parameters-56'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -5533,7 +6015,7 @@
 <td>QR code content / hash of ticket</td>
 </tr>
 </tbody></table>
-<h3 id='failure-codes-36'>Failure codes</h3>
+<h3 id='failure-codes-37'>Failure codes</h3>
 <table><thead>
 <tr>
 <th>Failure Code</th>
@@ -5623,7 +6105,7 @@
 <aside style="color: white;">Requires user authentication with right <b>settings</b></aside>
 
 <p>This endpoint can be used to update settings. It expects as many key-value pairs as you want. Only elements which exists in the <code>settings</code> table are updated, there are no elements newly created.</p>
-<h3 id='return-values-30'>Return values</h3>
+<h3 id='return-values-34'>Return values</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
