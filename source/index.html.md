@@ -2124,19 +2124,388 @@ Failure Code | Meaning
 # Orders
 
 ## POST /order
-TODO
+```php
+<?php
+$ch = curl_init("https://api.hyperspace.one/order");
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query([
+  "captcha" => "xxx",
+  "firstname" => "John",
+  "lastname" => "Doe",
+  "email" => "john.doe@example.com",
+  "address" => "Roermonder Str. 45",
+  "postcode" => "52134",
+  "city" => "Herzogenrath",
+  "country" => "Germany",
+  "paymentMethod" => "paypal",
+  "products" => [
+    5 => 1,
+  ],
+]));
+curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
+$res = curl_exec($ch);
+
+if (curl_errno($ch)) {
+  die(curl_error($ch));
+}
+
+curl_close($ch);
+$res = json_decode($res, true);
+
+print_r($res);
+```
+
+> The above request returns JSON structured like this:
+
+```json
+{
+  "success": true,
+  "id": 5,
+  "token": "xxx",
+  "payment": ""
+}
+```
+
+New orders should be placed using this endpoint.
+
+As soon as a captcha has been solved correctly, this information is saved within the browser session on the API server. This means if there is an error in the order process (excluding captcha error), the captcha must not be solved again. The information is reset as soon as the order was successful. Therefore, another order requires a new captcha.
+
+### Query parameters
+
+Parameter | Description
+--------- | -----------
+captcha | **If captcha activated** Captcha token
+firstname | First name
+lastname | Last name
+email | Email address
+address | Street address
+postcode | Postcode
+city | City
+country | Country (currently supported: `Germany`, `Netherlands`, `Belgium`, `Luxembourg`)
+paymentMethod | Payment method or `promoter` for promoter order
+products[] | Array with product IDs as keys and quantity as value
+
+There are some additional, optional parameters:
+
+Parameter | Description
+--------- | -----------
+paymentInfo | Additional payment information (currently only bank code for iDEAL payments)
+reflink | Hash of used reflink
+
+### Return values
+
+Parameter | Description
+--------- | -----------
+id | ID of newly placed order
+token | Token of order
+payment | Payment HTML to be displayed to the customer
+
+### Failure codes
+
+Failure Code | Meaning
+---------- | -------
+1000 | Invalid captcha token
+1001 | No first name specified
+1002 | No last name specified
+1003 | Invalid email
+1004 | No address specified
+1005 | No postcode specified
+1006 | No city specified
+1007 | Invalid country
+1008 | No products specified
+1009 | Unknown products specified
+1010 | Invalid quantity specified
+1011 | Product is not available in general or in this quantity
+1012 | Invalid payment method (unknown, or `promoter` when no authenticated user or no `promoter` right)
+1013 | No products in order
 
 ## GET /order/{order_id}/{token}
-TODO
+```php
+<?php
+$ch = curl_init("https://api.hyperspace.one/order/{order_id}/{token}");
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$res = curl_exec($ch);
+
+if (curl_errno($ch)) {
+  die(curl_error($ch));
+}
+
+curl_close($ch);
+$res = json_decode($res, true);
+
+print_r($res);
+```
+
+> The above request returns JSON structured like this:
+
+```json
+{
+  "success": true,
+  "amount": 39.98,
+  "status": "paid",
+  "firstname": "test",
+  "lastname": "facilitator",
+  "email": "mail-facilitator@spacion.de",
+  "address": "ESpachstr. 1",
+  "postcode": "79111",
+  "city": "Freiburg",
+  "country": "DE",
+  "shipping": 0,
+  "shipping_taxrate": 0,
+  "created": {
+    "date": "2019-03-08 00:44:48.000000",
+    "timezone_type": 3,
+    "timezone": "UTC"
+  },
+  "updated": {
+    "date": "2019-03-08 00:44:48.000000",
+    "timezone_type": 3,
+    "timezone": "UTC"
+  },
+  "payment_provider": "paypal",
+  "items": [
+    {
+      "name": "Early Bird",
+      "gross": 19.99,
+      "net": 18.339449541284,
+      "tax": 1.6505504587156,
+      "amount": 2,
+      "taxrate": 9,
+      "pricePrefix": "",
+      "priceSuffix": "€",
+      "id": 4
+    }
+  ]
+}
+```
+
+Use this endpoint to get details of an existing order.
+
+### Query parameters
+
+Parameter | Default | Description
+--------- | ------- | -----------
+order_id | - | Order ID
+token | - | Order token
+
+### Return values
+
+Parameter | Description
+--------- | -----------
+amount | Total order amount
+status | Order status (can be `paid`, `unpaid`, `cancelled`)
+firstname | First name
+lastname | Last name
+email | Email address
+address | Street address
+postcode | Postcode
+city | City
+country | Country code (ISO 3166 ALPHA-2)
+shipping | Shipping costs
+shipping_taxrate | Included taxrate in shipping
+created | Order creation time
+updated | Order update time (usually payment/cancellation time)
+payment_provider | Payment provider
+items[] | Order items
+
+If the order is unpaid, an element `payment` will contain the HTML code to be displayed to the customer for the payment.
+
+### Failure codes
+
+Failure Code | Meaning
+---------- | -------
+1000 | Order not found or token invalid
 
 ## GET /orders
-TODO
+```php
+<?php
+$ch = curl_init("https://api.hyperspace.one/orders");
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+  "Authorization: Bearer xxx",
+]);
+$res = curl_exec($ch);
+
+if (curl_errno($ch)) {
+  die(curl_error($ch));
+}
+
+curl_close($ch);
+$res = json_decode($res, true);
+
+print_r($res);
+```
+
+> The above request returns JSON structured like this:
+
+```json
+{
+  "success": true,
+  "itemCount": 1,
+  "paymentsConfirmed": 44.97,
+  "paymentsPipeline": 0,
+  "items": [
+    {
+      "id": 1,
+      "status": "paid",
+      "firstname": "John",
+      "lastname": "Doe",
+      "email": "john.doe@example.com",
+      "address": "Roermonder Str. 45",
+      "postcode": "52134",
+      "city": "Herzogenrath",
+      "country": "DE",
+      "shipping": 4.99,
+      "shipping_taxrate": 19,
+      "created_at": "2018-11-28 13:06:21",
+      "updated_at": "2018-11-28 13:06:21",
+      "payment_provider": "paypal",
+      "payment_id": "xxx",
+      "token": "xxx",
+      "token_intern": "xxx",
+      "user": 10,
+      "reflink": "",
+      "payment_info": "",
+      "amount": 44.97,
+      "items": [
+        {
+          "id": 187,
+          "order_id": 1,
+          "product_id": 4,
+          "quantity": 2,
+          "price": 19.99,
+          "taxrate": 9,
+          "created_at": "2018-11-28 13:06:21",
+          "updated_at": "2018-11-28 13:06:21"
+        }
+      ]
+    }
+  ]
+}
+```
+
+<aside style="color: white;">Requires user authentication with right <b>view_orders</b></aside>
+
+This endpoint allows administrators to get a paginated list of all orders in the system.
+
+### Query parameters
+
+Parameter | Default | Description
+--------- | ------- | -----------
+page | 1 | Page number
+per_page | 20 | Items to display per page
+filter | - | Wildcard filter for firstname, lastname, email, token, payment_id
+sort_field | created_at | Field to sort by
+sort_direction | asc | Sorting direction
+
+### Return values
+
+The request returns an `itemCount` which is the number of all orders in system. `paymentsConfirmed` is the sum of paid orders whereas `paymentsPipeline` is the sum of orders waiting for payment (not cancelled orders). `items` contains the set of requested orders according to pagination. The orders have these properties:
+
+Parameter | Description
+--------- | -----------
+id | Order ID
+status | Order status (can be `paid`, `unpaid`, `cancelled`)
+firstname | First name
+lastname | Last name
+email | Email address
+address | Street address
+postcode | Postcode
+city | City
+country | Country code (ISO 3166 ALPHA-2)
+shipping | Shipping costs
+shipping_taxrate | Included taxrate in shipping
+created | Order creation time
+updated | Order update time (usually payment/cancellation time)
+payment_provider | Payment provider
+payment_id | Payment ID at provider
+token | Order token
+token_intern | Internal order token (used e.g. for IPN)
+user | User ID
+reflink | Hash of used reflink
+payment_info | Additional payment info
+amount | Order amount
+items[] | Order items
 
 ## ANY /order/{order_id}/{token}/ipn/{payment_method}
-TODO
+
+> The request and response is individual for each payment module and not relevant as it is only processed by the payment provider.
+
+This endpoint is called directly by the payment provider and calls the IPN routine of the payment module. If the payment was successful, this means automatically provisioning of user account (if not already existing) and tickets.
+
+### Query parameters
+
+Parameter | Description
+--------- | -----------
+order_id | Order ID
+token | Order token
+payment_method | Payment method
+
+Additional parameters can be specified by the payment provider and are passed to the IPN routine. 
 
 ## POST /checkout/paypal
-TODO
+```php
+<?php
+$ch = curl_init("https://api.hyperspace.one/checkout/paypal");
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query([
+  "orderId" => "xxx",
+]));
+curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
+$res = curl_exec($ch);
+
+if (curl_errno($ch)) {
+  die(curl_error($ch));
+}
+
+curl_close($ch);
+$res = json_decode($res, true);
+
+print_r($res);
+```
+
+> The above request returns JSON structured like this:
+
+```json
+{
+  "success": true,
+  "orderId": 5,
+  "orderToken": "xxx"
+}
+```
+
+This endpoint is used to capture a confirmed payment via PayPal Express Checkout. The checkout process needs to be implemented in frontend, GroundControl API then fetches the specified Express order from PayPal, creates it in the system and marks it as paid.
+
+### Query parameters
+
+Parameter | Description
+--------- | -----------
+orderId | PayPal Express Checkout order ID
+reflink | **Optional** Hash of used reflink
+
+### Return values
+
+Parameter | Description
+--------- | -----------
+orderId | ID of newly placed order
+orderToken | Token of order
+
+### Failure codes
+
+Failure Code | Meaning
+---------- | -------
+1000 | No transaction ID
+1001 | PayPal error (see `error`)
+1002 | Incorrect payment type
+1003 | Incorrent payment status
+1004 | Invalid purchase units
+1005 | Invalid payee
+1006 | Invalid description
+1007 | Product not found
+1008 | Product not available
+1009 | Invalid currency
+1010 | Product is underpaid
+1011 | Order already processed
 
 ## GET /ideal/banks
 ```php
@@ -2173,7 +2542,7 @@ print_r($res);
     }
 ]
 ```
-<aside>Requires correct iDEAL API token</aside>
+<aside style="color: white;">Requires correct iDEAL API token</aside>
 
 This endpoint returns the banks available for use with iDEAL. The results are cached for performance reasons.
 
@@ -2186,7 +2555,7 @@ name | Name of the bank
 
 Failure Code | Meaning
 ---------- | -------
-1000 | API fail ( can be caused by wrong API token)
+1000 | API fail (can be caused by wrong API token)
 
 # Tickets
 
