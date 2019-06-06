@@ -1448,34 +1448,678 @@ galleries[] | List of assigned galleries
 # Galleries
 
 ## GET /galleries
-TODO
+```php
+<?php
+$ch = curl_init("https://api.hyperspace.one/galleries");
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$res = curl_exec($ch);
+
+if (curl_errno($ch)) {
+  die(curl_error($ch));
+}
+
+curl_close($ch);
+$res = json_decode($res, true);
+
+print_r($res);
+```
+
+> The above request returns JSON structured like this:
+
+```json
+{
+  "success": true,
+  "count": 1,
+  "data": [
+    {
+      "slug": "the-abandoned-dome",
+      "title": "The Abandoned Dome",
+      "event": {
+        "slug": "the-abandoned-dome",
+        "name": "The Abandoned Dome",
+        "date": "2019-03-30 22:00:00"
+      },
+      "created": {
+        "date": "2019-06-06 04:06:15.000000",
+        "timezone_type": 3,
+        "timezone": "UTC"
+      },
+      "public": 1,
+      "imageCount": 128
+    }
+  ]
+}
+```
+
+<aside style="color: white;">Hidden galleries are only shown for authenticated users with right <b>manage_images</b></aside>
+
+This endpoint lists all galleries.
+
+### Query parameters
+
+Parameter | Default | Description
+--------- | ------- | -----------
+page | 1 | Page number
+per_page | 20 | Items to display per page
+filter | - | Wildcard filter for slug, title
+sort_field | slug | Field to sort by
+sort_direction | asc | Sorting direction
+
+### Return values
+
+The request returns an `count` which is the number of all galleries in system. `data` contains the set of requested galleries according to pagination. The galleries have these properties:
+
+Parameter | Description
+--------- | -----------
+slug | Gallery slug
+title | Gallery title
+event | **If event** Event information **otherwise** *null*
+created | Date of creation
+public | Gallery is public
+imageCount | Number of images in gallery
+
+The `imageCount` includes hidden images only when user is authenticated and has the `manage_images` right.
 
 ## GET /galleries/{slug}
-TODO
+```php
+<?php
+$ch = curl_init("https://api.hyperspace.one/galleries/{slug}");
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+  "Authorization: Bearer xxx",
+]);
+$res = curl_exec($ch);
+
+if (curl_errno($ch)) {
+  die(curl_error($ch));
+}
+
+curl_close($ch);
+$res = json_decode($res, true);
+
+print_r($res);
+```
+
+> The above request returns JSON structured like this:
+
+```json
+{
+  "success": true,
+  "count": 1,
+  "data": {
+    "slug": "the-abandoned-dome",
+    "title": "The Abandoned Dome",
+    "event": {
+      "slug": "the-abandoned-dome",
+      "name": "The Abandoned Dome",
+      "date": "2019-03-30 22:00:00"
+    },
+    "created": {
+      "date": "2019-06-06 04:06:15.000000",
+      "timezone_type": 3,
+      "timezone": "UTC"
+    },
+    "public": 1,
+    "imageCount": 1,
+    "images": [
+      {
+          "id": 68,
+          "title": "the-abandoned-dome-126.jpg",
+          "url": "https://storage.googleapis.com/gc-media-resized/thumb%40512_2019-05-28-00-01-23-47153063.jpg",
+          "creator": "John Doe",
+          "created": {
+              "date": "2019-05-28 00:01:24.000000",
+              "timezone_type": 3,
+              "timezone": "UTC"
+          },
+          "public": 1
+      }
+    ]
+  }
+}
+```
+
+<aside style="color: white;">Hidden galleries are only available for authenticated users with right <b>manage_images</b>, hidden images are also shown only to users with this right</aside>
+
+This endpoint get the details and the images of a specific gallery. The images are paginated and can be filtered. 
+
+### Query parameters
+
+Parameter | Default | Description
+--------- | ------- | -----------
+slug | - | Gallery slug
+page | 1 | Page number
+per_page | 20 | Items to display per page
+filter | - | Wildcard filter for image title
+sort_field | created_at | Field to sort by
+sort_direction | asc | Sorting direction
+
+### Return values
+
+The response includes a parameter `count` which is the number of images available in the gallery. In the `data` object, you can find the gallery details with these properties:
+
+Parameter | Description
+--------- | -----------
+slug | Gallery slug
+title | Gallery title
+event | **If event** Event information **otherwise** *null*
+created | Date of creation
+public | Gallery is public
+imageCount | Number of images in gallery
+images[] | Array of images according to filter and pagination
+
+Each image has these properties:
+
+Parameter | Description
+--------- | -----------
+id | Image ID
+title | Image title (usually file name)
+url | Image URL
+creator | **If assigned** Name of creator **otherwise** *null*
+created | Image upload time
+public | Image is public
 
 ## POST /galleries
-TODO
+```php
+<?php
+$ch = curl_init("https://api.hyperspace.one/galleries");
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+  "Authorization: Bearer xxx",
+]);
+curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query([
+  "slug" => "my-gallery",
+  "title" => "My first gallery",
+  "public" => true,
+  "event" => 5,
+]));
+$res = curl_exec($ch);
+
+if (curl_errno($ch)) {
+  die(curl_error($ch));
+}
+
+curl_close($ch);
+$res = json_decode($res, true);
+
+print_r($res);
+```
+
+> The above request returns JSON structured like this:
+
+```json
+{
+  "success": true
+}
+```
+
+<aside style="color: white;">Requires user authentication with right <b>manage_images</b></aside>
+
+This endpoint allows administrators to create new galleries.
+
+### Query parameters
+
+Parameter | Default | Description
+--------- | ------- | -----------
+slug | - | Gallery slug
+title | - | Gallery title
+public | 0 | Gallery is public
+event | 0 | ID of event
+
+### Failure codes
+
+Failure Code | Meaning
+---------- | -------
+1001 | No slug specified
+1002 | Slug already in use
+1003 | No title specified
 
 ## PUT /galleries/{slug}
-TODO
+```php
+<?php
+$ch = curl_init("https://api.hyperspace.one/galleries/{slug}");
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query([
+  "title" => "New title",
+]));
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+  "Authorization: Bearer xxx",
+]);
+curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
+$res = curl_exec($ch);
+
+if (curl_errno($ch)) {
+  die(curl_error($ch));
+}
+
+curl_close($ch);
+$res = json_decode($res, true);
+
+print_r($res);
+```
+
+> The above request returns JSON structured like this:
+
+```json
+{
+  "success": true
+}
+```
+
+<aside style="color: white;">Requires user authentication with right <b>manage_images</b></aside>
+
+This endpoint allows administrators to edit galleries.
+
+### Query parameters
+
+Parameter | Default | Description
+--------- | ------- | -----------
+slug | - | Gallery slug
+
+You can also use the parameters `title`, `public` and `event` to update these properties. Only the properties specified are updated.
+
+### Failure codes
+
+Failure Code | Meaning
+---------- | -------
+1000 | Gallery not found
 
 ## DELETE /galleries/{slug}
-TODO
+```php
+<?php
+$ch = curl_init("https://api.hyperspace.one/galleries/{slug}");
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+  "Authorization: Bearer xxx",
+]);
+curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "DELETE");
+$res = curl_exec($ch);
+
+if (curl_errno($ch)) {
+  die(curl_error($ch));
+}
+
+curl_close($ch);
+$res = json_decode($res, true);
+
+print_r($res);
+```
+
+> The above request returns JSON structured like this:
+
+```json
+{
+  "success": true
+}
+```
+
+<aside style="color: white;">Requires user authentication with right <b>manage_images</b></aside>
+
+This endpoint allows administrators to delete galleries.
+
+### Query parameters
+
+Parameter | Default | Description
+--------- | ------- | -----------
+slug | - | Gallery slug
+
+### Failure codes
+
+Failure Code | Meaning
+---------- | -------
+1000 | Gallery not found
 
 ## GET /images
-TODO
+```php
+<?php
+$ch = curl_init("https://api.hyperspace.one/images");
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+  "Authorization: Bearer xxx",
+]);
+$res = curl_exec($ch);
+
+if (curl_errno($ch)) {
+  die(curl_error($ch));
+}
+
+curl_close($ch);
+$res = json_decode($res, true);
+
+print_r($res);
+```
+
+> The above request returns JSON structured like this:
+
+```json
+{
+  "success": true,
+  "count": 1,
+  "data": {
+    "images": [
+      {
+        "id": 10,
+        "title": "My image",
+        "url": "https://storage.googleapis.com/gc-media-resized/thumb%40128_2019-05-26-18-36-43-96907598.png",
+        "creator": null,
+        "created": {
+            "date": "2019-05-26 18:55:14.000000",
+            "timezone_type": 3,
+            "timezone": "UTC"
+        },
+        "galleries": ["my-gallery"],
+        "public": 1
+      }
+    ]
+  }
+}
+```
+
+<aside style="color: white;">Requires authentication with right <b>manage_images</b></aside>
+
+This endpoint allows administrators to list all images with respect to pagination and filtering.
+
+### Query parameters
+
+Parameter | Default | Description
+--------- | ------- | -----------
+page | 1 | Page number
+per_page | 20 | Items to display per page
+filter | - | Wildcard filter for title
+sort_field | created_at | Field to sort by
+sort_direction | asc | Sorting direction
+
+### Return values
+
+The request returns an `count` which is the number of all images in system. `data.images` contains the set of requested images according to pagination. The images have these properties:
+
+Parameter | Description
+--------- | -----------
+id | Image ID
+title | Image title (usually file name)
+url | Image URL
+creator | **If assigned** Name of creator **otherwise** *null*
+created | Image upload time
+galleries[] | Array of gallery slugs the image is assigned to
+public | Image is public
 
 ## POST /images/upload
-TODO
+```php
+<?php
+$ch = curl_init("https://api.hyperspace.one/images/upload");
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+  "Authorization: Bearer xxx",
+]);
+curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query([
+  "file" => new \CurlFile($filePath, 'image/png', 'filename.png'),
+]));
+$res = curl_exec($ch);
+
+if (curl_errno($ch)) {
+  die(curl_error($ch));
+}
+
+curl_close($ch);
+$res = json_decode($res, true);
+
+print_r($res);
+```
+
+> The above request returns JSON structured like this:
+
+```json
+{
+  "success": true,
+  "url": "https://storage.googleapis.com/gc-media-resized/thumb%40512_2019-05-28-00-01-23-47153063.jpg"
+}
+```
+
+<aside style="color: white;">Requires user authentication with right <b>manage_images</b></aside>
+
+This endpoint allows administrators to upload image files and get back the URL.
+
+### Query parameters
+
+Parameter | Default | Description
+--------- | ------- | -----------
+file | - | Image file (as multipart/form-data)
+
+### Return values
+
+Parameter | Description
+--------- | -----------
+url | Image upload URL
+
+### Failure codes
+
+Failure Code | Meaning
+---------- | -------
+1001 | No file uploaded
+1002 | Invalid file extension
+
+## POST /images/upload + publish
+```php
+<?php
+$ch = curl_init("https://api.hyperspace.one/images/upload");
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+  "Authorization: Bearer xxx",
+]);
+curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query([
+  "file" => new \CurlFile($filePath, 'image/png', 'filename.png'),
+  "title" => "My new image",
+  "galleries" => ["my-gallery"],
+]));
+$res = curl_exec($ch);
+
+if (curl_errno($ch)) {
+  die(curl_error($ch));
+}
+
+curl_close($ch);
+$res = json_decode($res, true);
+
+print_r($res);
+```
+
+> The above request returns JSON structured like this:
+
+```json
+{
+  "success": true,
+  "id": 5
+}
+```
+
+<aside style="color: white;">Requires user authentication with right <b>manage_images</b></aside>
+
+This is an extension to the previous `POST /images/upload` endpoint and allows directly creating an image in the system using the uploaded file by specifying more parameters.
+
+The endpoint variants are distinguished by the `title` element being specified and non-empty.
+
+### Query parameters
+
+Parameter | Default | Description
+--------- | ------- | -----------
+file | - | Image file (as multipart/form-data)
+title | - | Image title
+galleries[] | [] | Array of galleries the image should be assigned to (can be empty)
+public | 0 | Image is public
+creator | 0 | User ID of image creator
+
+### Return values
+
+Parameter | Description
+--------- | -----------
+id | ID of newly created image
+
+### Failure codes
+
+Failure Code | Meaning
+---------- | -------
+1001 | No file uploaded
+1002 | Invalid file extension
 
 ## POST /images
-TODO
+```php
+<?php
+$ch = curl_init("https://api.hyperspace.one/images");
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+  "Authorization: Bearer xxx",
+]);
+curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query([
+  "title" => "My new image",
+  "url" => "https://storage.googleapis.com/gc-media-resized/thumb%40512_2019-05-28-00-01-23-47153063.jpg",
+  "public" => true,
+  "creator" => 7,
+  "galleries" => ["my-gallery"],
+]));
+$res = curl_exec($ch);
+
+if (curl_errno($ch)) {
+  die(curl_error($ch));
+}
+
+curl_close($ch);
+$res = json_decode($res, true);
+
+print_r($res);
+```
+
+> The above request returns JSON structured like this:
+
+```json
+{
+  "success": true,
+  "id": 5
+}
+```
+
+<aside style="color: white;">Requires user authentication with right <b>manage_images</b></aside>
+
+This endpoint allows administrators to create an image from an URL.
+
+### Query parameters
+
+Parameter | Default | Description
+--------- | ------- | -----------
+title | - | Image title
+url | - | Image URL (can be obtained from `POST /images/upload`)
+public | 0 | Image is public
+creator | 0 | User ID of creator (optional)
+galleries[] | [] | Array of gallery slugs the image should be assigned to
+
+### Return values
+
+Parameter | Description
+--------- | -----------
+id | ID of the newly created image
+
+### Failure codes
+
+Failure Code | Meaning
+---------- | -------
+1001 | No title specified
+1002 | Invalid URL specified
 
 ## PUT /images/{id}
-TODO
+```php
+<?php
+$ch = curl_init("https://api.hyperspace.one/images/{id}");
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query([
+  "title" => "New title",
+]));
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+  "Authorization: Bearer xxx",
+]);
+curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
+$res = curl_exec($ch);
+
+if (curl_errno($ch)) {
+  die(curl_error($ch));
+}
+
+curl_close($ch);
+$res = json_decode($res, true);
+
+print_r($res);
+```
+
+> The above request returns JSON structured like this:
+
+```json
+{
+  "success": true
+}
+```
+
+<aside style="color: white;">Requires user authentication with right <b>manage_images</b></aside>
+
+This endpoint allows administrators to edit images.
+
+### Query parameters
+
+Parameter | Default | Description
+--------- | ------- | -----------
+id | - | Image ID
+
+You can also use the parameters `title`, `url`, `public`, `creator` and `galleries` to update these properties. Only the properties specified are updated.
+
+Hereby, `creator` should be the user ID of the creator or `0`. `galleries` should be an array of gallery slugs the image should be assigned to, this array can also be empty if the image should not be assigned to any gallery. To remove an image from a gallery, simply leave out the gallery slug in the array.
+
+### Failure codes
+
+Failure Code | Meaning
+---------- | -------
+1000 | Image not found
 
 ## DELETE /images/{id}
-TODO
+```php
+<?php
+$ch = curl_init("https://api.hyperspace.one/images/{id}");
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+  "Authorization: Bearer xxx",
+]);
+curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "DELETE");
+$res = curl_exec($ch);
+
+if (curl_errno($ch)) {
+  die(curl_error($ch));
+}
+
+curl_close($ch);
+$res = json_decode($res, true);
+
+print_r($res);
+```
+
+> The above request returns JSON structured like this:
+
+```json
+{
+  "success": true
+}
+```
+
+<aside style="color: white;">Requires user authentication with right <b>manage_images</b></aside>
+
+This endpoint allows administrators to delete images.
+
+### Query parameters
+
+Parameter | Default | Description
+--------- | ------- | -----------
+id | - | Image ID
+
+### Failure codes
+
+Failure Code | Meaning
+---------- | -------
+1000 | Image not found
 
 # Orders
 
@@ -1493,8 +2137,6 @@ TODO
 
 ## POST /checkout/paypal
 TODO
-
-# Payment
 
 ## GET /ideal/banks
 ```php
