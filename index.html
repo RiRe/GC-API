@@ -3496,16 +3496,699 @@
 <td>Image not found</td>
 </tr>
 </tbody></table>
-<h1 id='orders'>Orders</h1><h2 id='post-order'>POST /order</h2>
-<p>TODO</p>
-<h2 id='get-order-order_id-token'>GET /order/{order_id}/{token}</h2>
-<p>TODO</p>
-<h2 id='get-orders'>GET /orders</h2>
-<p>TODO</p>
+<h1 id='orders'>Orders</h1><h2 id='post-order'>POST /order</h2><pre class="highlight php tab-php"><code><span class="cp">&lt;?php</span>
+<span class="nv">$ch</span> <span class="o">=</span> <span class="nb">curl_init</span><span class="p">(</span><span class="s2">"https://api.hyperspace.one/order"</span><span class="p">);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_RETURNTRANSFER</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_POSTFIELDS</span><span class="p">,</span> <span class="nb">http_build_query</span><span class="p">([</span>
+  <span class="s2">"captcha"</span> <span class="o">=&gt;</span> <span class="s2">"xxx"</span><span class="p">,</span>
+  <span class="s2">"firstname"</span> <span class="o">=&gt;</span> <span class="s2">"John"</span><span class="p">,</span>
+  <span class="s2">"lastname"</span> <span class="o">=&gt;</span> <span class="s2">"Doe"</span><span class="p">,</span>
+  <span class="s2">"email"</span> <span class="o">=&gt;</span> <span class="s2">"john.doe@example.com"</span><span class="p">,</span>
+  <span class="s2">"address"</span> <span class="o">=&gt;</span> <span class="s2">"Roermonder Str. 45"</span><span class="p">,</span>
+  <span class="s2">"postcode"</span> <span class="o">=&gt;</span> <span class="s2">"52134"</span><span class="p">,</span>
+  <span class="s2">"city"</span> <span class="o">=&gt;</span> <span class="s2">"Herzogenrath"</span><span class="p">,</span>
+  <span class="s2">"country"</span> <span class="o">=&gt;</span> <span class="s2">"Germany"</span><span class="p">,</span>
+  <span class="s2">"paymentMethod"</span> <span class="o">=&gt;</span> <span class="s2">"paypal"</span><span class="p">,</span>
+  <span class="s2">"products"</span> <span class="o">=&gt;</span> <span class="p">[</span>
+    <span class="mi">5</span> <span class="o">=&gt;</span> <span class="mi">1</span><span class="p">,</span>
+  <span class="p">],</span>
+<span class="p">]));</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_CUSTOMREQUEST</span><span class="p">,</span> <span class="s2">"PUT"</span><span class="p">);</span>
+<span class="nv">$res</span> <span class="o">=</span> <span class="nb">curl_exec</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="nb">curl_errno</span><span class="p">(</span><span class="nv">$ch</span><span class="p">))</span> <span class="p">{</span>
+  <span class="k">die</span><span class="p">(</span><span class="nb">curl_error</span><span class="p">(</span><span class="nv">$ch</span><span class="p">));</span>
+<span class="p">}</span>
+
+<span class="nb">curl_close</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
+<span class="nv">$res</span> <span class="o">=</span> <span class="nb">json_decode</span><span class="p">(</span><span class="nv">$res</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+
+<span class="nb">print_r</span><span class="p">(</span><span class="nv">$res</span><span class="p">);</span>
+</code></pre>
+<blockquote>
+<p>The above request returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"success"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"token"</span><span class="p">:</span><span class="w"> </span><span class="s2">"xxx"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"payment"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<p>New orders should be placed using this endpoint.</p>
+
+<p>As soon as a captcha has been solved correctly, this information is saved within the browser session on the API server. This means if there is an error in the order process (excluding captcha error), the captcha must not be solved again. The information is reset as soon as the order was successful. Therefore, another order requires a new captcha.</p>
+<h3 id='query-parameters-33'>Query parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>captcha</td>
+<td><strong>If captcha activated</strong> Captcha token</td>
+</tr>
+<tr>
+<td>firstname</td>
+<td>First name</td>
+</tr>
+<tr>
+<td>lastname</td>
+<td>Last name</td>
+</tr>
+<tr>
+<td>email</td>
+<td>Email address</td>
+</tr>
+<tr>
+<td>address</td>
+<td>Street address</td>
+</tr>
+<tr>
+<td>postcode</td>
+<td>Postcode</td>
+</tr>
+<tr>
+<td>city</td>
+<td>City</td>
+</tr>
+<tr>
+<td>country</td>
+<td>Country (currently supported: <code>Germany</code>, <code>Netherlands</code>, <code>Belgium</code>, <code>Luxembourg</code>)</td>
+</tr>
+<tr>
+<td>paymentMethod</td>
+<td>Payment method or <code>promoter</code> for promoter order</td>
+</tr>
+<tr>
+<td>products[]</td>
+<td>Array with product IDs as keys and quantity as value</td>
+</tr>
+</tbody></table>
+
+<p>There are some additional, optional parameters:</p>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>paymentInfo</td>
+<td>Additional payment information (currently only bank code for iDEAL payments)</td>
+</tr>
+<tr>
+<td>reflink</td>
+<td>Hash of used reflink</td>
+</tr>
+</tbody></table>
+<h3 id='return-values-17'>Return values</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>id</td>
+<td>ID of newly placed order</td>
+</tr>
+<tr>
+<td>token</td>
+<td>Token of order</td>
+</tr>
+<tr>
+<td>payment</td>
+<td>Payment HTML to be displayed to the customer</td>
+</tr>
+</tbody></table>
+<h3 id='failure-codes-23'>Failure codes</h3>
+<table><thead>
+<tr>
+<th>Failure Code</th>
+<th>Meaning</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>1000</td>
+<td>Invalid captcha token</td>
+</tr>
+<tr>
+<td>1001</td>
+<td>No first name specified</td>
+</tr>
+<tr>
+<td>1002</td>
+<td>No last name specified</td>
+</tr>
+<tr>
+<td>1003</td>
+<td>Invalid email</td>
+</tr>
+<tr>
+<td>1004</td>
+<td>No address specified</td>
+</tr>
+<tr>
+<td>1005</td>
+<td>No postcode specified</td>
+</tr>
+<tr>
+<td>1006</td>
+<td>No city specified</td>
+</tr>
+<tr>
+<td>1007</td>
+<td>Invalid country</td>
+</tr>
+<tr>
+<td>1008</td>
+<td>No products specified</td>
+</tr>
+<tr>
+<td>1009</td>
+<td>Unknown products specified</td>
+</tr>
+<tr>
+<td>1010</td>
+<td>Invalid quantity specified</td>
+</tr>
+<tr>
+<td>1011</td>
+<td>Product is not available in general or in this quantity</td>
+</tr>
+<tr>
+<td>1012</td>
+<td>Invalid payment method (unknown, or <code>promoter</code> when no authenticated user or no <code>promoter</code> right)</td>
+</tr>
+<tr>
+<td>1013</td>
+<td>No products in order</td>
+</tr>
+</tbody></table>
+<h2 id='get-order-order_id-token'>GET /order/{order_id}/{token}</h2><pre class="highlight php tab-php"><code><span class="cp">&lt;?php</span>
+<span class="nv">$ch</span> <span class="o">=</span> <span class="nb">curl_init</span><span class="p">(</span><span class="s2">"https://api.hyperspace.one/order/</span><span class="si">{</span><span class="nv">order_id}/{token</span><span class="si">}</span><span class="s2">"</span><span class="p">);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_RETURNTRANSFER</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+<span class="nv">$res</span> <span class="o">=</span> <span class="nb">curl_exec</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="nb">curl_errno</span><span class="p">(</span><span class="nv">$ch</span><span class="p">))</span> <span class="p">{</span>
+  <span class="k">die</span><span class="p">(</span><span class="nb">curl_error</span><span class="p">(</span><span class="nv">$ch</span><span class="p">));</span>
+<span class="p">}</span>
+
+<span class="nb">curl_close</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
+<span class="nv">$res</span> <span class="o">=</span> <span class="nb">json_decode</span><span class="p">(</span><span class="nv">$res</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+
+<span class="nb">print_r</span><span class="p">(</span><span class="nv">$res</span><span class="p">);</span>
+</code></pre>
+<blockquote>
+<p>The above request returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"success"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"amount"</span><span class="p">:</span><span class="w"> </span><span class="mf">39.98</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"paid"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"firstname"</span><span class="p">:</span><span class="w"> </span><span class="s2">"test"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"lastname"</span><span class="p">:</span><span class="w"> </span><span class="s2">"facilitator"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"email"</span><span class="p">:</span><span class="w"> </span><span class="s2">"mail-facilitator@spacion.de"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ESpachstr. 1"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"postcode"</span><span class="p">:</span><span class="w"> </span><span class="s2">"79111"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"city"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Freiburg"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"country"</span><span class="p">:</span><span class="w"> </span><span class="s2">"DE"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"shipping"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"shipping_taxrate"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"created"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"date"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2019-03-08 00:44:48.000000"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"timezone_type"</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"timezone"</span><span class="p">:</span><span class="w"> </span><span class="s2">"UTC"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="s2">"updated"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"date"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2019-03-08 00:44:48.000000"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"timezone_type"</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"timezone"</span><span class="p">:</span><span class="w"> </span><span class="s2">"UTC"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="s2">"payment_provider"</span><span class="p">:</span><span class="w"> </span><span class="s2">"paypal"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"items"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Early Bird"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"gross"</span><span class="p">:</span><span class="w"> </span><span class="mf">19.99</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"net"</span><span class="p">:</span><span class="w"> </span><span class="mf">18.339449541284</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"tax"</span><span class="p">:</span><span class="w"> </span><span class="mf">1.6505504587156</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"amount"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"taxrate"</span><span class="p">:</span><span class="w"> </span><span class="mi">9</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"pricePrefix"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"priceSuffix"</span><span class="p">:</span><span class="w"> </span><span class="s2">"€"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<p>Use this endpoint to get details of an existing order.</p>
+<h3 id='query-parameters-34'>Query parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>order_id</td>
+<td>-</td>
+<td>Order ID</td>
+</tr>
+<tr>
+<td>token</td>
+<td>-</td>
+<td>Order token</td>
+</tr>
+</tbody></table>
+<h3 id='return-values-18'>Return values</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>amount</td>
+<td>Total order amount</td>
+</tr>
+<tr>
+<td>status</td>
+<td>Order status (can be <code>paid</code>, <code>unpaid</code>, <code>cancelled</code>)</td>
+</tr>
+<tr>
+<td>firstname</td>
+<td> First name</td>
+</tr>
+<tr>
+<td>lastname</td>
+<td>Last name</td>
+</tr>
+<tr>
+<td>email</td>
+<td>Email address</td>
+</tr>
+<tr>
+<td>address</td>
+<td>Street address</td>
+</tr>
+<tr>
+<td>postcode</td>
+<td>Postcode</td>
+</tr>
+<tr>
+<td>city</td>
+<td>City</td>
+</tr>
+<tr>
+<td>country</td>
+<td>Country code (ISO 3166 ALPHA-2)</td>
+</tr>
+<tr>
+<td>shipping</td>
+<td>Shipping costs</td>
+</tr>
+<tr>
+<td>shipping_taxrate</td>
+<td>Included taxrate in shipping</td>
+</tr>
+<tr>
+<td>created</td>
+<td>Order creation time</td>
+</tr>
+<tr>
+<td>updated</td>
+<td>Order update time (usually payment/cancellation time)</td>
+</tr>
+<tr>
+<td>payment_provider</td>
+<td>Payment provider</td>
+</tr>
+<tr>
+<td>items[]</td>
+<td>Order items</td>
+</tr>
+</tbody></table>
+
+<p>If the order is unpaid, an element <code>payment</code> will contain the HTML code to be displayed to the customer for the payment.</p>
+<h3 id='failure-codes-24'>Failure codes</h3>
+<table><thead>
+<tr>
+<th>Failure Code</th>
+<th>Meaning</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>1000</td>
+<td>Order not found or token invalid</td>
+</tr>
+</tbody></table>
+<h2 id='get-orders'>GET /orders</h2><pre class="highlight php tab-php"><code><span class="cp">&lt;?php</span>
+<span class="nv">$ch</span> <span class="o">=</span> <span class="nb">curl_init</span><span class="p">(</span><span class="s2">"https://api.hyperspace.one/orders"</span><span class="p">);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_RETURNTRANSFER</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_HTTPHEADER</span><span class="p">,</span> <span class="p">[</span>
+  <span class="s2">"Authorization: Bearer xxx"</span><span class="p">,</span>
+<span class="p">]);</span>
+<span class="nv">$res</span> <span class="o">=</span> <span class="nb">curl_exec</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="nb">curl_errno</span><span class="p">(</span><span class="nv">$ch</span><span class="p">))</span> <span class="p">{</span>
+  <span class="k">die</span><span class="p">(</span><span class="nb">curl_error</span><span class="p">(</span><span class="nv">$ch</span><span class="p">));</span>
+<span class="p">}</span>
+
+<span class="nb">curl_close</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
+<span class="nv">$res</span> <span class="o">=</span> <span class="nb">json_decode</span><span class="p">(</span><span class="nv">$res</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+
+<span class="nb">print_r</span><span class="p">(</span><span class="nv">$res</span><span class="p">);</span>
+</code></pre>
+<blockquote>
+<p>The above request returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"success"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"itemCount"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"paymentsConfirmed"</span><span class="p">:</span><span class="w"> </span><span class="mf">44.97</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"paymentsPipeline"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"items"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"paid"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"firstname"</span><span class="p">:</span><span class="w"> </span><span class="s2">"John"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"lastname"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Doe"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"email"</span><span class="p">:</span><span class="w"> </span><span class="s2">"john.doe@example.com"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Roermonder Str. 45"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"postcode"</span><span class="p">:</span><span class="w"> </span><span class="s2">"52134"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"city"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Herzogenrath"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"country"</span><span class="p">:</span><span class="w"> </span><span class="s2">"DE"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"shipping"</span><span class="p">:</span><span class="w"> </span><span class="mf">4.99</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"shipping_taxrate"</span><span class="p">:</span><span class="w"> </span><span class="mi">19</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"created_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2018-11-28 13:06:21"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"updated_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2018-11-28 13:06:21"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"payment_provider"</span><span class="p">:</span><span class="w"> </span><span class="s2">"paypal"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"payment_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"xxx"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"token"</span><span class="p">:</span><span class="w"> </span><span class="s2">"xxx"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"token_intern"</span><span class="p">:</span><span class="w"> </span><span class="s2">"xxx"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"user"</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"reflink"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"payment_info"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"amount"</span><span class="p">:</span><span class="w"> </span><span class="mf">44.97</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"items"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+          </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">187</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"order_id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"product_id"</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"quantity"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"price"</span><span class="p">:</span><span class="w"> </span><span class="mf">19.99</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"taxrate"</span><span class="p">:</span><span class="w"> </span><span class="mi">9</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"created_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2018-11-28 13:06:21"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"updated_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2018-11-28 13:06:21"</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+      </span><span class="p">]</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<aside style="color: white;">Requires user authentication with right <b>view_orders</b></aside>
+
+<p>This endpoint allows administrators to get a paginated list of all orders in the system.</p>
+<h3 id='query-parameters-35'>Query parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>page</td>
+<td>1</td>
+<td>Page number</td>
+</tr>
+<tr>
+<td>per_page</td>
+<td>20</td>
+<td>Items to display per page</td>
+</tr>
+<tr>
+<td>filter</td>
+<td>-</td>
+<td>Wildcard filter for firstname, lastname, email, token, payment_id</td>
+</tr>
+<tr>
+<td>sort_field</td>
+<td>created_at</td>
+<td>Field to sort by</td>
+</tr>
+<tr>
+<td>sort_direction</td>
+<td>asc</td>
+<td>Sorting direction</td>
+</tr>
+</tbody></table>
+<h3 id='return-values-19'>Return values</h3>
+<p>The request returns an <code>itemCount</code> which is the number of all orders in system. <code>paymentsConfirmed</code> is the sum of paid orders whereas <code>paymentsPipeline</code> is the sum of orders waiting for payment (not cancelled orders). <code>items</code> contains the set of requested orders according to pagination. The orders have these properties:</p>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>id</td>
+<td>Order ID</td>
+</tr>
+<tr>
+<td>status</td>
+<td>Order status (can be <code>paid</code>, <code>unpaid</code>, <code>cancelled</code>)</td>
+</tr>
+<tr>
+<td>firstname</td>
+<td>First name</td>
+</tr>
+<tr>
+<td>lastname</td>
+<td>Last name</td>
+</tr>
+<tr>
+<td>email</td>
+<td>Email address</td>
+</tr>
+<tr>
+<td>address</td>
+<td>Street address</td>
+</tr>
+<tr>
+<td>postcode</td>
+<td>Postcode</td>
+</tr>
+<tr>
+<td>city</td>
+<td>City</td>
+</tr>
+<tr>
+<td>country</td>
+<td>Country code (ISO 3166 ALPHA-2)</td>
+</tr>
+<tr>
+<td>shipping</td>
+<td>Shipping costs</td>
+</tr>
+<tr>
+<td>shipping_taxrate</td>
+<td>Included taxrate in shipping</td>
+</tr>
+<tr>
+<td>created</td>
+<td>Order creation time</td>
+</tr>
+<tr>
+<td>updated</td>
+<td>Order update time (usually payment/cancellation time)</td>
+</tr>
+<tr>
+<td>payment_provider</td>
+<td>Payment provider</td>
+</tr>
+<tr>
+<td>payment_id</td>
+<td>Payment ID at provider</td>
+</tr>
+<tr>
+<td>token</td>
+<td>Order token</td>
+</tr>
+<tr>
+<td>token_intern</td>
+<td>Internal order token (used e.g. for IPN)</td>
+</tr>
+<tr>
+<td>user</td>
+<td>User ID</td>
+</tr>
+<tr>
+<td>reflink</td>
+<td>Hash of used reflink</td>
+</tr>
+<tr>
+<td>payment_info</td>
+<td>Additional payment info</td>
+</tr>
+<tr>
+<td>amount</td>
+<td>Order amount</td>
+</tr>
+<tr>
+<td>items[]</td>
+<td>Order items</td>
+</tr>
+</tbody></table>
 <h2 id='any-order-order_id-token-ipn-payment_method'>ANY /order/{order_id}/{token}/ipn/{payment_method}</h2>
-<p>TODO</p>
-<h2 id='post-checkout-paypal'>POST /checkout/paypal</h2>
-<p>TODO</p>
+<blockquote>
+<p>The request and response is individual for each payment module and not relevant as it is only processed by the payment provider.</p>
+</blockquote>
+
+<p>This endpoint is called directly by the payment provider and calls the IPN routine of the payment module. If the payment was successful, this means automatically provisioning of user account (if not already existing) and tickets.</p>
+<h3 id='query-parameters-36'>Query parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>order_id</td>
+<td>Order ID</td>
+</tr>
+<tr>
+<td>token</td>
+<td>Order token</td>
+</tr>
+<tr>
+<td>payment_method</td>
+<td>Payment method</td>
+</tr>
+</tbody></table>
+
+<p>Additional parameters can be specified by the payment provider and are passed to the IPN routine. </p>
+<h2 id='post-checkout-paypal'>POST /checkout/paypal</h2><pre class="highlight php tab-php"><code><span class="cp">&lt;?php</span>
+<span class="nv">$ch</span> <span class="o">=</span> <span class="nb">curl_init</span><span class="p">(</span><span class="s2">"https://api.hyperspace.one/checkout/paypal"</span><span class="p">);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_RETURNTRANSFER</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_POSTFIELDS</span><span class="p">,</span> <span class="nb">http_build_query</span><span class="p">([</span>
+  <span class="s2">"orderId"</span> <span class="o">=&gt;</span> <span class="s2">"xxx"</span><span class="p">,</span>
+<span class="p">]));</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_CUSTOMREQUEST</span><span class="p">,</span> <span class="s2">"PUT"</span><span class="p">);</span>
+<span class="nv">$res</span> <span class="o">=</span> <span class="nb">curl_exec</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="nb">curl_errno</span><span class="p">(</span><span class="nv">$ch</span><span class="p">))</span> <span class="p">{</span>
+  <span class="k">die</span><span class="p">(</span><span class="nb">curl_error</span><span class="p">(</span><span class="nv">$ch</span><span class="p">));</span>
+<span class="p">}</span>
+
+<span class="nb">curl_close</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
+<span class="nv">$res</span> <span class="o">=</span> <span class="nb">json_decode</span><span class="p">(</span><span class="nv">$res</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+
+<span class="nb">print_r</span><span class="p">(</span><span class="nv">$res</span><span class="p">);</span>
+</code></pre>
+<blockquote>
+<p>The above request returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"success"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"orderId"</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"orderToken"</span><span class="p">:</span><span class="w"> </span><span class="s2">"xxx"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<p>This endpoint is used to capture a confirmed payment via PayPal Express Checkout. The checkout process needs to be implemented in frontend, GroundControl API then fetches the specified Express order from PayPal, creates it in the system and marks it as paid.</p>
+<h3 id='query-parameters-37'>Query parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>orderId</td>
+<td>PayPal Express Checkout order ID</td>
+</tr>
+<tr>
+<td>reflink</td>
+<td><strong>Optional</strong> Hash of used reflink</td>
+</tr>
+</tbody></table>
+<h3 id='return-values-20'>Return values</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>orderId</td>
+<td>ID of newly placed order</td>
+</tr>
+<tr>
+<td>orderToken</td>
+<td>Token of order</td>
+</tr>
+</tbody></table>
+<h3 id='failure-codes-25'>Failure codes</h3>
+<table><thead>
+<tr>
+<th>Failure Code</th>
+<th>Meaning</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>1000</td>
+<td>No transaction ID</td>
+</tr>
+<tr>
+<td>1001</td>
+<td>PayPal error (see <code>error</code>)</td>
+</tr>
+<tr>
+<td>1002</td>
+<td>Incorrect payment type</td>
+</tr>
+<tr>
+<td>1003</td>
+<td>Incorrent payment status</td>
+</tr>
+<tr>
+<td>1004</td>
+<td>Invalid purchase units</td>
+</tr>
+<tr>
+<td>1005</td>
+<td>Invalid payee</td>
+</tr>
+<tr>
+<td>1006</td>
+<td>Invalid description</td>
+</tr>
+<tr>
+<td>1007</td>
+<td>Product not found</td>
+</tr>
+<tr>
+<td>1008</td>
+<td>Product not available</td>
+</tr>
+<tr>
+<td>1009</td>
+<td>Invalid currency</td>
+</tr>
+<tr>
+<td>1010</td>
+<td>Product is underpaid</td>
+</tr>
+<tr>
+<td>1011</td>
+<td>Order already processed</td>
+</tr>
+</tbody></table>
 <h2 id='get-ideal-banks'>GET /ideal/banks</h2><pre class="highlight php tab-php"><code><span class="cp">&lt;?php</span>
 <span class="nv">$ch</span> <span class="o">=</span> <span class="nb">curl_init</span><span class="p">(</span><span class="s2">"https://api.hyperspace.one/ideal/banks"</span><span class="p">);</span>
 <span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_RETURNTRANSFER</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
@@ -3538,7 +4221,7 @@
     </span><span class="p">}</span><span class="w">
 </span><span class="p">]</span><span class="w">
 </span></code></pre>
-<aside>Requires correct iDEAL API token</aside>
+<aside style="color: white;">Requires correct iDEAL API token</aside>
 
 <p>This endpoint returns the banks available for use with iDEAL. The results are cached for performance reasons.</p>
 
@@ -3557,7 +4240,7 @@
 <td>Name of the bank</td>
 </tr>
 </tbody></table>
-<h3 id='failure-codes-23'>Failure codes</h3>
+<h3 id='failure-codes-26'>Failure codes</h3>
 <table><thead>
 <tr>
 <th>Failure Code</th>
@@ -3566,7 +4249,7 @@
 </thead><tbody>
 <tr>
 <td>1000</td>
-<td>API fail ( can be caused by wrong API token)</td>
+<td>API fail (can be caused by wrong API token)</td>
 </tr>
 </tbody></table>
 <h1 id='tickets'>Tickets</h1><h2 id='get-tickets'>GET /tickets</h2><pre class="highlight php tab-php"><code><span class="cp">&lt;?php</span>
@@ -3649,9 +4332,9 @@
 <aside style="color: white;">Requires user authentication</aside>
 
 <p>Gives back all tickets the user have, grouped by order</p>
-<h3 id='query-parameters-33'>Query parameters</h3>
+<h3 id='query-parameters-38'>Query parameters</h3>
 <p>None</p>
-<h3 id='return-values-17'>Return values</h3>
+<h3 id='return-values-21'>Return values</h3>
 <p>The request returns a list of orders containing order information and the tickets assigned with the order.</p>
 
 <table><thead>
@@ -3767,7 +4450,7 @@
 <p>You should use this endpoint to personalize a ticket which needs personalization. A ticket can be personalized as long as defined in the ticket product. Unlimited name changes are allowed.</p>
 
 <p>By default, a ticket is personalized to the buyers name.</p>
-<h3 id='query-parameters-34'>Query parameters</h3>
+<h3 id='query-parameters-39'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -3783,7 +4466,7 @@
 <td>Name of ticket owner</td>
 </tr>
 </tbody></table>
-<h3 id='failure-codes-24'>Failure codes</h3>
+<h3 id='failure-codes-27'>Failure codes</h3>
 <table><thead>
 <tr>
 <th>Failure Code</th>
@@ -3843,7 +4526,7 @@
 </span><span class="p">]</span><span class="w">
 </span></code></pre>
 <p>This endpoint returns all ranks configured with GroundControl.</p>
-<h3 id='return-values-18'>Return values</h3>
+<h3 id='return-values-22'>Return values</h3>
 <p>Each rank has the following properties:</p>
 
 <table><thead>
@@ -3911,7 +4594,7 @@
 <aside style="color: white;">Requires user authentication</aside>
 
 <p>This endpoint returns all achievements reached with pagination. The last achievements are shown first.</p>
-<h3 id='query-parameters-35'>Query parameters</h3>
+<h3 id='query-parameters-40'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -3930,7 +4613,7 @@
 <td>Items to display per page</td>
 </tr>
 </tbody></table>
-<h3 id='return-values-19'>Return values</h3>
+<h3 id='return-values-23'>Return values</h3>
 <p>Each achievement has the following properties:</p>
 
 <table><thead>
@@ -3989,7 +4672,7 @@
 <aside style="color: white;">Requires user authentication with right <b>create_achievements</b></aside>
 
 <p>This endpoint allows administrators to create new achievements for a user.</p>
-<h3 id='query-parameters-36'>Query parameters</h3>
+<h3 id='query-parameters-41'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -4013,7 +4696,7 @@
 <td>Points to be assigned</td>
 </tr>
 </tbody></table>
-<h3 id='return-values-20'>Return values</h3>
+<h3 id='return-values-24'>Return values</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -4025,7 +4708,7 @@
 <td>Array of push tokens (strings) of user</td>
 </tr>
 </tbody></table>
-<h3 id='failure-codes-25'>Failure codes</h3>
+<h3 id='failure-codes-28'>Failure codes</h3>
 <table><thead>
 <tr>
 <th>Failure Code</th>
@@ -4107,7 +4790,7 @@
 <aside style="color: white;">Requires user authentication with right <b>promoter</b></aside>
 
 <p>This endpoint allows promoters to view order they have placed. As they have entered the customer data by theirselves, there is no privacy problem in showing this data to promoters.</p>
-<h3 id='query-parameters-37'>Query parameters</h3>
+<h3 id='query-parameters-42'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -4141,7 +4824,7 @@
 <td>Sort direction</td>
 </tr>
 </tbody></table>
-<h3 id='return-values-21'>Return values</h3>
+<h3 id='return-values-25'>Return values</h3>
 <p>The request returns an <code>itemCount</code> which is the number of all orders of this promoter in system. <code>items</code> contains the set of requested orders according to pagination. The orders have these properties:</p>
 
 <table><thead>
@@ -4266,7 +4949,7 @@
 <aside style="color: white;">Requires user authentication with right <b>send_notifications</b></aside>
 
 <p>This endpoint allows administrators to see notifications that have been sent to a user. The newest notifications are shown first.</p>
-<h3 id='query-parameters-38'>Query parameters</h3>
+<h3 id='query-parameters-43'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -4290,7 +4973,7 @@
 <td>Elements per page</td>
 </tr>
 </tbody></table>
-<h3 id='return-values-22'>Return values</h3>
+<h3 id='return-values-26'>Return values</h3>
 <p>Every notification has these properties:</p>
 
 <table><thead>
@@ -4355,7 +5038,7 @@
 <aside style="color: white;">Requires user authentication with right <b>send_notifications</b></aside>
 
 <p>This endpoint allows administrators to send a notification to the specified user</p>
-<h3 id='query-parameters-39'>Query parameters</h3>
+<h3 id='query-parameters-44'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -4379,7 +5062,7 @@
 <td><strong>Optional</strong> App deeplink</td>
 </tr>
 </tbody></table>
-<h3 id='failure-codes-26'>Failure codes</h3>
+<h3 id='failure-codes-29'>Failure codes</h3>
 <table><thead>
 <tr>
 <th>Failure Code</th>
@@ -4425,7 +5108,7 @@
 <aside style="color: white;">Requires user authentication</aside>
 
 <p>Assign push token to user profile</p>
-<h3 id='query-parameters-40'>Query parameters</h3>
+<h3 id='query-parameters-45'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -4437,7 +5120,7 @@
 <td>Push token</td>
 </tr>
 </tbody></table>
-<h3 id='failure-codes-27'>Failure codes</h3>
+<h3 id='failure-codes-30'>Failure codes</h3>
 <table><thead>
 <tr>
 <th>Failure Code</th>
@@ -4480,7 +5163,7 @@
 <aside style="color: white;">Requires user authentication</aside>
 
 <p>Remove push token from user profile</p>
-<h3 id='query-parameters-41'>Query parameters</h3>
+<h3 id='query-parameters-46'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -4492,7 +5175,7 @@
 <td>Push token</td>
 </tr>
 </tbody></table>
-<h3 id='failure-codes-28'>Failure codes</h3>
+<h3 id='failure-codes-31'>Failure codes</h3>
 <table><thead>
 <tr>
 <th>Failure Code</th>
@@ -4542,7 +5225,7 @@
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
 <p>This endpoint returns information about the requested RFID tag.</p>
-<h3 id='query-parameters-42'>Query parameters</h3>
+<h3 id='query-parameters-47'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -4558,7 +5241,7 @@
 <td>The ID of the RFID tag scanned</td>
 </tr>
 </tbody></table>
-<h3 id='return-values-23'>Return values</h3>
+<h3 id='return-values-27'>Return values</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -4574,7 +5257,7 @@
 <td>LED color (age based)</td>
 </tr>
 </tbody></table>
-<h3 id='failure-codes-29'>Failure codes</h3>
+<h3 id='failure-codes-32'>Failure codes</h3>
 <table><thead>
 <tr>
 <th>Failure Code</th>
@@ -4616,7 +5299,7 @@
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
 <p>This endpoint returns all tags available for a specific device. Also, it returns config options for the requesting device.</p>
-<h3 id='query-parameters-43'>Query parameters</h3>
+<h3 id='query-parameters-48'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -4628,7 +5311,7 @@
 <td>The UUID of the device requesting</td>
 </tr>
 </tbody></table>
-<h3 id='return-values-24'>Return values</h3>
+<h3 id='return-values-28'>Return values</h3>
 <p>The return value is a list of tags available and the device options:</p>
 
 <table><thead>
@@ -4642,7 +5325,7 @@
 <td>Specifies if the device should beep when RFID scan is finished</td>
 </tr>
 </tbody></table>
-<h3 id='failure-codes-30'>Failure codes</h3>
+<h3 id='failure-codes-33'>Failure codes</h3>
 <table><thead>
 <tr>
 <th>Failure Code</th>
@@ -4681,7 +5364,7 @@
 <aside style="color: white;">Requires user authentication with right <b>scan_tickets</b></aside>
 
 <p>This endpoint is used to scan tickets at entry. It either returns a success response or a failure if the ticket is invalid or was already scanned. If the scan was successful, it saves the time of the scan and the staff member who has scanned.</p>
-<h3 id='query-parameters-44'>Query parameters</h3>
+<h3 id='query-parameters-49'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -4693,7 +5376,7 @@
 <td>QR code content / hash of ticket</td>
 </tr>
 </tbody></table>
-<h3 id='failure-codes-31'>Failure codes</h3>
+<h3 id='failure-codes-34'>Failure codes</h3>
 <table><thead>
 <tr>
 <th>Failure Code</th>
@@ -4754,7 +5437,7 @@
 <aside style="color: white;">Requires user authentication with right <b>view_tickets</b></aside>
 
 <p>This endpoint returns details about the ticket scanned and any associated entry.</p>
-<h3 id='query-parameters-45'>Query parameters</h3>
+<h3 id='query-parameters-50'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -4766,7 +5449,7 @@
 <td>QR code content / hash of ticket</td>
 </tr>
 </tbody></table>
-<h3 id='return-values-25'>Return values</h3>
+<h3 id='return-values-29'>Return values</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -4790,7 +5473,7 @@
 <td><strong>If entry</strong> Name of staff member <strong>Otherwise</strong> <em>null</em></td>
 </tr>
 </tbody></table>
-<h3 id='failure-codes-32'>Failure codes</h3>
+<h3 id='failure-codes-35'>Failure codes</h3>
 <table><thead>
 <tr>
 <th>Failure Code</th>
@@ -4838,7 +5521,7 @@
 <aside style="color: white;">Requires user authentication with right <b>reset_tickets</b></aside>
 
 <p>This endpoint resets any scan of the specified ticket.</p>
-<h3 id='query-parameters-46'>Query parameters</h3>
+<h3 id='query-parameters-51'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -4850,7 +5533,7 @@
 <td>QR code content / hash of ticket</td>
 </tr>
 </tbody></table>
-<h3 id='failure-codes-33'>Failure codes</h3>
+<h3 id='failure-codes-36'>Failure codes</h3>
 <table><thead>
 <tr>
 <th>Failure Code</th>
@@ -4940,7 +5623,7 @@
 <aside style="color: white;">Requires user authentication with right <b>settings</b></aside>
 
 <p>This endpoint can be used to update settings. It expects as many key-value pairs as you want. Only elements which exists in the <code>settings</code> table are updated, there are no elements newly created.</p>
-<h3 id='return-values-26'>Return values</h3>
+<h3 id='return-values-30'>Return values</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
