@@ -1475,6 +1475,7 @@ print_r($res);
       "slug": "the-abandoned-dome",
       "title": "The Abandoned Dome",
       "event": {
+        "id": 1,
         "slug": "the-abandoned-dome",
         "name": "The Abandoned Dome",
         "date": "2019-03-30 22:00:00"
@@ -1550,6 +1551,7 @@ print_r($res);
     "slug": "the-abandoned-dome",
     "title": "The Abandoned Dome",
     "event": {
+      "id": 1,
       "slug": "the-abandoned-dome",
       "name": "The Abandoned Dome",
       "date": "2019-03-30 22:00:00"
