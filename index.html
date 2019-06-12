@@ -430,6 +430,27 @@
                     <a href="#get-ranks" class="toc-h2 toc-link" data-title="GET /ranks">GET /ranks</a>
                   </li>
                   <li>
+                    <a href="#post-ranks" class="toc-h2 toc-link" data-title="POST /ranks">POST /ranks</a>
+                  </li>
+                  <li>
+                    <a href="#put-ranks-id" class="toc-h2 toc-link" data-title="PUT /ranks/{id}">PUT /ranks/{id}</a>
+                  </li>
+                  <li>
+                    <a href="#delete-ranks-id" class="toc-h2 toc-link" data-title="DELETE /ranks/{id}">DELETE /ranks/{id}</a>
+                  </li>
+                  <li>
+                    <a href="#get-ranks-features" class="toc-h2 toc-link" data-title="GET /ranks/features">GET /ranks/features</a>
+                  </li>
+                  <li>
+                    <a href="#post-ranks-features" class="toc-h2 toc-link" data-title="POST /ranks/features">POST /ranks/features</a>
+                  </li>
+                  <li>
+                    <a href="#put-ranks-features-id" class="toc-h2 toc-link" data-title="PUT /ranks/features/{id}">PUT /ranks/features/{id}</a>
+                  </li>
+                  <li>
+                    <a href="#delete-ranks-features-id" class="toc-h2 toc-link" data-title="DELETE /ranks/features/{id}">DELETE /ranks/features/{id}</a>
+                  </li>
+                  <li>
                     <a href="#get-achievements" class="toc-h2 toc-link" data-title="GET /achievements">GET /achievements</a>
                   </li>
                   <li>
@@ -553,7 +574,7 @@
 </thead><tbody>
 <tr>
 <td>2019-06-12</td>
-<td><ul style="margin: 0;"><li>Added GET /photographers</li><li>Added POST /orders/{id}</li><li>Updated GET /faq</li><li>Added POST /faq</li><li>Added PUT /faq/{id}</li><li>Added DELETE /faq/{id}</li></ul></td>
+<td><ul style="margin: 0;"><li>Added GET /photographers</li><li>Added POST /orders/{id}</li><li>Updated GET /faq</li><li>Added POST /faq</li><li>Added PUT /faq/{id}</li><li>Added DELETE /faq/{id}</li><li>Updated GET /ranks</li><li>Added POST /ranks</li><li>Added PUT /ranks/{id}</li><li>Added DELETE /ranks/{id}</li><li>Added GET /ranks/features</li><li>Added POST /ranks/features</li><li>Added PUT /ranks/features/{id}</li><li>Added DELETE /ranks/features/{id}</li></ul></td>
 </tr>
 </tbody></table>
 <h1 id='return-values-amp-error-handling'>Return values &amp; error handling</h1>
@@ -4645,19 +4666,22 @@
 </blockquote>
 <pre class="highlight json tab-json"><code><span class="p">[</span><span class="w">
   </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"name"</span><span class="p">:</span><span class="s2">"Visitor"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"points"</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"features"</span><span class="p">:[]</span><span class="w">
+    </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Visitor"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"points"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"features"</span><span class="p">:</span><span class="w"> </span><span class="p">[]</span><span class="w">
   </span><span class="p">},</span><span class="w">
   </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"name"</span><span class="p">:</span><span class="s2">"Flight Engineer"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"points"</span><span class="p">:</span><span class="mi">100</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"features"</span><span class="p">:[]</span><span class="w">
+    </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Flight Engineer"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"points"</span><span class="p">:</span><span class="w"> </span><span class="mi">100</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"features"</span><span class="p">:</span><span class="w"> </span><span class="p">[]</span><span class="w">
   </span><span class="p">},</span><span class="w">
   </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"name"</span><span class="p">:</span><span class="s2">"Commander"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"points"</span><span class="p">:</span><span class="mi">300</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"features"</span><span class="p">:[</span><span class="s2">"Free entry"</span><span class="p">]</span><span class="w">
+    </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Commander"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"points"</span><span class="p">:</span><span class="w"> </span><span class="mi">300</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"features"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"Free entry"</span><span class="p">]</span><span class="w">
   </span><span class="p">}</span><span class="w">
 </span><span class="p">]</span><span class="w">
 </span></code></pre>
@@ -4672,6 +4696,10 @@
 </tr>
 </thead><tbody>
 <tr>
+<td>id</td>
+<td>Rank ID</td>
+</tr>
+<tr>
 <td>name</td>
 <td>Name of rank</td>
 </tr>
@@ -4682,6 +4710,390 @@
 <tr>
 <td>features[]</td>
 <td>List of features coming with rank</td>
+</tr>
+</tbody></table>
+<h2 id='post-ranks'>POST /ranks</h2><pre class="highlight php tab-php"><code><span class="cp">&lt;?php</span>
+<span class="nv">$ch</span> <span class="o">=</span> <span class="nb">curl_init</span><span class="p">(</span><span class="s2">"https://api.hyperspace.one/ranks"</span><span class="p">);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_RETURNTRANSFER</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_HTTPHEADER</span><span class="p">,</span> <span class="p">[</span>
+  <span class="s2">"Authorization: Bearer xxx"</span><span class="p">,</span>
+<span class="p">]);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_POSTFIELDS</span><span class="p">,</span> <span class="nb">http_build_query</span><span class="p">([</span>
+  <span class="s2">"name"</span> <span class="o">=&gt;</span> <span class="s2">"Visitor"</span><span class="p">,</span>
+  <span class="s2">"points"</span> <span class="o">=&gt;</span> <span class="mi">0</span><span class="p">,</span>
+<span class="p">]));</span>
+<span class="nv">$res</span> <span class="o">=</span> <span class="nb">curl_exec</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="nb">curl_errno</span><span class="p">(</span><span class="nv">$ch</span><span class="p">))</span> <span class="p">{</span>
+  <span class="k">die</span><span class="p">(</span><span class="nb">curl_error</span><span class="p">(</span><span class="nv">$ch</span><span class="p">));</span>
+<span class="p">}</span>
+
+<span class="nb">curl_close</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
+<span class="nv">$res</span> <span class="o">=</span> <span class="nb">json_decode</span><span class="p">(</span><span class="nv">$res</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+
+<span class="nb">print_r</span><span class="p">(</span><span class="nv">$res</span><span class="p">);</span>
+</code></pre>
+<blockquote>
+<p>The above request returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"success"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<aside style="color: white;">Requires user authentication with right <b>settings</b></aside>
+
+<p>This endpoint allows administrators to create new ranks.</p>
+<h3 id='query-parameters-41'>Query parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>name</td>
+<td>-</td>
+<td>Rank name</td>
+</tr>
+<tr>
+<td>points</td>
+<td>-</td>
+<td>Points required to reach rank</td>
+</tr>
+</tbody></table>
+<h3 id='return-values-24'>Return values</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>id</td>
+<td>ID of newly created rank</td>
+</tr>
+</tbody></table>
+<h3 id='failure-codes-28'>Failure codes</h3>
+<table><thead>
+<tr>
+<th>Failure Code</th>
+<th>Meaning</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>1001</td>
+<td>No name specified</td>
+</tr>
+<tr>
+<td>1002</td>
+<td>Invalid points specified</td>
+</tr>
+</tbody></table>
+<h2 id='put-ranks-id'>PUT /ranks/{id}</h2><pre class="highlight php tab-php"><code><span class="cp">&lt;?php</span>
+<span class="nv">$ch</span> <span class="o">=</span> <span class="nb">curl_init</span><span class="p">(</span><span class="s2">"https://api.hyperspace.one/ranks/</span><span class="si">{</span><span class="nv">id</span><span class="si">}</span><span class="s2">"</span><span class="p">);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_RETURNTRANSFER</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_POSTFIELDS</span><span class="p">,</span> <span class="nb">http_build_query</span><span class="p">([</span>
+  <span class="s2">"name"</span> <span class="o">=&gt;</span> <span class="s2">"Flight Engineer"</span><span class="p">,</span>
+<span class="p">]));</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_HTTPHEADER</span><span class="p">,</span> <span class="p">[</span>
+  <span class="s2">"Authorization: Bearer xxx"</span><span class="p">,</span>
+<span class="p">]);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_CUSTOMREQUEST</span><span class="p">,</span> <span class="s2">"PUT"</span><span class="p">);</span>
+<span class="nv">$res</span> <span class="o">=</span> <span class="nb">curl_exec</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="nb">curl_errno</span><span class="p">(</span><span class="nv">$ch</span><span class="p">))</span> <span class="p">{</span>
+  <span class="k">die</span><span class="p">(</span><span class="nb">curl_error</span><span class="p">(</span><span class="nv">$ch</span><span class="p">));</span>
+<span class="p">}</span>
+
+<span class="nb">curl_close</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
+<span class="nv">$res</span> <span class="o">=</span> <span class="nb">json_decode</span><span class="p">(</span><span class="nv">$res</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+
+<span class="nb">print_r</span><span class="p">(</span><span class="nv">$res</span><span class="p">);</span>
+</code></pre>
+<blockquote>
+<p>The above request returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"success"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<aside style="color: white;">Requires user authentication with right <b>settings</b></aside>
+
+<p>This endpoint allows administrators to edit ranks.</p>
+<h3 id='query-parameters-42'>Query parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>id</td>
+<td>-</td>
+<td>Rank ID</td>
+</tr>
+</tbody></table>
+
+<p>You can also use the parameters <code>name</code> and <code>points</code> to update these properties. Parameters not specified are ignored and not updated.</p>
+<h2 id='delete-ranks-id'>DELETE /ranks/{id}</h2><pre class="highlight php tab-php"><code><span class="cp">&lt;?php</span>
+<span class="nv">$ch</span> <span class="o">=</span> <span class="nb">curl_init</span><span class="p">(</span><span class="s2">"https://api.hyperspace.one/ranks/</span><span class="si">{</span><span class="nv">id</span><span class="si">}</span><span class="s2">"</span><span class="p">);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_RETURNTRANSFER</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_HTTPHEADER</span><span class="p">,</span> <span class="p">[</span>
+  <span class="s2">"Authorization: Bearer xxx"</span><span class="p">,</span>
+<span class="p">]);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_CUSTOMREQUEST</span><span class="p">,</span> <span class="s2">"DELETE"</span><span class="p">);</span>
+<span class="nv">$res</span> <span class="o">=</span> <span class="nb">curl_exec</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="nb">curl_errno</span><span class="p">(</span><span class="nv">$ch</span><span class="p">))</span> <span class="p">{</span>
+  <span class="k">die</span><span class="p">(</span><span class="nb">curl_error</span><span class="p">(</span><span class="nv">$ch</span><span class="p">));</span>
+<span class="p">}</span>
+
+<span class="nb">curl_close</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
+<span class="nv">$res</span> <span class="o">=</span> <span class="nb">json_decode</span><span class="p">(</span><span class="nv">$res</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+
+<span class="nb">print_r</span><span class="p">(</span><span class="nv">$res</span><span class="p">);</span>
+</code></pre>
+<blockquote>
+<p>The above request returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"success"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<aside style="color: white;">Requires user authentication with right <b>settings</b></aside>
+
+<p>This endpoint allows administrators to delete a rank.</p>
+<h3 id='query-parameters-43'>Query parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>id</td>
+<td>-</td>
+<td>Rank ID</td>
+</tr>
+</tbody></table>
+<h2 id='get-ranks-features'>GET /ranks/features</h2><pre class="highlight php tab-php"><code><span class="cp">&lt;?php</span>
+<span class="nv">$ch</span> <span class="o">=</span> <span class="nb">curl_init</span><span class="p">(</span><span class="s2">"https://api.hyperspace.one/ranks/features"</span><span class="p">);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_RETURNTRANSFER</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+<span class="nv">$res</span> <span class="o">=</span> <span class="nb">curl_exec</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="nb">curl_errno</span><span class="p">(</span><span class="nv">$ch</span><span class="p">))</span> <span class="p">{</span>
+  <span class="k">die</span><span class="p">(</span><span class="nb">curl_error</span><span class="p">(</span><span class="nv">$ch</span><span class="p">));</span>
+<span class="p">}</span>
+
+<span class="nb">curl_close</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
+<span class="nv">$res</span> <span class="o">=</span> <span class="nb">json_decode</span><span class="p">(</span><span class="nv">$res</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+
+<span class="nb">print_r</span><span class="p">(</span><span class="nv">$res</span><span class="p">);</span>
+</code></pre>
+<blockquote>
+<p>The above request returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">[</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"id"</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"feature"</span><span class="p">:</span><span class="s2">"Freier Eintritt"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"points"</span><span class="p">:</span><span class="mi">500</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">]</span><span class="w">
+</span></code></pre>
+<p>This endpoint returns all rank features configured with GroundControl.</p>
+<h3 id='return-values-25'>Return values</h3>
+<p>Each rank has the following properties:</p>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>id</td>
+<td>Feature ID</td>
+</tr>
+<tr>
+<td>feature</td>
+<td>Feature description</td>
+</tr>
+<tr>
+<td>points</td>
+<td> Points required</td>
+</tr>
+</tbody></table>
+<h2 id='post-ranks-features'>POST /ranks/features</h2><pre class="highlight php tab-php"><code><span class="cp">&lt;?php</span>
+<span class="nv">$ch</span> <span class="o">=</span> <span class="nb">curl_init</span><span class="p">(</span><span class="s2">"https://api.hyperspace.one/ranks/features"</span><span class="p">);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_RETURNTRANSFER</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_HTTPHEADER</span><span class="p">,</span> <span class="p">[</span>
+  <span class="s2">"Authorization: Bearer xxx"</span><span class="p">,</span>
+<span class="p">]);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_POSTFIELDS</span><span class="p">,</span> <span class="nb">http_build_query</span><span class="p">([</span>
+  <span class="s2">"feature"</span> <span class="o">=&gt;</span> <span class="s2">"Free entrance"</span><span class="p">,</span>
+  <span class="s2">"points"</span> <span class="o">=&gt;</span> <span class="mi">500</span><span class="p">,</span>
+<span class="p">]));</span>
+<span class="nv">$res</span> <span class="o">=</span> <span class="nb">curl_exec</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="nb">curl_errno</span><span class="p">(</span><span class="nv">$ch</span><span class="p">))</span> <span class="p">{</span>
+  <span class="k">die</span><span class="p">(</span><span class="nb">curl_error</span><span class="p">(</span><span class="nv">$ch</span><span class="p">));</span>
+<span class="p">}</span>
+
+<span class="nb">curl_close</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
+<span class="nv">$res</span> <span class="o">=</span> <span class="nb">json_decode</span><span class="p">(</span><span class="nv">$res</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+
+<span class="nb">print_r</span><span class="p">(</span><span class="nv">$res</span><span class="p">);</span>
+</code></pre>
+<blockquote>
+<p>The above request returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"success"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<aside style="color: white;">Requires user authentication with right <b>settings</b></aside>
+
+<p>This endpoint allows administrators to create new rank features.</p>
+<h3 id='query-parameters-44'>Query parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>feature</td>
+<td>-</td>
+<td>Feature description</td>
+</tr>
+<tr>
+<td>points</td>
+<td>-</td>
+<td>Points required to activate feature</td>
+</tr>
+</tbody></table>
+<h3 id='return-values-26'>Return values</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>id</td>
+<td>ID of newly created feature</td>
+</tr>
+</tbody></table>
+<h3 id='failure-codes-29'>Failure codes</h3>
+<table><thead>
+<tr>
+<th>Failure Code</th>
+<th>Meaning</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>1001</td>
+<td>No description specified</td>
+</tr>
+<tr>
+<td>1002</td>
+<td>Invalid points specified</td>
+</tr>
+</tbody></table>
+<h2 id='put-ranks-features-id'>PUT /ranks/features/{id}</h2><pre class="highlight php tab-php"><code><span class="cp">&lt;?php</span>
+<span class="nv">$ch</span> <span class="o">=</span> <span class="nb">curl_init</span><span class="p">(</span><span class="s2">"https://api.hyperspace.one/ranks/features/</span><span class="si">{</span><span class="nv">id</span><span class="si">}</span><span class="s2">"</span><span class="p">);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_RETURNTRANSFER</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_POSTFIELDS</span><span class="p">,</span> <span class="nb">http_build_query</span><span class="p">([</span>
+  <span class="s2">"name"</span> <span class="o">=&gt;</span> <span class="s2">"Free Entrance"</span><span class="p">,</span>
+<span class="p">]));</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_HTTPHEADER</span><span class="p">,</span> <span class="p">[</span>
+  <span class="s2">"Authorization: Bearer xxx"</span><span class="p">,</span>
+<span class="p">]);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_CUSTOMREQUEST</span><span class="p">,</span> <span class="s2">"PUT"</span><span class="p">);</span>
+<span class="nv">$res</span> <span class="o">=</span> <span class="nb">curl_exec</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="nb">curl_errno</span><span class="p">(</span><span class="nv">$ch</span><span class="p">))</span> <span class="p">{</span>
+  <span class="k">die</span><span class="p">(</span><span class="nb">curl_error</span><span class="p">(</span><span class="nv">$ch</span><span class="p">));</span>
+<span class="p">}</span>
+
+<span class="nb">curl_close</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
+<span class="nv">$res</span> <span class="o">=</span> <span class="nb">json_decode</span><span class="p">(</span><span class="nv">$res</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+
+<span class="nb">print_r</span><span class="p">(</span><span class="nv">$res</span><span class="p">);</span>
+</code></pre>
+<blockquote>
+<p>The above request returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"success"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<aside style="color: white;">Requires user authentication with right <b>settings</b></aside>
+
+<p>This endpoint allows administrators to edit rank features.</p>
+<h3 id='query-parameters-45'>Query parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>id</td>
+<td>-</td>
+<td>Feature ID</td>
+</tr>
+</tbody></table>
+
+<p>You can also use the parameters <code>feature</code> and <code>points</code> to update these properties. Parameters not specified are ignored and not updated.</p>
+<h2 id='delete-ranks-features-id'>DELETE /ranks/features/{id}</h2><pre class="highlight php tab-php"><code><span class="cp">&lt;?php</span>
+<span class="nv">$ch</span> <span class="o">=</span> <span class="nb">curl_init</span><span class="p">(</span><span class="s2">"https://api.hyperspace.one/ranks/features/</span><span class="si">{</span><span class="nv">id</span><span class="si">}</span><span class="s2">"</span><span class="p">);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_RETURNTRANSFER</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_HTTPHEADER</span><span class="p">,</span> <span class="p">[</span>
+  <span class="s2">"Authorization: Bearer xxx"</span><span class="p">,</span>
+<span class="p">]);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_CUSTOMREQUEST</span><span class="p">,</span> <span class="s2">"DELETE"</span><span class="p">);</span>
+<span class="nv">$res</span> <span class="o">=</span> <span class="nb">curl_exec</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="nb">curl_errno</span><span class="p">(</span><span class="nv">$ch</span><span class="p">))</span> <span class="p">{</span>
+  <span class="k">die</span><span class="p">(</span><span class="nb">curl_error</span><span class="p">(</span><span class="nv">$ch</span><span class="p">));</span>
+<span class="p">}</span>
+
+<span class="nb">curl_close</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
+<span class="nv">$res</span> <span class="o">=</span> <span class="nb">json_decode</span><span class="p">(</span><span class="nv">$res</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+
+<span class="nb">print_r</span><span class="p">(</span><span class="nv">$res</span><span class="p">);</span>
+</code></pre>
+<blockquote>
+<p>The above request returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"success"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<aside style="color: white;">Requires user authentication with right <b>settings</b></aside>
+
+<p>This endpoint allows administrators to delete a rank feature.</p>
+<h3 id='query-parameters-46'>Query parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>id</td>
+<td>-</td>
+<td>Feature ID</td>
 </tr>
 </tbody></table>
 <h2 id='get-achievements'>GET /achievements</h2><pre class="highlight php tab-php"><code><span class="cp">&lt;?php</span>
@@ -4730,7 +5142,7 @@
 <aside style="color: white;">Requires user authentication</aside>
 
 <p>This endpoint returns all achievements reached with pagination. The last achievements are shown first.</p>
-<h3 id='query-parameters-41'>Query parameters</h3>
+<h3 id='query-parameters-47'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -4749,7 +5161,7 @@
 <td>Items to display per page</td>
 </tr>
 </tbody></table>
-<h3 id='return-values-24'>Return values</h3>
+<h3 id='return-values-27'>Return values</h3>
 <p>Each achievement has the following properties:</p>
 
 <table><thead>
@@ -4808,7 +5220,7 @@
 <aside style="color: white;">Requires user authentication with right <b>create_achievements</b></aside>
 
 <p>This endpoint allows administrators to create new achievements for a user.</p>
-<h3 id='query-parameters-42'>Query parameters</h3>
+<h3 id='query-parameters-48'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -4832,7 +5244,7 @@
 <td>Points to be assigned</td>
 </tr>
 </tbody></table>
-<h3 id='return-values-25'>Return values</h3>
+<h3 id='return-values-28'>Return values</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -4844,7 +5256,7 @@
 <td>Array of push tokens (strings) of user</td>
 </tr>
 </tbody></table>
-<h3 id='failure-codes-28'>Failure codes</h3>
+<h3 id='failure-codes-30'>Failure codes</h3>
 <table><thead>
 <tr>
 <th>Failure Code</th>
@@ -4926,7 +5338,7 @@
 <aside style="color: white;">Requires user authentication with right <b>promoter</b></aside>
 
 <p>This endpoint allows promoters to view orders they have placed. As they have entered the customer data by theirselves, there is no privacy problem in showing this data to promoters.</p>
-<h3 id='query-parameters-43'>Query parameters</h3>
+<h3 id='query-parameters-49'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -4960,7 +5372,7 @@
 <td>Sort direction</td>
 </tr>
 </tbody></table>
-<h3 id='return-values-26'>Return values</h3>
+<h3 id='return-values-29'>Return values</h3>
 <p>The request returns an <code>itemCount</code> which is the number of all orders of this promoter in system. <code>items</code> contains the set of requested orders according to pagination. The orders have these properties:</p>
 
 <table><thead>
@@ -5066,7 +5478,7 @@
 <aside style="color: white;">Requires user authentication with right <b>affiliate</b></aside>
 
 <p>This endpoint allows affiliates to view their reflinks and statistics.</p>
-<h3 id='return-values-27'>Return values</h3>
+<h3 id='return-values-30'>Return values</h3>
 <p>The reflinks are listed in the <code>data</code> element. Each reflink has these properties:</p>
 
 <table><thead>
@@ -5135,7 +5547,7 @@
 <aside style="color: white;">Requires user authentication with right <b>affiliate</b></aside>
 
 <p>This endpoint allows affiliates to create new reflinks.</p>
-<h3 id='query-parameters-44'>Query parameters</h3>
+<h3 id='query-parameters-50'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -5149,7 +5561,7 @@
 <td>Reflink description</td>
 </tr>
 </tbody></table>
-<h3 id='return-values-28'>Return values</h3>
+<h3 id='return-values-31'>Return values</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -5195,7 +5607,7 @@
 <p>This endpoint allows affiliates to edit their reflinks.</p>
 
 <p>Administrators with <strong>reflinks</strong> right can use this endpoint to update any reflink.</p>
-<h3 id='query-parameters-45'>Query parameters</h3>
+<h3 id='query-parameters-51'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -5249,7 +5661,7 @@
 <p>This endpoint allows affiliates to delete their reflinks.</p>
 
 <p>Administrators with <strong>reflinks</strong> right can use this endpoint to delete any reflink.</p>
-<h3 id='query-parameters-46'>Query parameters</h3>
+<h3 id='query-parameters-52'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -5286,7 +5698,7 @@
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
 <p>This endpoint increases a reflink click count by 1.</p>
-<h3 id='query-parameters-47'>Query parameters</h3>
+<h3 id='query-parameters-53'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -5300,7 +5712,7 @@
 <td>Reflink hash</td>
 </tr>
 </tbody></table>
-<h3 id='failure-codes-29'>Failure codes</h3>
+<h3 id='failure-codes-31'>Failure codes</h3>
 <table><thead>
 <tr>
 <th>Failure Code</th>
@@ -5371,7 +5783,7 @@
 <aside style="color: white;">Requires user authentication with right <b>promoter</b></aside>
 
 <p>This endpoint allows affiliates to view orders that were placed using their reflink. Only paid orders are shown. The newest orders are shown first.</p>
-<h3 id='query-parameters-48'>Query parameters</h3>
+<h3 id='query-parameters-54'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -5390,7 +5802,7 @@
 <td>Elements per page</td>
 </tr>
 </tbody></table>
-<h3 id='return-values-29'>Return values</h3>
+<h3 id='return-values-32'>Return values</h3>
 <p>The request returns an <code>itemCount</code> which is the number of all paid orders of this affiliate in system. <code>items</code> contains the set of requested orders according to pagination. The orders have these properties:</p>
 
 <table><thead>
@@ -5484,7 +5896,7 @@
 <aside style="color: white;">Requires user authentication with right <b>reflinks</b></aside>
 
 <p>This endpoint allows administrators to view all reflinks in system and their statistics.</p>
-<h3 id='return-values-30'>Return values</h3>
+<h3 id='return-values-33'>Return values</h3>
 <p>The reflinks are listed in the <code>data</code> element. Each reflink has these properties:</p>
 
 <table><thead>
@@ -5567,7 +5979,7 @@
 <aside style="color: white;">Requires user authentication with right <b>send_notifications</b></aside>
 
 <p>This endpoint allows administrators to see notifications that have been sent to a user. The newest notifications are shown first.</p>
-<h3 id='query-parameters-49'>Query parameters</h3>
+<h3 id='query-parameters-55'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -5591,7 +6003,7 @@
 <td>Elements per page</td>
 </tr>
 </tbody></table>
-<h3 id='return-values-31'>Return values</h3>
+<h3 id='return-values-34'>Return values</h3>
 <p>Every notification has these properties:</p>
 
 <table><thead>
@@ -5656,7 +6068,7 @@
 <aside style="color: white;">Requires user authentication with right <b>send_notifications</b></aside>
 
 <p>This endpoint allows administrators to send a notification to the specified user</p>
-<h3 id='query-parameters-50'>Query parameters</h3>
+<h3 id='query-parameters-56'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -5680,7 +6092,7 @@
 <td><strong>Optional</strong> App deeplink</td>
 </tr>
 </tbody></table>
-<h3 id='failure-codes-30'>Failure codes</h3>
+<h3 id='failure-codes-32'>Failure codes</h3>
 <table><thead>
 <tr>
 <th>Failure Code</th>
@@ -5726,7 +6138,7 @@
 <aside style="color: white;">Requires user authentication</aside>
 
 <p>Assign push token to user profile</p>
-<h3 id='query-parameters-51'>Query parameters</h3>
+<h3 id='query-parameters-57'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -5738,7 +6150,7 @@
 <td>Push token</td>
 </tr>
 </tbody></table>
-<h3 id='failure-codes-31'>Failure codes</h3>
+<h3 id='failure-codes-33'>Failure codes</h3>
 <table><thead>
 <tr>
 <th>Failure Code</th>
@@ -5781,7 +6193,7 @@
 <aside style="color: white;">Requires user authentication</aside>
 
 <p>Remove push token from user profile</p>
-<h3 id='query-parameters-52'>Query parameters</h3>
+<h3 id='query-parameters-58'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -5793,7 +6205,7 @@
 <td>Push token</td>
 </tr>
 </tbody></table>
-<h3 id='failure-codes-32'>Failure codes</h3>
+<h3 id='failure-codes-34'>Failure codes</h3>
 <table><thead>
 <tr>
 <th>Failure Code</th>
@@ -5843,7 +6255,7 @@
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
 <p>This endpoint returns information about the requested RFID tag.</p>
-<h3 id='query-parameters-53'>Query parameters</h3>
+<h3 id='query-parameters-59'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -5859,7 +6271,7 @@
 <td>The ID of the RFID tag scanned</td>
 </tr>
 </tbody></table>
-<h3 id='return-values-32'>Return values</h3>
+<h3 id='return-values-35'>Return values</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -5875,7 +6287,7 @@
 <td>LED color (age based)</td>
 </tr>
 </tbody></table>
-<h3 id='failure-codes-33'>Failure codes</h3>
+<h3 id='failure-codes-35'>Failure codes</h3>
 <table><thead>
 <tr>
 <th>Failure Code</th>
@@ -5917,7 +6329,7 @@
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
 <p>This endpoint returns all tags available for a specific device. Also, it returns config options for the requesting device.</p>
-<h3 id='query-parameters-54'>Query parameters</h3>
+<h3 id='query-parameters-60'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -5929,7 +6341,7 @@
 <td>The UUID of the device requesting</td>
 </tr>
 </tbody></table>
-<h3 id='return-values-33'>Return values</h3>
+<h3 id='return-values-36'>Return values</h3>
 <p>The return value is a list of tags available and the device options:</p>
 
 <table><thead>
@@ -5943,7 +6355,7 @@
 <td>Specifies if the device should beep when RFID scan is finished</td>
 </tr>
 </tbody></table>
-<h3 id='failure-codes-34'>Failure codes</h3>
+<h3 id='failure-codes-36'>Failure codes</h3>
 <table><thead>
 <tr>
 <th>Failure Code</th>
@@ -5982,7 +6394,7 @@
 <aside style="color: white;">Requires user authentication with right <b>scan_tickets</b></aside>
 
 <p>This endpoint is used to scan tickets at entry. It either returns a success response or a failure if the ticket is invalid or was already scanned. If the scan was successful, it saves the time of the scan and the staff member who has scanned.</p>
-<h3 id='query-parameters-55'>Query parameters</h3>
+<h3 id='query-parameters-61'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -5994,7 +6406,7 @@
 <td>QR code content / hash of ticket</td>
 </tr>
 </tbody></table>
-<h3 id='failure-codes-35'>Failure codes</h3>
+<h3 id='failure-codes-37'>Failure codes</h3>
 <table><thead>
 <tr>
 <th>Failure Code</th>
@@ -6055,7 +6467,7 @@
 <aside style="color: white;">Requires user authentication with right <b>view_tickets</b></aside>
 
 <p>This endpoint returns details about the ticket scanned and any associated entry.</p>
-<h3 id='query-parameters-56'>Query parameters</h3>
+<h3 id='query-parameters-62'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -6067,7 +6479,7 @@
 <td>QR code content / hash of ticket</td>
 </tr>
 </tbody></table>
-<h3 id='return-values-34'>Return values</h3>
+<h3 id='return-values-37'>Return values</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -6091,7 +6503,7 @@
 <td><strong>If entry</strong> Name of staff member <strong>Otherwise</strong> <em>null</em></td>
 </tr>
 </tbody></table>
-<h3 id='failure-codes-36'>Failure codes</h3>
+<h3 id='failure-codes-38'>Failure codes</h3>
 <table><thead>
 <tr>
 <th>Failure Code</th>
@@ -6139,7 +6551,7 @@
 <aside style="color: white;">Requires user authentication with right <b>reset_tickets</b></aside>
 
 <p>This endpoint resets any scan of the specified ticket.</p>
-<h3 id='query-parameters-57'>Query parameters</h3>
+<h3 id='query-parameters-63'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -6151,7 +6563,7 @@
 <td>QR code content / hash of ticket</td>
 </tr>
 </tbody></table>
-<h3 id='failure-codes-37'>Failure codes</h3>
+<h3 id='failure-codes-39'>Failure codes</h3>
 <table><thead>
 <tr>
 <th>Failure Code</th>
@@ -6241,7 +6653,7 @@
 <aside style="color: white;">Requires user authentication with right <b>settings</b></aside>
 
 <p>This endpoint can be used to update settings. It expects as many key-value pairs as you want. Only elements which exists in the <code>settings</code> table are updated, there are no elements newly created.</p>
-<h3 id='return-values-35'>Return values</h3>
+<h3 id='return-values-38'>Return values</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -6291,7 +6703,7 @@
 <aside style="color: white;">Requires user authentication with right <b>settings</b></aside>
 
 <p>This endpoint allows administrators to create new FAQs.</p>
-<h3 id='query-parameters-58'>Query parameters</h3>
+<h3 id='query-parameters-64'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -6315,7 +6727,7 @@
 <td>Array with localized content (optional)</td>
 </tr>
 </tbody></table>
-<h3 id='return-values-36'>Return values</h3>
+<h3 id='return-values-39'>Return values</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -6327,7 +6739,7 @@
 <td>ID of newly created FAQ</td>
 </tr>
 </tbody></table>
-<h3 id='failure-codes-38'>Failure codes</h3>
+<h3 id='failure-codes-40'>Failure codes</h3>
 <table><thead>
 <tr>
 <th>Failure Code</th>
@@ -6374,7 +6786,7 @@
 <aside style="color: white;">Requires user authentication with right <b>settings</b></aside>
 
 <p>This endpoint allows administrators to edit FAQs.</p>
-<h3 id='query-parameters-59'>Query parameters</h3>
+<h3 id='query-parameters-65'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -6389,7 +6801,7 @@
 </tr>
 </tbody></table>
 
-<p>You can also use the parameters <code>question</code>, and <code>answer</code> to update these properties. Parameters not specified are ignored and not updated.</p>
+<p>You can also use the parameters <code>question</code> and <code>answer</code> to update these properties. Parameters not specified are ignored and not updated.</p>
 
 <p>If you specify an array named <code>localization</code> as in <code>POST /faq</code>, the values for the specified languages are updated. Localizations not specified are deleted.</p>
 <h2 id='delete-faq-id'>DELETE /faq/{id}</h2><pre class="highlight php tab-php"><code><span class="cp">&lt;?php</span>
@@ -6420,7 +6832,7 @@
 <aside style="color: white;">Requires user authentication with right <b>settings</b></aside>
 
 <p>This endpoint allows administrators to delete a FAQ.</p>
-<h3 id='query-parameters-60'>Query parameters</h3>
+<h3 id='query-parameters-66'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
