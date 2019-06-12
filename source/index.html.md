@@ -24,7 +24,7 @@ This is the changelog of this API documentation.
 
 Date | Changes
 ---- | -------
-2019-06-12 | <ul><li>Added GET /photographers</li><li>Added POST /orders/{id}</li><li>Updated GET /faq</li><li>Added POST /faq</li><li>Added PUT /faq/{id}</li><li>Added DELETE /faq/{id}</li></ul>
+2019-06-12 | <ul style="margin: 0;"><li>Added GET /photographers</li><li>Added POST /orders/{id}</li><li>Updated GET /faq</li><li>Added POST /faq</li><li>Added PUT /faq/{id}</li><li>Added DELETE /faq/{id}</li></ul>
 
 # Return values & error handling
 
