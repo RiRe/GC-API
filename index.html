@@ -517,6 +517,15 @@
                   <li>
                     <a href="#put-settings" class="toc-h2 toc-link" data-title="PUT /settings">PUT /settings</a>
                   </li>
+                  <li>
+                    <a href="#post-faq" class="toc-h2 toc-link" data-title="POST /faq">POST /faq</a>
+                  </li>
+                  <li>
+                    <a href="#put-faq-id" class="toc-h2 toc-link" data-title="PUT /faq/{id}">PUT /faq/{id}</a>
+                  </li>
+                  <li>
+                    <a href="#delete-faq-id" class="toc-h2 toc-link" data-title="DELETE /faq/{id}">DELETE /faq/{id}</a>
+                  </li>
               </ul>
           </li>
       </ul>
@@ -544,7 +553,7 @@
 </thead><tbody>
 <tr>
 <td>2019-06-12</td>
-<td><ul><li>Added GET /photographers</li><li>Added POST /orders/{id}</li></ul></td>
+<td><ul><li>Added GET /photographers</li><li>Added POST /orders/{id}</li><li>Updated GET /faq</li><li>Added POST /faq</li><li>Added PUT /faq/{id}</li><li>Added DELETE /faq/{id}</li></ul></td>
 </tr>
 </tbody></table>
 <h1 id='return-values-amp-error-handling'>Return values &amp; error handling</h1>
@@ -899,8 +908,19 @@
   </span><span class="s2">"success"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
   </span><span class="s2">"faq"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
     </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
       </span><span class="s2">"question"</span><span class="p">:</span><span class="s2">"WHERE CAN YOU PARK?"</span><span class="p">,</span><span class="w">
-      </span><span class="s2">"answer"</span><span class="p">:</span><span class="s2">"At our PreParty in Music Dome there is free parking."</span><span class="w">
+      </span><span class="s2">"answer"</span><span class="p">:</span><span class="s2">"At our PreParty in Music Dome there is free parking."</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"localization"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"en"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+          </span><span class="s2">"question"</span><span class="p">:</span><span class="w"> </span><span class="s2">"WHERE CAN YOU PARK?"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"answer"</span><span class="p">:</span><span class="w"> </span><span class="s2">"At our PreParty in Music Dome there is free parking straight in front of the location. Because the Music Dome is located in the stadion of Roda JC Kerkrade, there are more than enough parking lots."</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="s2">"de"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+          </span><span class="s2">"question"</span><span class="p">:</span><span class="w"> </span><span class="s2">"WO KANN ICH PARKEN?"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"answer"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Bei unserer PreParty im Music Dome Kerkrade findest Du kostenlose Parkplätze direkt vor der Location. Da der Music Dome sich direkt im Stadiongebäude des Roda JC Kerkrade befindet, stehen hier genügend Stellplätze zur Verfügung."</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+      </span><span class="p">}</span><span class="w">
     </span><span class="p">}</span><span class="w">
   </span><span class="p">]</span><span class="w">
 </span><span class="p">}</span><span class="w">
@@ -6231,6 +6251,187 @@
 <tr>
 <td>set</td>
 <td>All newly set values according to their keys</td>
+</tr>
+</tbody></table>
+<h2 id='post-faq'>POST /faq</h2><pre class="highlight php tab-php"><code><span class="cp">&lt;?php</span>
+<span class="nv">$ch</span> <span class="o">=</span> <span class="nb">curl_init</span><span class="p">(</span><span class="s2">"https://api.hyperspace.one/faq"</span><span class="p">);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_RETURNTRANSFER</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_HTTPHEADER</span><span class="p">,</span> <span class="p">[</span>
+  <span class="s2">"Authorization: Bearer xxx"</span><span class="p">,</span>
+<span class="p">]);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_POSTFIELDS</span><span class="p">,</span> <span class="nb">http_build_query</span><span class="p">([</span>
+  <span class="s2">"question"</span> <span class="o">=&gt;</span> <span class="s2">"My question"</span><span class="p">,</span>
+  <span class="s2">"answer"</span> <span class="o">=&gt;</span> <span class="s2">"My answer"</span><span class="p">,</span>
+  <span class="s2">"localization"</span> <span class="o">=&gt;</span> <span class="p">[</span>
+    <span class="s2">"de"</span> <span class="o">=&gt;</span> <span class="p">[</span>
+      <span class="s2">"question"</span> <span class="o">=&gt;</span> <span class="s2">"Meine Frage"</span><span class="p">,</span>
+      <span class="s2">"answer"</span> <span class="o">=&gt;</span> <span class="s2">"Meine Antwort"</span>
+    <span class="p">],</span>
+  <span class="p">],</span>
+<span class="p">]));</span>
+<span class="nv">$res</span> <span class="o">=</span> <span class="nb">curl_exec</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="nb">curl_errno</span><span class="p">(</span><span class="nv">$ch</span><span class="p">))</span> <span class="p">{</span>
+  <span class="k">die</span><span class="p">(</span><span class="nb">curl_error</span><span class="p">(</span><span class="nv">$ch</span><span class="p">));</span>
+<span class="p">}</span>
+
+<span class="nb">curl_close</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
+<span class="nv">$res</span> <span class="o">=</span> <span class="nb">json_decode</span><span class="p">(</span><span class="nv">$res</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+
+<span class="nb">print_r</span><span class="p">(</span><span class="nv">$res</span><span class="p">);</span>
+</code></pre>
+<blockquote>
+<p>The above request returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"success"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<aside style="color: white;">Requires user authentication with right <b>settings</b></aside>
+
+<p>This endpoint allows administrators to create new FAQs.</p>
+<h3 id='query-parameters-58'>Query parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>question</td>
+<td>-</td>
+<td>Question</td>
+</tr>
+<tr>
+<td>answer</td>
+<td>-</td>
+<td>Answer</td>
+</tr>
+<tr>
+<td>localization</td>
+<td>[]</td>
+<td>Array with localized content (optional)</td>
+</tr>
+</tbody></table>
+<h3 id='return-values-36'>Return values</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>id</td>
+<td>ID of newly created FAQ</td>
+</tr>
+</tbody></table>
+<h3 id='failure-codes-38'>Failure codes</h3>
+<table><thead>
+<tr>
+<th>Failure Code</th>
+<th>Meaning</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>1001</td>
+<td>No question specified</td>
+</tr>
+<tr>
+<td>1002</td>
+<td>No answer specified</td>
+</tr>
+</tbody></table>
+<h2 id='put-faq-id'>PUT /faq/{id}</h2><pre class="highlight php tab-php"><code><span class="cp">&lt;?php</span>
+<span class="nv">$ch</span> <span class="o">=</span> <span class="nb">curl_init</span><span class="p">(</span><span class="s2">"https://api.hyperspace.one/faq/</span><span class="si">{</span><span class="nv">id</span><span class="si">}</span><span class="s2">"</span><span class="p">);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_RETURNTRANSFER</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_POSTFIELDS</span><span class="p">,</span> <span class="nb">http_build_query</span><span class="p">([</span>
+  <span class="s2">"question"</span> <span class="o">=&gt;</span> <span class="s2">"My question?"</span><span class="p">,</span>
+<span class="p">]));</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_HTTPHEADER</span><span class="p">,</span> <span class="p">[</span>
+  <span class="s2">"Authorization: Bearer xxx"</span><span class="p">,</span>
+<span class="p">]);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_CUSTOMREQUEST</span><span class="p">,</span> <span class="s2">"PUT"</span><span class="p">);</span>
+<span class="nv">$res</span> <span class="o">=</span> <span class="nb">curl_exec</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="nb">curl_errno</span><span class="p">(</span><span class="nv">$ch</span><span class="p">))</span> <span class="p">{</span>
+  <span class="k">die</span><span class="p">(</span><span class="nb">curl_error</span><span class="p">(</span><span class="nv">$ch</span><span class="p">));</span>
+<span class="p">}</span>
+
+<span class="nb">curl_close</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
+<span class="nv">$res</span> <span class="o">=</span> <span class="nb">json_decode</span><span class="p">(</span><span class="nv">$res</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+
+<span class="nb">print_r</span><span class="p">(</span><span class="nv">$res</span><span class="p">);</span>
+</code></pre>
+<blockquote>
+<p>The above request returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"success"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<aside style="color: white;">Requires user authentication with right <b>settings</b></aside>
+
+<p>This endpoint allows administrators to edit FAQs.</p>
+<h3 id='query-parameters-59'>Query parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>id</td>
+<td>-</td>
+<td>FAQ ID</td>
+</tr>
+</tbody></table>
+
+<p>You can also use the parameters <code>question</code>, and <code>answer</code> to update these properties. Parameters not specified are ignored and not updated.</p>
+
+<p>If you specify an array named <code>localization</code> as in <code>POST /faq</code>, the values for the specified languages are updated. Localizations not specified are deleted.</p>
+<h2 id='delete-faq-id'>DELETE /faq/{id}</h2><pre class="highlight php tab-php"><code><span class="cp">&lt;?php</span>
+<span class="nv">$ch</span> <span class="o">=</span> <span class="nb">curl_init</span><span class="p">(</span><span class="s2">"https://api.hyperspace.one/faq/</span><span class="si">{</span><span class="nv">id</span><span class="si">}</span><span class="s2">"</span><span class="p">);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_RETURNTRANSFER</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_HTTPHEADER</span><span class="p">,</span> <span class="p">[</span>
+  <span class="s2">"Authorization: Bearer xxx"</span><span class="p">,</span>
+<span class="p">]);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_CUSTOMREQUEST</span><span class="p">,</span> <span class="s2">"DELETE"</span><span class="p">);</span>
+<span class="nv">$res</span> <span class="o">=</span> <span class="nb">curl_exec</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="nb">curl_errno</span><span class="p">(</span><span class="nv">$ch</span><span class="p">))</span> <span class="p">{</span>
+  <span class="k">die</span><span class="p">(</span><span class="nb">curl_error</span><span class="p">(</span><span class="nv">$ch</span><span class="p">));</span>
+<span class="p">}</span>
+
+<span class="nb">curl_close</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
+<span class="nv">$res</span> <span class="o">=</span> <span class="nb">json_decode</span><span class="p">(</span><span class="nv">$res</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+
+<span class="nb">print_r</span><span class="p">(</span><span class="nv">$res</span><span class="p">);</span>
+</code></pre>
+<blockquote>
+<p>The above request returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"success"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<aside style="color: white;">Requires user authentication with right <b>settings</b></aside>
+
+<p>This endpoint allows administrators to delete a FAQ.</p>
+<h3 id='query-parameters-60'>Query parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>id</td>
+<td>-</td>
+<td>FAQ ID</td>
 </tr>
 </tbody></table>
 
