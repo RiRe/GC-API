@@ -222,6 +222,9 @@
             <a href="#introduction" class="toc-h1 toc-link" data-title="Introduction">Introduction</a>
           </li>
           <li>
+            <a href="#changelog" class="toc-h1 toc-link" data-title="Changelog">Changelog</a>
+          </li>
+          <li>
             <a href="#return-values-amp-error-handling" class="toc-h1 toc-link" data-title="Return values &amp; error handling">Return values &amp; error handling</a>
           </li>
           <li>
@@ -390,6 +393,9 @@
                     <a href="#get-orders" class="toc-h2 toc-link" data-title="GET /orders">GET /orders</a>
                   </li>
                   <li>
+                    <a href="#post-orders-id" class="toc-h2 toc-link" data-title="POST /orders/{id}">POST /orders/{id}</a>
+                  </li>
+                  <li>
                     <a href="#any-order-order_id-token-ipn-payment_method" class="toc-h2 toc-link" data-title="ANY /order/{order_id}/{token}/ipn/{payment_method}">ANY /order/{order_id}/{token}/ipn/{payment_method}</a>
                   </li>
                   <li>
@@ -527,6 +533,20 @@
 <p>We use <code>https://api.hyperspace.one</code> as an example URL. This URL has to be replaced by your URL where GroundControl API is hosted.</p>
 
 <p>We provide example codes in PHP. You can view code examples in the dark area to the right, and you can switch the programming language of the examples with the tabs in the top right.</p>
+<h1 id='changelog'>Changelog</h1>
+<p>This is the changelog of this API documentation.</p>
+
+<table><thead>
+<tr>
+<th>Date</th>
+<th>Changes</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>2019-06-12</td>
+<td><ul><li>Added GET /photographers</li><li>Added POST /orders/{id}</li></ul></td>
+</tr>
+</tbody></table>
 <h1 id='return-values-amp-error-handling'>Return values &amp; error handling</h1>
 <blockquote>
 <p>Successful request (HTTP status code <code>200</code>) without data</p>
@@ -4099,13 +4119,55 @@
 <td>Order items</td>
 </tr>
 </tbody></table>
+<h2 id='post-orders-id'>POST /orders/{id}</h2><pre class="highlight php tab-php"><code><span class="cp">&lt;?php</span>
+<span class="nv">$ch</span> <span class="o">=</span> <span class="nb">curl_init</span><span class="p">(</span><span class="s2">"https://api.hyperspace.one/orders/</span><span class="si">{</span><span class="nv">id</span><span class="si">}</span><span class="s2">"</span><span class="p">);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_RETURNTRANSFER</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_CUSTOMREQUEST</span><span class="p">,</span> <span class="s2">"POST"</span><span class="p">);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_HTTPHEADER</span><span class="p">,</span> <span class="p">[</span>
+  <span class="s2">"Authorization: Bearer xxx"</span><span class="p">,</span>
+<span class="p">]);</span>
+<span class="nv">$res</span> <span class="o">=</span> <span class="nb">curl_exec</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="nb">curl_errno</span><span class="p">(</span><span class="nv">$ch</span><span class="p">))</span> <span class="p">{</span>
+  <span class="k">die</span><span class="p">(</span><span class="nb">curl_error</span><span class="p">(</span><span class="nv">$ch</span><span class="p">));</span>
+<span class="p">}</span>
+
+<span class="nb">curl_close</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
+<span class="nv">$res</span> <span class="o">=</span> <span class="nb">json_decode</span><span class="p">(</span><span class="nv">$res</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+
+<span class="nb">print_r</span><span class="p">(</span><span class="nv">$res</span><span class="p">);</span>
+</code></pre>
+<blockquote>
+<p>The above request returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"success"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<aside style="color: white;">Requires user authentication with right <b>view_orders</b></aside>
+
+<p>This endpoint allows administrators to resend the confirmation email for a specific order. This order <strong>must be paid</strong>.</p>
+<h3 id='query-parameters-36'>Query parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>id</td>
+<td>-</td>
+<td>Order ID</td>
+</tr>
+</tbody></table>
 <h2 id='any-order-order_id-token-ipn-payment_method'>ANY /order/{order_id}/{token}/ipn/{payment_method}</h2>
 <blockquote>
 <p>The request and response is individual for each payment module and not relevant as it is only processed by the payment provider.</p>
 </blockquote>
 
 <p>This endpoint is called directly by the payment provider and calls the IPN routine of the payment module. If the payment was successful, this means automatically provisioning of user account (if not already existing) and tickets.</p>
-<h3 id='query-parameters-36'>Query parameters</h3>
+<h3 id='query-parameters-37'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -4155,7 +4217,7 @@
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
 <p>This endpoint is used to capture a confirmed payment via PayPal Express Checkout. The checkout process needs to be implemented in frontend, GroundControl API then fetches the specified Express order from PayPal, creates it in the system and marks it as paid.</p>
-<h3 id='query-parameters-37'>Query parameters</h3>
+<h3 id='query-parameters-38'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -4386,7 +4448,7 @@
 <aside style="color: white;">Requires user authentication</aside>
 
 <p>Gives back all tickets the user have, grouped by order</p>
-<h3 id='query-parameters-38'>Query parameters</h3>
+<h3 id='query-parameters-39'>Query parameters</h3>
 <p>None</p>
 <h3 id='return-values-22'>Return values</h3>
 <p>The request returns a list of orders containing order information and the tickets assigned with the order.</p>
@@ -4504,7 +4566,7 @@
 <p>You should use this endpoint to personalize a ticket which needs personalization. A ticket can be personalized as long as defined in the ticket product. Unlimited name changes are allowed.</p>
 
 <p>By default, a ticket is personalized to the buyers name.</p>
-<h3 id='query-parameters-39'>Query parameters</h3>
+<h3 id='query-parameters-40'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -4648,7 +4710,7 @@
 <aside style="color: white;">Requires user authentication</aside>
 
 <p>This endpoint returns all achievements reached with pagination. The last achievements are shown first.</p>
-<h3 id='query-parameters-40'>Query parameters</h3>
+<h3 id='query-parameters-41'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -4726,7 +4788,7 @@
 <aside style="color: white;">Requires user authentication with right <b>create_achievements</b></aside>
 
 <p>This endpoint allows administrators to create new achievements for a user.</p>
-<h3 id='query-parameters-41'>Query parameters</h3>
+<h3 id='query-parameters-42'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -4844,7 +4906,7 @@
 <aside style="color: white;">Requires user authentication with right <b>promoter</b></aside>
 
 <p>This endpoint allows promoters to view orders they have placed. As they have entered the customer data by theirselves, there is no privacy problem in showing this data to promoters.</p>
-<h3 id='query-parameters-42'>Query parameters</h3>
+<h3 id='query-parameters-43'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -5053,7 +5115,7 @@
 <aside style="color: white;">Requires user authentication with right <b>affiliate</b></aside>
 
 <p>This endpoint allows affiliates to create new reflinks.</p>
-<h3 id='query-parameters-43'>Query parameters</h3>
+<h3 id='query-parameters-44'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -5113,7 +5175,7 @@
 <p>This endpoint allows affiliates to edit their reflinks.</p>
 
 <p>Administrators with <strong>reflinks</strong> right can use this endpoint to update any reflink.</p>
-<h3 id='query-parameters-44'>Query parameters</h3>
+<h3 id='query-parameters-45'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -5167,7 +5229,7 @@
 <p>This endpoint allows affiliates to delete their reflinks.</p>
 
 <p>Administrators with <strong>reflinks</strong> right can use this endpoint to delete any reflink.</p>
-<h3 id='query-parameters-45'>Query parameters</h3>
+<h3 id='query-parameters-46'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -5204,7 +5266,7 @@
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
 <p>This endpoint increases a reflink click count by 1.</p>
-<h3 id='query-parameters-46'>Query parameters</h3>
+<h3 id='query-parameters-47'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -5289,7 +5351,7 @@
 <aside style="color: white;">Requires user authentication with right <b>promoter</b></aside>
 
 <p>This endpoint allows affiliates to view orders that were placed using their reflink. Only paid orders are shown. The newest orders are shown first.</p>
-<h3 id='query-parameters-47'>Query parameters</h3>
+<h3 id='query-parameters-48'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -5485,7 +5547,7 @@
 <aside style="color: white;">Requires user authentication with right <b>send_notifications</b></aside>
 
 <p>This endpoint allows administrators to see notifications that have been sent to a user. The newest notifications are shown first.</p>
-<h3 id='query-parameters-48'>Query parameters</h3>
+<h3 id='query-parameters-49'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -5574,7 +5636,7 @@
 <aside style="color: white;">Requires user authentication with right <b>send_notifications</b></aside>
 
 <p>This endpoint allows administrators to send a notification to the specified user</p>
-<h3 id='query-parameters-49'>Query parameters</h3>
+<h3 id='query-parameters-50'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -5644,7 +5706,7 @@
 <aside style="color: white;">Requires user authentication</aside>
 
 <p>Assign push token to user profile</p>
-<h3 id='query-parameters-50'>Query parameters</h3>
+<h3 id='query-parameters-51'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -5699,7 +5761,7 @@
 <aside style="color: white;">Requires user authentication</aside>
 
 <p>Remove push token from user profile</p>
-<h3 id='query-parameters-51'>Query parameters</h3>
+<h3 id='query-parameters-52'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -5761,7 +5823,7 @@
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
 <p>This endpoint returns information about the requested RFID tag.</p>
-<h3 id='query-parameters-52'>Query parameters</h3>
+<h3 id='query-parameters-53'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -5835,7 +5897,7 @@
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
 <p>This endpoint returns all tags available for a specific device. Also, it returns config options for the requesting device.</p>
-<h3 id='query-parameters-53'>Query parameters</h3>
+<h3 id='query-parameters-54'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -5900,7 +5962,7 @@
 <aside style="color: white;">Requires user authentication with right <b>scan_tickets</b></aside>
 
 <p>This endpoint is used to scan tickets at entry. It either returns a success response or a failure if the ticket is invalid or was already scanned. If the scan was successful, it saves the time of the scan and the staff member who has scanned.</p>
-<h3 id='query-parameters-54'>Query parameters</h3>
+<h3 id='query-parameters-55'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -5973,7 +6035,7 @@
 <aside style="color: white;">Requires user authentication with right <b>view_tickets</b></aside>
 
 <p>This endpoint returns details about the ticket scanned and any associated entry.</p>
-<h3 id='query-parameters-55'>Query parameters</h3>
+<h3 id='query-parameters-56'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -6057,7 +6119,7 @@
 <aside style="color: white;">Requires user authentication with right <b>reset_tickets</b></aside>
 
 <p>This endpoint resets any scan of the specified ticket.</p>
-<h3 id='query-parameters-56'>Query parameters</h3>
+<h3 id='query-parameters-57'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
