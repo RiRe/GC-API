@@ -18,6 +18,14 @@ We use `https://api.hyperspace.one` as an example URL. This URL has to be replac
 
 We provide example codes in PHP. You can view code examples in the dark area to the right, and you can switch the programming language of the examples with the tabs in the top right.
 
+# Changelog
+
+This is the changelog of this API documentation.
+
+Date | Changes
+---- | -------
+2019-06-12 | <ul><li>Added GET /photographers</li><li>Added POST /orders/{id}</li></ul>
+
 # Return values & error handling
 
 > Successful request (HTTP status code `200`) without data
@@ -2473,6 +2481,45 @@ reflink | Hash of used reflink
 payment_info | Additional payment info
 amount | Order amount
 items[] | Order items
+
+## POST /orders/{id}
+```php
+<?php
+$ch = curl_init("https://api.hyperspace.one/orders/{id}");
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+  "Authorization: Bearer xxx",
+]);
+$res = curl_exec($ch);
+
+if (curl_errno($ch)) {
+  die(curl_error($ch));
+}
+
+curl_close($ch);
+$res = json_decode($res, true);
+
+print_r($res);
+```
+
+> The above request returns JSON structured like this:
+
+```json
+{
+  "success": true
+}
+```
+
+<aside style="color: white;">Requires user authentication with right <b>view_orders</b></aside>
+
+This endpoint allows administrators to resend the confirmation email for a specific order. This order **must be paid**.
+
+### Query parameters
+
+Parameter | Default | Description
+--------- | ------- | -----------
+id | - | Order ID
 
 ## ANY /order/{order_id}/{token}/ipn/{payment_method}
 
