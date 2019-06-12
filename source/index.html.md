@@ -2123,6 +2123,51 @@ Failure Code | Meaning
 ---------- | -------
 1000 | Image not found
 
+## GET /photographers
+```php
+<?php
+$ch = curl_init("https://api.hyperspace.one/photographers");
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+  "Authorization: Bearer xxx",
+]);
+$res = curl_exec($ch);
+
+if (curl_errno($ch)) {
+  die(curl_error($ch));
+}
+
+curl_close($ch);
+$res = json_decode($res, true);
+
+print_r($res);
+```
+
+> The above request returns JSON structured like this:
+
+```json
+{
+  "success": true,
+  "photographers": [
+    {
+      "id": 33,
+      "name": "John Doe"
+    }
+  ]
+}
+```
+
+<aside style="color: white;">Requires authentication with right <b>manage_images</b></aside>
+
+This endpoint allows getting all users with `photographer` right, allowing image managers without user access to search for a creator.
+
+### Return values
+
+Parameter | Description
+--------- | -----------
+id | User ID
+name | User full name
+
 # Orders
 
 ## POST /order
