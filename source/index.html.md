@@ -24,7 +24,7 @@ This is the changelog of this API documentation.
 
 Date | Changes
 ---- | -------
-2019-06-12 | <ul style="margin: 0;"><li>Added GET /photographers</li><li>Added POST /orders/{id}</li><li>Updated GET /faq</li><li>Added POST /faq</li><li>Added PUT /faq/{id}</li><li>Added DELETE /faq/{id}</li></ul>
+2019-06-12 | <ul style="margin: 0;"><li>Added GET /photographers</li><li>Added POST /orders/{id}</li><li>Updated GET /faq</li><li>Added POST /faq</li><li>Added PUT /faq/{id}</li><li>Added DELETE /faq/{id}</li><li>Updated GET /ranks</li><li>Added POST /ranks</li><li>Added PUT /ranks/{id}</li><li>Added DELETE /ranks/{id}</li><li>Added GET /ranks/features</li><li>Added POST /ranks/features</li><li>Added PUT /ranks/features/{id}</li><li>Added DELETE /ranks/features/{id}</li></ul>
 
 # Return values & error handling
 
@@ -2864,19 +2864,22 @@ print_r($res);
 ```json
 [
   {
-    "name":"Visitor",
-    "points":0,
-    "features":[]
+    "id": 1,
+    "name": "Visitor",
+    "points": 0,
+    "features": []
   },
   {
-    "name":"Flight Engineer",
-    "points":100,
-    "features":[]
+    "id": 2,
+    "name": "Flight Engineer",
+    "points": 100,
+    "features": []
   },
   {
-    "name":"Commander",
-    "points":300,
-    "features":["Free entry"]
+    "id": 3,
+    "name": "Commander",
+    "points": 300,
+    "features": ["Free entry"]
   }
 ]
 ```
@@ -2889,9 +2892,331 @@ Each rank has the following properties:
 
 Parameter | Description
 --------- | -----------
+id | Rank ID
 name | Name of rank
 points | Points required
 features[] | List of features coming with rank
+
+## POST /ranks
+```php
+<?php
+$ch = curl_init("https://api.hyperspace.one/ranks");
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+  "Authorization: Bearer xxx",
+]);
+curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query([
+  "name" => "Visitor",
+  "points" => 0,
+]));
+$res = curl_exec($ch);
+
+if (curl_errno($ch)) {
+  die(curl_error($ch));
+}
+
+curl_close($ch);
+$res = json_decode($res, true);
+
+print_r($res);
+```
+
+> The above request returns JSON structured like this:
+
+```json
+{
+  "success": true,
+  "id": 1
+}
+```
+
+<aside style="color: white;">Requires user authentication with right <b>settings</b></aside>
+
+This endpoint allows administrators to create new ranks.
+
+### Query parameters
+
+Parameter | Default | Description
+--------- | ------- | -----------
+name | - | Rank name
+points | - | Points required to reach rank
+
+### Return values
+
+Parameter | Description
+--------- | -----------
+id | ID of newly created rank
+
+### Failure codes
+
+Failure Code | Meaning
+---------- | -------
+1001 | No name specified
+1002 | Invalid points specified
+
+## PUT /ranks/{id}
+```php
+<?php
+$ch = curl_init("https://api.hyperspace.one/ranks/{id}");
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query([
+  "name" => "Flight Engineer",
+]));
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+  "Authorization: Bearer xxx",
+]);
+curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
+$res = curl_exec($ch);
+
+if (curl_errno($ch)) {
+  die(curl_error($ch));
+}
+
+curl_close($ch);
+$res = json_decode($res, true);
+
+print_r($res);
+```
+
+> The above request returns JSON structured like this:
+
+```json
+{
+  "success": true
+}
+```
+
+<aside style="color: white;">Requires user authentication with right <b>settings</b></aside>
+
+This endpoint allows administrators to edit ranks.
+
+### Query parameters
+
+Parameter | Default | Description
+--------- | ------- | -----------
+id | - | Rank ID
+
+You can also use the parameters `name` and `points` to update these properties. Parameters not specified are ignored and not updated.
+
+## DELETE /ranks/{id}
+```php
+<?php
+$ch = curl_init("https://api.hyperspace.one/ranks/{id}");
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+  "Authorization: Bearer xxx",
+]);
+curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "DELETE");
+$res = curl_exec($ch);
+
+if (curl_errno($ch)) {
+  die(curl_error($ch));
+}
+
+curl_close($ch);
+$res = json_decode($res, true);
+
+print_r($res);
+```
+
+> The above request returns JSON structured like this:
+
+```json
+{
+  "success": true
+}
+```
+
+<aside style="color: white;">Requires user authentication with right <b>settings</b></aside>
+
+This endpoint allows administrators to delete a rank.
+
+### Query parameters
+
+Parameter | Default | Description
+--------- | ------- | -----------
+id | - | Rank ID
+
+## GET /ranks/features
+```php
+<?php
+$ch = curl_init("https://api.hyperspace.one/ranks/features");
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$res = curl_exec($ch);
+
+if (curl_errno($ch)) {
+  die(curl_error($ch));
+}
+
+curl_close($ch);
+$res = json_decode($res, true);
+
+print_r($res);
+```
+
+> The above request returns JSON structured like this:
+
+```json
+[
+  {
+    "id":1,
+    "feature":"Freier Eintritt",
+    "points":500
+  }
+]
+```
+
+This endpoint returns all rank features configured with GroundControl.
+
+### Return values
+
+Each rank has the following properties:
+
+Parameter | Description
+--------- | -----------
+id | Feature ID
+feature | Feature description
+points | Points required
+
+## POST /ranks/features
+```php
+<?php
+$ch = curl_init("https://api.hyperspace.one/ranks/features");
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+  "Authorization: Bearer xxx",
+]);
+curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query([
+  "feature" => "Free entrance",
+  "points" => 500,
+]));
+$res = curl_exec($ch);
+
+if (curl_errno($ch)) {
+  die(curl_error($ch));
+}
+
+curl_close($ch);
+$res = json_decode($res, true);
+
+print_r($res);
+```
+
+> The above request returns JSON structured like this:
+
+```json
+{
+  "success": true,
+  "id": 1
+}
+```
+
+<aside style="color: white;">Requires user authentication with right <b>settings</b></aside>
+
+This endpoint allows administrators to create new rank features.
+
+### Query parameters
+
+Parameter | Default | Description
+--------- | ------- | -----------
+feature | - | Feature description
+points | - | Points required to activate feature
+
+### Return values
+
+Parameter | Description
+--------- | -----------
+id | ID of newly created feature
+
+### Failure codes
+
+Failure Code | Meaning
+---------- | -------
+1001 | No description specified
+1002 | Invalid points specified
+
+## PUT /ranks/features/{id}
+```php
+<?php
+$ch = curl_init("https://api.hyperspace.one/ranks/features/{id}");
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query([
+  "name" => "Free Entrance",
+]));
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+  "Authorization: Bearer xxx",
+]);
+curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
+$res = curl_exec($ch);
+
+if (curl_errno($ch)) {
+  die(curl_error($ch));
+}
+
+curl_close($ch);
+$res = json_decode($res, true);
+
+print_r($res);
+```
+
+> The above request returns JSON structured like this:
+
+```json
+{
+  "success": true
+}
+```
+
+<aside style="color: white;">Requires user authentication with right <b>settings</b></aside>
+
+This endpoint allows administrators to edit rank features.
+
+### Query parameters
+
+Parameter | Default | Description
+--------- | ------- | -----------
+id | - | Feature ID
+
+You can also use the parameters `feature` and `points` to update these properties. Parameters not specified are ignored and not updated.
+
+## DELETE /ranks/features/{id}
+```php
+<?php
+$ch = curl_init("https://api.hyperspace.one/ranks/features/{id}");
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+  "Authorization: Bearer xxx",
+]);
+curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "DELETE");
+$res = curl_exec($ch);
+
+if (curl_errno($ch)) {
+  die(curl_error($ch));
+}
+
+curl_close($ch);
+$res = json_decode($res, true);
+
+print_r($res);
+```
+
+> The above request returns JSON structured like this:
+
+```json
+{
+  "success": true
+}
+```
+
+<aside style="color: white;">Requires user authentication with right <b>settings</b></aside>
+
+This endpoint allows administrators to delete a rank feature.
+
+### Query parameters
+
+Parameter | Default | Description
+--------- | ------- | -----------
+id | - | Feature ID
 
 ## GET /achievements
 ```php
@@ -4192,7 +4517,7 @@ Parameter | Default | Description
 --------- | ------- | -----------
 id | - | FAQ ID
 
-You can also use the parameters `question`, and `answer` to update these properties. Parameters not specified are ignored and not updated.
+You can also use the parameters `question` and `answer` to update these properties. Parameters not specified are ignored and not updated.
 
 If you specify an array named `localization` as in `POST /faq`, the values for the specified languages are updated. Localizations not specified are deleted.
 
