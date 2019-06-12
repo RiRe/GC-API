@@ -24,7 +24,7 @@ This is the changelog of this API documentation.
 
 Date | Changes
 ---- | -------
-2019-06-12 | <ul><li>Added GET /photographers</li><li>Added POST /orders/{id}</li></ul>
+2019-06-12 | <ul><li>Added GET /photographers</li><li>Added POST /orders/{id}</li><li>Updated GET /faq</li><li>Added POST /faq</li><li>Added PUT /faq/{id}</li><li>Added DELETE /faq/{id}</li></ul>
 
 # Return values & error handling
 
@@ -279,8 +279,19 @@ print_r($res);
   "success": true,
   "faq": [
     {
+      "id": 2,
       "question":"WHERE CAN YOU PARK?",
-      "answer":"At our PreParty in Music Dome there is free parking."
+      "answer":"At our PreParty in Music Dome there is free parking.",
+      "localization": {
+        "en": {
+          "question": "WHERE CAN YOU PARK?",
+          "answer": "At our PreParty in Music Dome there is free parking straight in front of the location. Because the Music Dome is located in the stadion of Roda JC Kerkrade, there are more than enough parking lots."
+        },
+        "de": {
+          "question": "WO KANN ICH PARKEN?",
+          "answer": "Bei unserer PreParty im Music Dome Kerkrade findest Du kostenlose Parkplätze direkt vor der Location. Da der Music Dome sich direkt im Stadiongebäude des Roda JC Kerkrade befindet, stehen hier genügend Stellplätze zur Verfügung."
+        }
+      }
     }
   ]
 }
@@ -4074,3 +4085,152 @@ This endpoint can be used to update settings. It expects as many key-value pairs
 Parameter | Description
 --------- | -----------
 set | All newly set values according to their keys
+
+## POST /faq
+```php
+<?php
+$ch = curl_init("https://api.hyperspace.one/faq");
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+  "Authorization: Bearer xxx",
+]);
+curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query([
+  "question" => "My question",
+  "answer" => "My answer",
+  "localization" => [
+    "de" => [
+      "question" => "Meine Frage",
+      "answer" => "Meine Antwort"
+    ],
+  ],
+]));
+$res = curl_exec($ch);
+
+if (curl_errno($ch)) {
+  die(curl_error($ch));
+}
+
+curl_close($ch);
+$res = json_decode($res, true);
+
+print_r($res);
+```
+
+> The above request returns JSON structured like this:
+
+```json
+{
+  "success": true,
+  "id": 1
+}
+```
+
+<aside style="color: white;">Requires user authentication with right <b>settings</b></aside>
+
+This endpoint allows administrators to create new FAQs.
+
+### Query parameters
+
+Parameter | Default | Description
+--------- | ------- | -----------
+question | - | Question
+answer | - | Answer
+localization | [] | Array with localized content (optional)
+
+### Return values
+
+Parameter | Description
+--------- | -----------
+id | ID of newly created FAQ
+
+### Failure codes
+
+Failure Code | Meaning
+---------- | -------
+1001 | No question specified
+1002 | No answer specified
+
+## PUT /faq/{id}
+```php
+<?php
+$ch = curl_init("https://api.hyperspace.one/faq/{id}");
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query([
+  "question" => "My question?",
+]));
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+  "Authorization: Bearer xxx",
+]);
+curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
+$res = curl_exec($ch);
+
+if (curl_errno($ch)) {
+  die(curl_error($ch));
+}
+
+curl_close($ch);
+$res = json_decode($res, true);
+
+print_r($res);
+```
+
+> The above request returns JSON structured like this:
+
+```json
+{
+  "success": true
+}
+```
+
+<aside style="color: white;">Requires user authentication with right <b>settings</b></aside>
+
+This endpoint allows administrators to edit FAQs.
+
+### Query parameters
+
+Parameter | Default | Description
+--------- | ------- | -----------
+id | - | FAQ ID
+
+You can also use the parameters `question`, and `answer` to update these properties. Parameters not specified are ignored and not updated.
+
+If you specify an array named `localization` as in `POST /faq`, the values for the specified languages are updated. Localizations not specified are deleted.
+
+## DELETE /faq/{id}
+```php
+<?php
+$ch = curl_init("https://api.hyperspace.one/faq/{id}");
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+  "Authorization: Bearer xxx",
+]);
+curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "DELETE");
+$res = curl_exec($ch);
+
+if (curl_errno($ch)) {
+  die(curl_error($ch));
+}
+
+curl_close($ch);
+$res = json_decode($res, true);
+
+print_r($res);
+```
+
+> The above request returns JSON structured like this:
+
+```json
+{
+  "success": true
+}
+```
+
+<aside style="color: white;">Requires user authentication with right <b>settings</b></aside>
+
+This endpoint allows administrators to delete a FAQ.
+
+### Query parameters
+
+Parameter | Default | Description
+--------- | ------- | -----------
+id | - | FAQ ID
