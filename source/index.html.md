@@ -24,6 +24,7 @@ This is the changelog of this API documentation.
 
 Date | Changes
 ---- | -------
+2019-06-13 | <ul style="margin: 0;"><li>Added GET /users/rights</li><li>Added GET /devices</li><li>Added POST /devices</li><li>Added PUT /devices/{id}</li><li>Added DELETE /devices/{id}</li></ul>
 2019-06-12 | <ul style="margin: 0;"><li>Added GET /photographers</li><li>Added POST /orders/{id}</li><li>Updated GET /faq</li><li>Added POST /faq</li><li>Added PUT /faq/{id}</li><li>Added DELETE /faq/{id}</li><li>Updated GET /ranks</li><li>Added POST /ranks</li><li>Added PUT /ranks/{id}</li><li>Added DELETE /ranks/{id}</li><li>Added GET /ranks/features</li><li>Added POST /ranks/features</li><li>Added PUT /ranks/features/{id}</li><li>Added DELETE /ranks/features/{id}</li></ul>
 
 # Return values & error handling
@@ -916,6 +917,45 @@ Failure Code | Meaning
 1003 | No firstname specified
 1004 | No lastname specified
 1005 | Password does not met requirements
+
+## GET /users/rights
+```php
+<?php
+$ch = curl_init("https://api.hyperspace.one/users/rights");
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+  "Authorization: Bearer xxx",
+]);
+$res = curl_exec($ch);
+
+if (curl_errno($ch)) {
+  die(curl_error($ch));
+}
+
+curl_close($ch);
+$res = json_decode($res, true);
+
+print_r($res);
+```
+
+> The above request returns JSON structured like this:
+
+```json
+{
+  "success": true,
+  "rights": {
+    "settings": "Manage system settings",
+    "get_users": "View customer list",
+    "get_user": "View customer details",
+    "create_user": "Create customers",
+    "delete_user": "Delete customers"
+  }
+}
+```
+
+<aside style="color: white;">Requires authentication with right <b>get_users</b></aside>
+
+This endpoint allows staff members to get the available system rights with their localized description.
 
 # Preregistrations
 
@@ -4053,7 +4093,7 @@ Failure Code | Meaning
 1000 | No token specified
 1001 | Token not found
 
-# Terminals
+# Devices
 
 ## GET /terminal/{device_id}/{rfid_tag}
 ```php
@@ -4324,6 +4364,199 @@ Failure Code | Meaning
 1000 | Invalid hash format
 1001 | Unknown ticket ID
 1002 | Wrong hash
+
+## GET /devices
+```php
+<?php
+$ch = curl_init("https://api.hyperspace.one/devices");
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+  "Authorization: Bearer xxx",
+]);
+$res = curl_exec($ch);
+
+if (curl_errno($ch)) {
+  die(curl_error($ch));
+}
+
+curl_close($ch);
+$res = json_decode($res, true);
+
+print_r($res);
+```
+
+> The above request returns JSON structured like this:
+
+```json
+{
+  "success": true,
+  "itemCount": 1,
+  "items": [
+    {
+      "id": "4f0ca3a3-c729-467a-adfd-75ef58029ac3",
+      "beep": 1,
+      "age_green": 18,
+      "created_at": "2019-06-13 04:09:08",
+      "updated_at": "2019-06-13 08:01:07"
+    }
+  ]
+}
+```
+
+<aside style="color: white;">Requires user authentication with right <b>manage_devices</b></aside>
+
+This endpoint allows administrators to get a paginated list of all devices in the system.
+
+### Query parameters
+
+Parameter | Default | Description
+--------- | ------- | -----------
+page | 1 | Page number
+per_page | 20 | Items to display per page
+
+### Return values
+
+The request returns an `itemCount` which is the number of all devices in system. `items` contains the set of requested devices according to pagination. The devices have these properties:
+
+Parameter | Description
+--------- | -----------
+id | Device ID (**keep it secret**)
+beep | Scan beep activated
+age_green | Age required for green LED
+created_at | Time of device creation
+updated_at | Time of last change
+
+## POST /devices
+```php
+<?php
+$ch = curl_init("https://api.hyperspace.one/devices");
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+  "Authorization: Bearer xxx",
+]);
+curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query([
+  "beep" => true,
+]));
+$res = curl_exec($ch);
+
+if (curl_errno($ch)) {
+  die(curl_error($ch));
+}
+
+curl_close($ch);
+$res = json_decode($res, true);
+
+print_r($res);
+```
+
+> The above request returns JSON structured like this:
+
+```json
+{
+  "success": true,
+  "id": "1f37acb0-8df1-11e9-a016-0b66f9bad036"
+}
+```
+
+<aside style="color: white;">Requires user authentication with right <b>manage_devices</b></aside>
+
+This endpoint allows administrators to create new devices.
+
+### Query parameters
+
+Parameter | Default | Description
+--------- | ------- | -----------
+beep | false | Scan beep activated
+age_green | 18 | Age required for green LED
+
+### Return values
+
+Parameter | Description
+--------- | -----------
+id | ID of newly created device (**keep it secret**)
+
+## PUT /devices/{id}
+```php
+<?php
+$ch = curl_init("https://api.hyperspace.one/devices/{id}");
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query([
+  "beep" => false,
+]));
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+  "Authorization: Bearer xxx",
+]);
+curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
+$res = curl_exec($ch);
+
+if (curl_errno($ch)) {
+  die(curl_error($ch));
+}
+
+curl_close($ch);
+$res = json_decode($res, true);
+
+print_r($res);
+```
+
+> The above request returns JSON structured like this:
+
+```json
+{
+  "success": true
+}
+```
+
+<aside style="color: white;">Requires user authentication with right <b>manage_devices</b></aside>
+
+This endpoint allows administrators to edit a device.
+
+### Query parameters
+
+Parameter | Default | Description
+--------- | ------- | -----------
+id | - | Device ID
+
+You can also use the parameters `beep`, and `age_green` to update these properties. Parameters not specified are ignored and not updated.
+
+## DELETE /devices/{id}
+```php
+<?php
+$ch = curl_init("https://api.hyperspace.one/devices/{id}");
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+  "Authorization: Bearer xxx",
+]);
+curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "DELETE");
+$res = curl_exec($ch);
+
+if (curl_errno($ch)) {
+  die(curl_error($ch));
+}
+
+curl_close($ch);
+$res = json_decode($res, true);
+
+print_r($res);
+```
+
+> The above request returns JSON structured like this:
+
+```json
+{
+  "success": true
+}
+```
+
+<aside style="color: white;">Requires user authentication with right <b>manage_devices</b></aside>
+
+This endpoint allows administrators to delete a device.
+
+### Query parameters
+
+Parameter | Default | Description
+--------- | ------- | -----------
+id | - | Device ID
 
 # Settings
 
