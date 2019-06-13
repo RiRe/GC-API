@@ -300,6 +300,9 @@
                   <li>
                     <a href="#post-user" class="toc-h2 toc-link" data-title="POST /user">POST /user</a>
                   </li>
+                  <li>
+                    <a href="#get-users-rights" class="toc-h2 toc-link" data-title="GET /users/rights">GET /users/rights</a>
+                  </li>
               </ul>
           </li>
           <li>
@@ -510,7 +513,7 @@
               </ul>
           </li>
           <li>
-            <a href="#terminals" class="toc-h1 toc-link" data-title="Terminals">Terminals</a>
+            <a href="#devices" class="toc-h1 toc-link" data-title="Devices">Devices</a>
               <ul class="toc-list-h2">
                   <li>
                     <a href="#get-terminal-device_id-rfid_tag" class="toc-h2 toc-link" data-title="GET /terminal/{device_id}/{rfid_tag}">GET /terminal/{device_id}/{rfid_tag}</a>
@@ -526,6 +529,18 @@
                   </li>
                   <li>
                     <a href="#delete-entry-hash" class="toc-h2 toc-link" data-title="DELETE /entry/{hash}">DELETE /entry/{hash}</a>
+                  </li>
+                  <li>
+                    <a href="#get-devices" class="toc-h2 toc-link" data-title="GET /devices">GET /devices</a>
+                  </li>
+                  <li>
+                    <a href="#post-devices" class="toc-h2 toc-link" data-title="POST /devices">POST /devices</a>
+                  </li>
+                  <li>
+                    <a href="#put-devices-id" class="toc-h2 toc-link" data-title="PUT /devices/{id}">PUT /devices/{id}</a>
+                  </li>
+                  <li>
+                    <a href="#delete-devices-id" class="toc-h2 toc-link" data-title="DELETE /devices/{id}">DELETE /devices/{id}</a>
                   </li>
               </ul>
           </li>
@@ -572,6 +587,10 @@
 <th>Changes</th>
 </tr>
 </thead><tbody>
+<tr>
+<td>2019-06-13</td>
+<td><ul style="margin: 0;"><li>Added GET /users/rights</li><li>Added GET /devices</li><li>Added POST /devices</li><li>Added PUT /devices/{id}</li><li>Added DELETE /devices/{id}</li></ul></td>
+</tr>
 <tr>
 <td>2019-06-12</td>
 <td><ul style="margin: 0;"><li>Added GET /photographers</li><li>Added POST /orders/{id}</li><li>Updated GET /faq</li><li>Added POST /faq</li><li>Added PUT /faq/{id}</li><li>Added DELETE /faq/{id}</li><li>Updated GET /ranks</li><li>Added POST /ranks</li><li>Added PUT /ranks/{id}</li><li>Added DELETE /ranks/{id}</li><li>Added GET /ranks/features</li><li>Added POST /ranks/features</li><li>Added PUT /ranks/features/{id}</li><li>Added DELETE /ranks/features/{id}</li></ul></td>
@@ -1837,6 +1856,40 @@
 <td>Password does not met requirements</td>
 </tr>
 </tbody></table>
+<h2 id='get-users-rights'>GET /users/rights</h2><pre class="highlight php tab-php"><code><span class="cp">&lt;?php</span>
+<span class="nv">$ch</span> <span class="o">=</span> <span class="nb">curl_init</span><span class="p">(</span><span class="s2">"https://api.hyperspace.one/users/rights"</span><span class="p">);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_RETURNTRANSFER</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_HTTPHEADER</span><span class="p">,</span> <span class="p">[</span>
+  <span class="s2">"Authorization: Bearer xxx"</span><span class="p">,</span>
+<span class="p">]);</span>
+<span class="nv">$res</span> <span class="o">=</span> <span class="nb">curl_exec</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="nb">curl_errno</span><span class="p">(</span><span class="nv">$ch</span><span class="p">))</span> <span class="p">{</span>
+  <span class="k">die</span><span class="p">(</span><span class="nb">curl_error</span><span class="p">(</span><span class="nv">$ch</span><span class="p">));</span>
+<span class="p">}</span>
+
+<span class="nb">curl_close</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
+<span class="nv">$res</span> <span class="o">=</span> <span class="nb">json_decode</span><span class="p">(</span><span class="nv">$res</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+
+<span class="nb">print_r</span><span class="p">(</span><span class="nv">$res</span><span class="p">);</span>
+</code></pre>
+<blockquote>
+<p>The above request returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"success"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"rights"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"settings"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Manage system settings"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"get_users"</span><span class="p">:</span><span class="w"> </span><span class="s2">"View customer list"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"get_user"</span><span class="p">:</span><span class="w"> </span><span class="s2">"View customer details"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"create_user"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Create customers"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"delete_user"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Delete customers"</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<aside style="color: white;">Requires authentication with right <b>get_users</b></aside>
+
+<p>This endpoint allows staff members to get the available system rights with their localized description.</p>
 <h1 id='preregistrations'>Preregistrations</h1><h2 id='post-preregister'>POST /preregister</h2><pre class="highlight php tab-php"><code><span class="cp">&lt;?php</span>
 <span class="nv">$ch</span> <span class="o">=</span> <span class="nb">curl_init</span><span class="p">(</span><span class="s2">"https://api.hyperspace.one/preregister"</span><span class="p">);</span>
 <span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_RETURNTRANSFER</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
@@ -6221,7 +6274,7 @@
 <td>Token not found</td>
 </tr>
 </tbody></table>
-<h1 id='terminals'>Terminals</h1><h2 id='get-terminal-device_id-rfid_tag'>GET /terminal/{device_id}/{rfid_tag}</h2><pre class="highlight php tab-php"><code><span class="cp">&lt;?php</span>
+<h1 id='devices'>Devices</h1><h2 id='get-terminal-device_id-rfid_tag'>GET /terminal/{device_id}/{rfid_tag}</h2><pre class="highlight php tab-php"><code><span class="cp">&lt;?php</span>
 <span class="nv">$ch</span> <span class="o">=</span> <span class="nb">curl_init</span><span class="p">(</span><span class="s2">"https://api.hyperspace.one/terminal/</span><span class="nv">$device_id</span><span class="s2">/</span><span class="nv">$rfid_tag</span><span class="s2">"</span><span class="p">);</span>
 <span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_RETURNTRANSFER</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
 <span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_HTTPHEADER</span><span class="p">,</span> <span class="p">[</span>
@@ -6583,6 +6636,243 @@
 <td>Wrong hash</td>
 </tr>
 </tbody></table>
+<h2 id='get-devices'>GET /devices</h2><pre class="highlight php tab-php"><code><span class="cp">&lt;?php</span>
+<span class="nv">$ch</span> <span class="o">=</span> <span class="nb">curl_init</span><span class="p">(</span><span class="s2">"https://api.hyperspace.one/devices"</span><span class="p">);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_RETURNTRANSFER</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_HTTPHEADER</span><span class="p">,</span> <span class="p">[</span>
+  <span class="s2">"Authorization: Bearer xxx"</span><span class="p">,</span>
+<span class="p">]);</span>
+<span class="nv">$res</span> <span class="o">=</span> <span class="nb">curl_exec</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="nb">curl_errno</span><span class="p">(</span><span class="nv">$ch</span><span class="p">))</span> <span class="p">{</span>
+  <span class="k">die</span><span class="p">(</span><span class="nb">curl_error</span><span class="p">(</span><span class="nv">$ch</span><span class="p">));</span>
+<span class="p">}</span>
+
+<span class="nb">curl_close</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
+<span class="nv">$res</span> <span class="o">=</span> <span class="nb">json_decode</span><span class="p">(</span><span class="nv">$res</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+
+<span class="nb">print_r</span><span class="p">(</span><span class="nv">$res</span><span class="p">);</span>
+</code></pre>
+<blockquote>
+<p>The above request returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"success"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"itemCount"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"items"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"4f0ca3a3-c729-467a-adfd-75ef58029ac3"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"beep"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"age_green"</span><span class="p">:</span><span class="w"> </span><span class="mi">18</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"created_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2019-06-13 04:09:08"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"updated_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2019-06-13 08:01:07"</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<aside style="color: white;">Requires user authentication with right <b>manage_devices</b></aside>
+
+<p>This endpoint allows administrators to get a paginated list of all devices in the system.</p>
+<h3 id='query-parameters-64'>Query parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>page</td>
+<td>1</td>
+<td>Page number</td>
+</tr>
+<tr>
+<td>per_page</td>
+<td>20</td>
+<td>Items to display per page</td>
+</tr>
+</tbody></table>
+<h3 id='return-values-38'>Return values</h3>
+<p>The request returns an <code>itemCount</code> which is the number of all devices in system. <code>items</code> contains the set of requested devices according to pagination. The devices have these properties:</p>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>id</td>
+<td>Device ID (<strong>keep it secret</strong>)</td>
+</tr>
+<tr>
+<td>beep</td>
+<td>Scan beep activated</td>
+</tr>
+<tr>
+<td>age_green</td>
+<td>Age required for green LED</td>
+</tr>
+<tr>
+<td>created_at</td>
+<td>Time of device creation</td>
+</tr>
+<tr>
+<td>updated_at</td>
+<td>Time of last change</td>
+</tr>
+</tbody></table>
+<h2 id='post-devices'>POST /devices</h2><pre class="highlight php tab-php"><code><span class="cp">&lt;?php</span>
+<span class="nv">$ch</span> <span class="o">=</span> <span class="nb">curl_init</span><span class="p">(</span><span class="s2">"https://api.hyperspace.one/devices"</span><span class="p">);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_RETURNTRANSFER</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_HTTPHEADER</span><span class="p">,</span> <span class="p">[</span>
+  <span class="s2">"Authorization: Bearer xxx"</span><span class="p">,</span>
+<span class="p">]);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_POSTFIELDS</span><span class="p">,</span> <span class="nb">http_build_query</span><span class="p">([</span>
+  <span class="s2">"beep"</span> <span class="o">=&gt;</span> <span class="kc">true</span><span class="p">,</span>
+<span class="p">]));</span>
+<span class="nv">$res</span> <span class="o">=</span> <span class="nb">curl_exec</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="nb">curl_errno</span><span class="p">(</span><span class="nv">$ch</span><span class="p">))</span> <span class="p">{</span>
+  <span class="k">die</span><span class="p">(</span><span class="nb">curl_error</span><span class="p">(</span><span class="nv">$ch</span><span class="p">));</span>
+<span class="p">}</span>
+
+<span class="nb">curl_close</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
+<span class="nv">$res</span> <span class="o">=</span> <span class="nb">json_decode</span><span class="p">(</span><span class="nv">$res</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+
+<span class="nb">print_r</span><span class="p">(</span><span class="nv">$res</span><span class="p">);</span>
+</code></pre>
+<blockquote>
+<p>The above request returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"success"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1f37acb0-8df1-11e9-a016-0b66f9bad036"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<aside style="color: white;">Requires user authentication with right <b>manage_devices</b></aside>
+
+<p>This endpoint allows administrators to create new devices.</p>
+<h3 id='query-parameters-65'>Query parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>beep</td>
+<td>false</td>
+<td>Scan beep activated</td>
+</tr>
+<tr>
+<td>age_green</td>
+<td>18</td>
+<td>Age required for green LED</td>
+</tr>
+</tbody></table>
+<h3 id='return-values-39'>Return values</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>id</td>
+<td>ID of newly created device (<strong>keep it secret</strong>)</td>
+</tr>
+</tbody></table>
+<h2 id='put-devices-id'>PUT /devices/{id}</h2><pre class="highlight php tab-php"><code><span class="cp">&lt;?php</span>
+<span class="nv">$ch</span> <span class="o">=</span> <span class="nb">curl_init</span><span class="p">(</span><span class="s2">"https://api.hyperspace.one/devices/</span><span class="si">{</span><span class="nv">id</span><span class="si">}</span><span class="s2">"</span><span class="p">);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_RETURNTRANSFER</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_POSTFIELDS</span><span class="p">,</span> <span class="nb">http_build_query</span><span class="p">([</span>
+  <span class="s2">"beep"</span> <span class="o">=&gt;</span> <span class="kc">false</span><span class="p">,</span>
+<span class="p">]));</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_HTTPHEADER</span><span class="p">,</span> <span class="p">[</span>
+  <span class="s2">"Authorization: Bearer xxx"</span><span class="p">,</span>
+<span class="p">]);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_CUSTOMREQUEST</span><span class="p">,</span> <span class="s2">"PUT"</span><span class="p">);</span>
+<span class="nv">$res</span> <span class="o">=</span> <span class="nb">curl_exec</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="nb">curl_errno</span><span class="p">(</span><span class="nv">$ch</span><span class="p">))</span> <span class="p">{</span>
+  <span class="k">die</span><span class="p">(</span><span class="nb">curl_error</span><span class="p">(</span><span class="nv">$ch</span><span class="p">));</span>
+<span class="p">}</span>
+
+<span class="nb">curl_close</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
+<span class="nv">$res</span> <span class="o">=</span> <span class="nb">json_decode</span><span class="p">(</span><span class="nv">$res</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+
+<span class="nb">print_r</span><span class="p">(</span><span class="nv">$res</span><span class="p">);</span>
+</code></pre>
+<blockquote>
+<p>The above request returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"success"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<aside style="color: white;">Requires user authentication with right <b>manage_devices</b></aside>
+
+<p>This endpoint allows administrators to edit a device.</p>
+<h3 id='query-parameters-66'>Query parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>id</td>
+<td>-</td>
+<td>Device ID</td>
+</tr>
+</tbody></table>
+
+<p>You can also use the parameters <code>beep</code>, and <code>age_green</code> to update these properties. Parameters not specified are ignored and not updated.</p>
+<h2 id='delete-devices-id'>DELETE /devices/{id}</h2><pre class="highlight php tab-php"><code><span class="cp">&lt;?php</span>
+<span class="nv">$ch</span> <span class="o">=</span> <span class="nb">curl_init</span><span class="p">(</span><span class="s2">"https://api.hyperspace.one/devices/</span><span class="si">{</span><span class="nv">id</span><span class="si">}</span><span class="s2">"</span><span class="p">);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_RETURNTRANSFER</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_HTTPHEADER</span><span class="p">,</span> <span class="p">[</span>
+  <span class="s2">"Authorization: Bearer xxx"</span><span class="p">,</span>
+<span class="p">]);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_CUSTOMREQUEST</span><span class="p">,</span> <span class="s2">"DELETE"</span><span class="p">);</span>
+<span class="nv">$res</span> <span class="o">=</span> <span class="nb">curl_exec</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="nb">curl_errno</span><span class="p">(</span><span class="nv">$ch</span><span class="p">))</span> <span class="p">{</span>
+  <span class="k">die</span><span class="p">(</span><span class="nb">curl_error</span><span class="p">(</span><span class="nv">$ch</span><span class="p">));</span>
+<span class="p">}</span>
+
+<span class="nb">curl_close</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
+<span class="nv">$res</span> <span class="o">=</span> <span class="nb">json_decode</span><span class="p">(</span><span class="nv">$res</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+
+<span class="nb">print_r</span><span class="p">(</span><span class="nv">$res</span><span class="p">);</span>
+</code></pre>
+<blockquote>
+<p>The above request returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"success"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<aside style="color: white;">Requires user authentication with right <b>manage_devices</b></aside>
+
+<p>This endpoint allows administrators to delete a device.</p>
+<h3 id='query-parameters-67'>Query parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>id</td>
+<td>-</td>
+<td>Device ID</td>
+</tr>
+</tbody></table>
 <h1 id='settings'>Settings</h1><h2 id='get-settings'>GET /settings</h2><pre class="highlight php tab-php"><code><span class="cp">&lt;?php</span>
 <span class="nv">$ch</span> <span class="o">=</span> <span class="nb">curl_init</span><span class="p">(</span><span class="s2">"https://api.hyperspace.one/settings"</span><span class="p">);</span>
 <span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_RETURNTRANSFER</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
@@ -6653,7 +6943,7 @@
 <aside style="color: white;">Requires user authentication with right <b>settings</b></aside>
 
 <p>This endpoint can be used to update settings. It expects as many key-value pairs as you want. Only elements which exists in the <code>settings</code> table are updated, there are no elements newly created.</p>
-<h3 id='return-values-38'>Return values</h3>
+<h3 id='return-values-40'>Return values</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -6703,7 +6993,7 @@
 <aside style="color: white;">Requires user authentication with right <b>settings</b></aside>
 
 <p>This endpoint allows administrators to create new FAQs.</p>
-<h3 id='query-parameters-64'>Query parameters</h3>
+<h3 id='query-parameters-68'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -6727,7 +7017,7 @@
 <td>Array with localized content (optional)</td>
 </tr>
 </tbody></table>
-<h3 id='return-values-39'>Return values</h3>
+<h3 id='return-values-41'>Return values</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -6786,7 +7076,7 @@
 <aside style="color: white;">Requires user authentication with right <b>settings</b></aside>
 
 <p>This endpoint allows administrators to edit FAQs.</p>
-<h3 id='query-parameters-65'>Query parameters</h3>
+<h3 id='query-parameters-69'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -6832,7 +7122,7 @@
 <aside style="color: white;">Requires user authentication with right <b>settings</b></aside>
 
 <p>This endpoint allows administrators to delete a FAQ.</p>
-<h3 id='query-parameters-66'>Query parameters</h3>
+<h3 id='query-parameters-70'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
