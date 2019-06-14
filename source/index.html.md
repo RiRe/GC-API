@@ -5,7 +5,7 @@ language_tabs:
   - php
 
 toc_footers:
-  - <a href='https://my.hyperspace.one/contact'>Imprint</a>
+  - <a href='https://spacion.de/imprint' target='_blank'>Imprint</a>
 
 search: true
 ---
