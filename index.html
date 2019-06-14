@@ -257,9 +257,6 @@
                     <a href="#get-info" class="toc-h2 toc-link" data-title="GET /info">GET /info</a>
                   </li>
                   <li>
-                    <a href="#get-products" class="toc-h2 toc-link" data-title="GET /products">GET /products</a>
-                  </li>
-                  <li>
                     <a href="#get-faq" class="toc-h2 toc-link" data-title="GET /faq">GET /faq</a>
                   </li>
                   <li>
@@ -360,6 +357,23 @@
                   </li>
                   <li>
                     <a href="#delete-events-slug-artists-id" class="toc-h2 toc-link" data-title="DELETE /events/{slug}/artists/{id}">DELETE /events/{slug}/artists/{id}</a>
+                  </li>
+              </ul>
+          </li>
+          <li>
+            <a href="#products" class="toc-h1 toc-link" data-title="Products">Products</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#get-products" class="toc-h2 toc-link" data-title="GET /products">GET /products</a>
+                  </li>
+                  <li>
+                    <a href="#post-products" class="toc-h2 toc-link" data-title="POST /products">POST /products</a>
+                  </li>
+                  <li>
+                    <a href="#put-products-id" class="toc-h2 toc-link" data-title="PUT /products/{id}">PUT /products/{id}</a>
+                  </li>
+                  <li>
+                    <a href="#delete-products-id" class="toc-h2 toc-link" data-title="DELETE /products/{id}">DELETE /products/{id}</a>
                   </li>
               </ul>
           </li>
@@ -614,7 +628,7 @@
 <td>2019-06-14</td>
 <td>2019-06-14</td>
 <td>-</td>
-<td><ul style="margin: 0;"><li>Updated GET /events</li><li>Updated GET /events/{slug}</li><li>Added POST /events</li><li>Added PUT /events/{slug}</li><li>Added DELETE /events/{slug}</li><li>Added POST /events/{slug}/artists</li><li>Added PUT /evetns/{slug}/artists/{id}</li><li>Added DELETE /events/{slug}/artists/{id}</li><li>Added GET /metrics</lI></ul></td>
+<td><ul style="margin: 0;"><li>Updated GET /events</li><li>Updated GET /events/{slug}</li><li>Added POST /events</li><li>Added PUT /events/{slug}</li><li>Added DELETE /events/{slug}</li><li>Added POST /events/{slug}/artists</li><li>Added PUT /events/{slug}/artists/{id}</li><li>Added DELETE /events/{slug}/artists/{id}</li><li>Added GET /metrics</li><li>Added POST /products</li><li>Added PUT /products/{id}</li><li>Added DELETE /products/{id}</li></ul></td>
 </tr>
 <tr>
 <td>2019-06-13</td>
@@ -842,124 +856,6 @@
 </tbody></table>
 
 <aside style="color: white;">Additional values are possible based on your system configuration</aside>
-<h2 id='get-products'>GET /products</h2><pre class="highlight php tab-php"><code><span class="cp">&lt;?php</span>
-<span class="nv">$ch</span> <span class="o">=</span> <span class="nb">curl_init</span><span class="p">(</span><span class="s2">"https://api.hyperspace.one/products"</span><span class="p">);</span>
-<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_RETURNTRANSFER</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
-<span class="nv">$res</span> <span class="o">=</span> <span class="nb">curl_exec</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
-
-<span class="k">if</span> <span class="p">(</span><span class="nb">curl_errno</span><span class="p">(</span><span class="nv">$ch</span><span class="p">))</span> <span class="p">{</span>
-  <span class="k">die</span><span class="p">(</span><span class="nb">curl_error</span><span class="p">(</span><span class="nv">$ch</span><span class="p">));</span>
-<span class="p">}</span>
-
-<span class="nb">curl_close</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
-<span class="nv">$res</span> <span class="o">=</span> <span class="nb">json_decode</span><span class="p">(</span><span class="nv">$res</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
-
-<span class="nb">print_r</span><span class="p">(</span><span class="nv">$res</span><span class="p">);</span>
-</code></pre>
-<blockquote>
-<p>The above request returns JSON structured like this:</p>
-</blockquote>
-<pre class="highlight json tab-json"><code><span class="p">[</span><span class="w">
-  </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"id"</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"name"</span><span class="p">:</span><span class="s2">"Early Bird"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"description"</span><span class="p">:</span><span class="s2">"What do you get with this ticket?</span><span class="se">\r\n\r\n</span><span class="s2">+ Access to the festival</span><span class="se">\r\n</span><span class="s2">+ Wristband</span><span class="se">\r\n</span><span class="s2">+ Parking</span><span class="se">\r\n</span><span class="s2">+ Some more stuff</span><span class="se">\r\n</span><span class="s2">- Some more stuff"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"net_price"</span><span class="p">:</span><span class="mf">4.2</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"gross_price"</span><span class="p">:</span><span class="mi">5</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"price"</span><span class="p">:</span><span class="mi">5</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"taxrate"</span><span class="p">:</span><span class="mi">19</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"tax"</span><span class="p">:</span><span class="mf">0.8</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"net_shipping"</span><span class="p">:</span><span class="mf">0.04</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"gross_shipping"</span><span class="p">:</span><span class="mf">0.05</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"tax_shipping"</span><span class="p">:</span><span class="mf">0.01</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"pricePrefix"</span><span class="p">:</span><span class="s2">""</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"priceSuffix"</span><span class="p">:</span><span class="s2">"</span><span class="se">\u</span><span class="s2">20ac"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"end_personalization"</span><span class="p">:</span><span class="s2">"0000-00-00 00:00:00"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"sale_start"</span><span class="p">:</span><span class="s2">"0000-00-00 00:00:00"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"sale_end"</span><span class="p">:</span><span class="s2">"0000-00-00 00:00:00"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"available"</span><span class="p">:</span><span class="kc">true</span><span class="w">
-  </span><span class="p">}</span><span class="w">
-</span><span class="p">]</span><span class="w">
-</span></code></pre>
-<p>This endpoint returns the products defined in GroundControl.</p>
-<h3 id='return-values-3'>Return values</h3>
-<p>Each product has the following parameters:</p>
-
-<table><thead>
-<tr>
-<th>Parameter</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>id</td>
-<td>Product ID</td>
-</tr>
-<tr>
-<td>name</td>
-<td>Product name (localized)</td>
-</tr>
-<tr>
-<td>description</td>
-<td>Product description (localized)</td>
-</tr>
-<tr>
-<td>net_price </td>
-<td>Price without tax</td>
-</tr>
-<tr>
-<td>gross_price</td>
-<td>Price with tax</td>
-</tr>
-<tr>
-<td>price</td>
-<td>End price</td>
-</tr>
-<tr>
-<td>taxrate</td>
-<td>Tax rate in percent</td>
-</tr>
-<tr>
-<td>tax</td>
-<td>Tax included in price</td>
-</tr>
-<tr>
-<td>net_shipping</td>
-<td>Shipping costs without tax</td>
-</tr>
-<tr>
-<td>gross_shipping</td>
-<td>Shipping costs including tax</td>
-</tr>
-<tr>
-<td>tax_shipping</td>
-<td>Tax included in shipping</td>
-</tr>
-<tr>
-<td>pricePrefix</td>
-<td>Prefix for pricing (e.g. $)</td>
-</tr>
-<tr>
-<td>priceSuffix </td>
-<td>Suffix for pricing (e.g. €)</td>
-</tr>
-<tr>
-<td>end_personalization</td>
-<td>End of ticket personalization timeframe</td>
-</tr>
-<tr>
-<td>sale_start</td>
-<td>Start date of sale (can be in future)</td>
-</tr>
-<tr>
-<td>sale_end</td>
-<td>End date of sale (can be in past)</td>
-</tr>
-<tr>
-<td>available </td>
-<td>Product in stock</td>
-</tr>
-</tbody></table>
 <h2 id='get-faq'>GET /faq</h2><pre class="highlight php tab-php"><code><span class="cp">&lt;?php</span>
 <span class="nv">$ch</span> <span class="o">=</span> <span class="nb">curl_init</span><span class="p">(</span><span class="s2">"https://api.hyperspace.one/faq"</span><span class="p">);</span>
 <span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_RETURNTRANSFER</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
@@ -999,7 +895,7 @@
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
 <p>This endpoint returns the defined Frequently Asked Questions (FAQ).</p>
-<h3 id='return-values-4'>Return values</h3>
+<h3 id='return-values-3'>Return values</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -1514,7 +1410,7 @@ order_countries{country="DE"} 8 1560511346509
 <td>Sorting direction</td>
 </tr>
 </tbody></table>
-<h3 id='return-values-5'>Return values</h3>
+<h3 id='return-values-4'>Return values</h3>
 <p>The request returns an <code>itemCount</code> which is the number of all users in system. <code>items</code> contains the set of requested users according to pagination. The users have these properties:</p>
 
 <table><thead>
@@ -1627,7 +1523,7 @@ order_countries{country="DE"} 8 1560511346509
 <td>User ID</td>
 </tr>
 </tbody></table>
-<h3 id='return-values-6'>Return values</h3>
+<h3 id='return-values-5'>Return values</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -1903,7 +1799,7 @@ order_countries{country="DE"} 8 1560511346509
 </tbody></table>
 
 <p>The welcome mails are being sent with the users password.</p>
-<h3 id='return-values-7'>Return values</h3>
+<h3 id='return-values-6'>Return values</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -2267,7 +2163,7 @@ order_countries{country="DE"} 8 1560511346509
 <td>Sorting direction</td>
 </tr>
 </tbody></table>
-<h3 id='return-values-8'>Return values</h3>
+<h3 id='return-values-7'>Return values</h3>
 <p>The request returns an <code>itemCount</code> which is the number of all preregistrations in system. <code>items</code> contains the set of requested preregistrations according to pagination. The preregistrations have these properties:</p>
 
 <table><thead>
@@ -2543,7 +2439,7 @@ order_countries{country="DE"} 8 1560511346509
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
 <p>This endpoint returns the events defined in GroundControl.</p>
-<h3 id='return-values-9'>Return values</h3>
+<h3 id='return-values-8'>Return values</h3>
 <p>In the <code>data</code> element, there is a key <code>all</code> containing all events with their ID as key. If you have a featured event configured, there will be also a key <code>featured</code> in <code>data</code> containing the details of the featured event like the events in <code>all</code> are listed.</p>
 
 <p>Each event has the following parameters:</p>
@@ -2676,7 +2572,7 @@ order_countries{country="DE"} 8 1560511346509
 <td>Event slug</td>
 </tr>
 </tbody></table>
-<h3 id='return-values-10'>Return values</h3>
+<h3 id='return-values-9'>Return values</h3>
 <p>The event properties are in the <code>data</code> element:</p>
 
 <table><thead>
@@ -2989,7 +2885,7 @@ order_countries{country="DE"} 8 1560511346509
 <td>Artist tier</td>
 </tr>
 </tbody></table>
-<h3 id='return-values-11'>Return values</h3>
+<h3 id='return-values-10'>Return values</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -3112,6 +3008,387 @@ order_countries{country="DE"} 8 1560511346509
 <td>Artist ID</td>
 </tr>
 </tbody></table>
+<h1 id='products'>Products</h1><h2 id='get-products'>GET /products</h2><pre class="highlight php tab-php"><code><span class="cp">&lt;?php</span>
+<span class="nv">$ch</span> <span class="o">=</span> <span class="nb">curl_init</span><span class="p">(</span><span class="s2">"https://api.hyperspace.one/products"</span><span class="p">);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_RETURNTRANSFER</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+<span class="nv">$res</span> <span class="o">=</span> <span class="nb">curl_exec</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="nb">curl_errno</span><span class="p">(</span><span class="nv">$ch</span><span class="p">))</span> <span class="p">{</span>
+  <span class="k">die</span><span class="p">(</span><span class="nb">curl_error</span><span class="p">(</span><span class="nv">$ch</span><span class="p">));</span>
+<span class="p">}</span>
+
+<span class="nb">curl_close</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
+<span class="nv">$res</span> <span class="o">=</span> <span class="nb">json_decode</span><span class="p">(</span><span class="nv">$res</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+
+<span class="nb">print_r</span><span class="p">(</span><span class="nv">$res</span><span class="p">);</span>
+</code></pre>
+<blockquote>
+<p>The above request returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">[</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Early Bird"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"What do you get with this ticket?</span><span class="se">\r\n\r\n</span><span class="s2">+ Access to the festival</span><span class="se">\r\n</span><span class="s2">+ Wristband</span><span class="se">\r\n</span><span class="s2">+ Parking</span><span class="se">\r\n</span><span class="s2">+ Some more stuff</span><span class="se">\r\n</span><span class="s2">- Some more stuff"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"net_price"</span><span class="p">:</span><span class="w"> </span><span class="mf">4.2</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"gross_price"</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"price"</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"taxrate"</span><span class="p">:</span><span class="w"> </span><span class="mi">19</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"tax"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.8</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"net_shipping"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.04</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"gross_shipping"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.05</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"tax_shipping"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.01</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"pricePrefix"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"priceSuffix"</span><span class="p">:</span><span class="w"> </span><span class="s2">"</span><span class="se">\u</span><span class="s2">20ac"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"end_personalization"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0000-00-00 00:00:00"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"sale_start"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0000-00-00 00:00:00"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"sale_end"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0000-00-00 00:00:00"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"available"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"localization"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"en"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Regular"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Buy Your Ticket for HYPERSPACE - The Abandoned Dome now!</span><span class="se">\r\n\r\n</span><span class="s2">+ Festival-Feeling</span><span class="se">\r\n</span><span class="s2">+ Free Parking"</span><span class="w">
+      </span><span class="p">},</span><span class="w">
+      </span><span class="s2">"de"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Regular"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Sichere Dir jetzt Dein Ticket für HYPERSPACE - The Abandoned Dome!</span><span class="se">\r\n\r\n</span><span class="s2">+ Festival-Feeling</span><span class="se">\r\n</span><span class="s2">+ Kostenloses Parken"</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">]</span><span class="w">
+</span></code></pre>
+<p>This endpoint returns the products defined in GroundControl.</p>
+
+<aside style="color: white;">Viewing disabled products requires user authentication with right <b>products</b></aside>
+<h3 id='return-values-11'>Return values</h3>
+<p>Each product has the following parameters:</p>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>id</td>
+<td>Product ID</td>
+</tr>
+<tr>
+<td>name</td>
+<td>Product name (localized)</td>
+</tr>
+<tr>
+<td>description</td>
+<td>Product description (localized)</td>
+</tr>
+<tr>
+<td>net_price </td>
+<td>Price without tax</td>
+</tr>
+<tr>
+<td>gross_price</td>
+<td>Price with tax</td>
+</tr>
+<tr>
+<td>price</td>
+<td>End price</td>
+</tr>
+<tr>
+<td>taxrate</td>
+<td>Tax rate in percent</td>
+</tr>
+<tr>
+<td>tax</td>
+<td>Tax included in price</td>
+</tr>
+<tr>
+<td>net_shipping</td>
+<td>Shipping costs without tax</td>
+</tr>
+<tr>
+<td>gross_shipping</td>
+<td>Shipping costs including tax</td>
+</tr>
+<tr>
+<td>tax_shipping</td>
+<td>Tax included in shipping</td>
+</tr>
+<tr>
+<td>pricePrefix</td>
+<td>Prefix for pricing (e.g. $)</td>
+</tr>
+<tr>
+<td>priceSuffix </td>
+<td>Suffix for pricing (e.g. €)</td>
+</tr>
+<tr>
+<td>end_personalization</td>
+<td>End of ticket personalization timeframe</td>
+</tr>
+<tr>
+<td>sale_start</td>
+<td>Start date of sale (can be in future)</td>
+</tr>
+<tr>
+<td>sale_end</td>
+<td>End date of sale (can be in past)</td>
+</tr>
+<tr>
+<td>available </td>
+<td>Product in stock</td>
+</tr>
+<tr>
+<td>localization[]</td>
+<td>Array of product localizations</td>
+</tr>
+</tbody></table>
+<h2 id='post-products'>POST /products</h2><pre class="highlight php tab-php"><code><span class="cp">&lt;?php</span>
+<span class="nv">$ch</span> <span class="o">=</span> <span class="nb">curl_init</span><span class="p">(</span><span class="s2">"https://api.hyperspace.one/products"</span><span class="p">);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_RETURNTRANSFER</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_HTTPHEADER</span><span class="p">,</span> <span class="p">[</span>
+  <span class="s2">"Authorization: Bearer xxx"</span><span class="p">,</span>
+<span class="p">]);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_POSTFIELDS</span><span class="p">,</span> <span class="nb">http_build_query</span><span class="p">([</span>
+  <span class="s2">"name"</span> <span class="o">=&gt;</span> <span class="s2">"My products"</span><span class="p">,</span>
+  <span class="s2">"description"</span> <span class="o">=&gt;</span> <span class="s2">"My description"</span><span class="p">,</span>
+  <span class="s2">"amount"</span> <span class="o">=&gt;</span> <span class="mf">5.99</span><span class="p">,</span>
+  <span class="s2">"taxrate"</span> <span class="o">=&gt;</span> <span class="mf">19.00</span><span class="p">,</span>
+  <span class="s2">"shipping"</span> <span class="o">=&gt;</span> <span class="mf">4.99</span><span class="p">,</span>
+  <span class="s2">"event"</span> <span class="o">=&gt;</span> <span class="s2">"the-abandoned-dome"</span><span class="p">,</span>
+  <span class="s2">"localization"</span> <span class="o">=&gt;</span> <span class="p">[</span>
+    <span class="s2">"de"</span> <span class="o">=&gt;</span> <span class="p">[</span>
+      <span class="s2">"name"</span> <span class="o">=&gt;</span> <span class="s2">"Mein Produkt"</span><span class="p">,</span>
+      <span class="s2">"description"</span> <span class="o">=&gt;</span> <span class="s2">"Meine Beschreibung"</span>
+    <span class="p">],</span>
+  <span class="p">],</span>
+<span class="p">]));</span>
+<span class="nv">$res</span> <span class="o">=</span> <span class="nb">curl_exec</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="nb">curl_errno</span><span class="p">(</span><span class="nv">$ch</span><span class="p">))</span> <span class="p">{</span>
+  <span class="k">die</span><span class="p">(</span><span class="nb">curl_error</span><span class="p">(</span><span class="nv">$ch</span><span class="p">));</span>
+<span class="p">}</span>
+
+<span class="nb">curl_close</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
+<span class="nv">$res</span> <span class="o">=</span> <span class="nb">json_decode</span><span class="p">(</span><span class="nv">$res</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+
+<span class="nb">print_r</span><span class="p">(</span><span class="nv">$res</span><span class="p">);</span>
+</code></pre>
+<blockquote>
+<p>The above request returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"success"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<aside style="color: white;">Requires user authentication with right <b>products</b></aside>
+
+<p>This endpoint allows administrators to create new products.</p>
+<h3 id='query-parameters-28'>Query parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>name</td>
+<td>-</td>
+<td>Product name</td>
+</tr>
+<tr>
+<td>description</td>
+<td>&quot;&quot;</td>
+<td>Product description</td>
+</tr>
+<tr>
+<td>amount</td>
+<td>-</td>
+<td>Product price</td>
+</tr>
+<tr>
+<td>taxrate</td>
+<td>0.00</td>
+<td>Taxrate in percent (19 % = 19.00)</td>
+</tr>
+<tr>
+<td>shipping</td>
+<td>0.00</td>
+<td>Shipping costs</td>
+</tr>
+<tr>
+<td>event</td>
+<td>No event</td>
+<td>Event ID or slug</td>
+</tr>
+<tr>
+<td>available</td>
+<td>Unlimited</td>
+<td>Available ticket number</td>
+</tr>
+<tr>
+<td>sale_start</td>
+<td>Immediately</td>
+<td>If datetime specified, ticket sale starts then</td>
+</tr>
+<tr>
+<td>sale_end</td>
+<td>Never</td>
+<td>If datetime specified, ticket sale ends then</td>
+</tr>
+<tr>
+<td>product_before</td>
+<td>No product</td>
+<td>If product ID specified, sale will start earlier if specified product is sold out</td>
+</tr>
+<tr>
+<td>end_personalization</td>
+<td>No personalization</td>
+<td>If datetime specified, tickets can be personalized until then</td>
+</tr>
+<tr>
+<td>points</td>
+<td>0</td>
+<td>Points achieved for each ticket buyed</td>
+</tr>
+<tr>
+<td>localization</td>
+<td>[]</td>
+<td>Array with localized content (optional)</td>
+</tr>
+</tbody></table>
+<h3 id='return-values-12'>Return values</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>id</td>
+<td>ID of newly created product</td>
+</tr>
+</tbody></table>
+<h3 id='failure-codes-17'>Failure codes</h3>
+<table><thead>
+<tr>
+<th>Failure Code</th>
+<th>Meaning</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>1000</td>
+<td>No name specified</td>
+</tr>
+<tr>
+<td>1001</td>
+<td>Invalid amount specified</td>
+</tr>
+</tbody></table>
+<h2 id='put-products-id'>PUT /products/{id}</h2><pre class="highlight php tab-php"><code><span class="cp">&lt;?php</span>
+<span class="nv">$ch</span> <span class="o">=</span> <span class="nb">curl_init</span><span class="p">(</span><span class="s2">"https://api.hyperspace.one/products/</span><span class="si">{</span><span class="nv">id</span><span class="si">}</span><span class="s2">"</span><span class="p">);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_RETURNTRANSFER</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_POSTFIELDS</span><span class="p">,</span> <span class="nb">http_build_query</span><span class="p">([</span>
+  <span class="s2">"name"</span> <span class="o">=&gt;</span> <span class="s2">"Other name"</span><span class="p">,</span>
+<span class="p">]));</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_HTTPHEADER</span><span class="p">,</span> <span class="p">[</span>
+  <span class="s2">"Authorization: Bearer xxx"</span><span class="p">,</span>
+<span class="p">]);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_CUSTOMREQUEST</span><span class="p">,</span> <span class="s2">"PUT"</span><span class="p">);</span>
+<span class="nv">$res</span> <span class="o">=</span> <span class="nb">curl_exec</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="nb">curl_errno</span><span class="p">(</span><span class="nv">$ch</span><span class="p">))</span> <span class="p">{</span>
+  <span class="k">die</span><span class="p">(</span><span class="nb">curl_error</span><span class="p">(</span><span class="nv">$ch</span><span class="p">));</span>
+<span class="p">}</span>
+
+<span class="nb">curl_close</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
+<span class="nv">$res</span> <span class="o">=</span> <span class="nb">json_decode</span><span class="p">(</span><span class="nv">$res</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+
+<span class="nb">print_r</span><span class="p">(</span><span class="nv">$res</span><span class="p">);</span>
+</code></pre>
+<blockquote>
+<p>The above request returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"success"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<aside style="color: white;">Requires user authentication with right <b>products</b></aside>
+
+<p>This endpoint allows administrators to edit products.</p>
+<h3 id='query-parameters-29'>Query parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>id</td>
+<td>-</td>
+<td>Product ID</td>
+</tr>
+</tbody></table>
+
+<p>You can also use the parameters <code>name</code>, <code>description</code>, <code>amount</code>, <code>taxrate</code>, <code>shipping</code>, <code>event</code>, <code>available</code>, <code>sale_start</code>, <code>sale_end</code>, <code>product_before</code>, <code>end_personalization</code> and <code>points</code> to update these properties. Parameters not specified are ignored and not updated.</p>
+
+<p>If you specify an array named <code>localization</code> as in <code>POST /products</code>, the values for the specified languages are updated. Localizations not specified are deleted.</p>
+<h2 id='delete-products-id'>DELETE /products/{id}</h2><pre class="highlight php tab-php"><code><span class="cp">&lt;?php</span>
+<span class="nv">$ch</span> <span class="o">=</span> <span class="nb">curl_init</span><span class="p">(</span><span class="s2">"https://api.hyperspace.one/products/</span><span class="si">{</span><span class="nv">id</span><span class="si">}</span><span class="s2">"</span><span class="p">);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_RETURNTRANSFER</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_HTTPHEADER</span><span class="p">,</span> <span class="p">[</span>
+  <span class="s2">"Authorization: Bearer xxx"</span><span class="p">,</span>
+<span class="p">]);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_CUSTOMREQUEST</span><span class="p">,</span> <span class="s2">"DELETE"</span><span class="p">);</span>
+<span class="nv">$res</span> <span class="o">=</span> <span class="nb">curl_exec</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="nb">curl_errno</span><span class="p">(</span><span class="nv">$ch</span><span class="p">))</span> <span class="p">{</span>
+  <span class="k">die</span><span class="p">(</span><span class="nb">curl_error</span><span class="p">(</span><span class="nv">$ch</span><span class="p">));</span>
+<span class="p">}</span>
+
+<span class="nb">curl_close</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
+<span class="nv">$res</span> <span class="o">=</span> <span class="nb">json_decode</span><span class="p">(</span><span class="nv">$res</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+
+<span class="nb">print_r</span><span class="p">(</span><span class="nv">$res</span><span class="p">);</span>
+</code></pre>
+<blockquote>
+<p>The above request returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"success"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<aside style="color: white;">Requires user authentication with right <b>products</b></aside>
+
+<p>This endpoint allows administrators to delete a product.</p>
+<h3 id='query-parameters-30'>Query parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>id</td>
+<td>-</td>
+<td>Product ID</td>
+</tr>
+</tbody></table>
+<h3 id='failure-codes-18'>Failure codes</h3>
+<table><thead>
+<tr>
+<th>Failure Code</th>
+<th>Meaning</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>1000</td>
+<td>Product deletion failed (existing orders or tickets)</td>
+</tr>
+</tbody></table>
 <h1 id='galleries'>Galleries</h1><h2 id='get-galleries'>GET /galleries</h2><pre class="highlight php tab-php"><code><span class="cp">&lt;?php</span>
 <span class="nv">$ch</span> <span class="o">=</span> <span class="nb">curl_init</span><span class="p">(</span><span class="s2">"https://api.hyperspace.one/galleries"</span><span class="p">);</span>
 <span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_RETURNTRANSFER</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
@@ -3156,7 +3433,7 @@ order_countries{country="DE"} 8 1560511346509
 <aside style="color: white;">Hidden galleries are only shown for authenticated users with right <b>manage_images</b></aside>
 
 <p>This endpoint lists all galleries.</p>
-<h3 id='query-parameters-28'>Query parameters</h3>
+<h3 id='query-parameters-31'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -3190,7 +3467,7 @@ order_countries{country="DE"} 8 1560511346509
 <td>Sorting direction</td>
 </tr>
 </tbody></table>
-<h3 id='return-values-12'>Return values</h3>
+<h3 id='return-values-13'>Return values</h3>
 <p>The request returns an <code>count</code> which is the number of all galleries in system. <code>data</code> contains the set of requested galleries according to pagination. The galleries have these properties:</p>
 
 <table><thead>
@@ -3285,7 +3562,7 @@ order_countries{country="DE"} 8 1560511346509
 <aside style="color: white;">Hidden galleries are only available for authenticated users with right <b>manage_images</b>, hidden images are also shown only to users with this right</aside>
 
 <p>This endpoint get the details and the images of a specific gallery. The images are paginated and can be filtered. </p>
-<h3 id='query-parameters-29'>Query parameters</h3>
+<h3 id='query-parameters-32'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -3324,7 +3601,7 @@ order_countries{country="DE"} 8 1560511346509
 <td>Sorting direction</td>
 </tr>
 </tbody></table>
-<h3 id='return-values-13'>Return values</h3>
+<h3 id='return-values-14'>Return values</h3>
 <p>The response includes a parameter <code>count</code> which is the number of images available in the gallery. In the <code>data</code> object, you can find the gallery details with these properties:</p>
 
 <table><thead>
@@ -3429,7 +3706,7 @@ order_countries{country="DE"} 8 1560511346509
 <aside style="color: white;">Requires user authentication with right <b>manage_images</b></aside>
 
 <p>This endpoint allows administrators to create new galleries.</p>
-<h3 id='query-parameters-30'>Query parameters</h3>
+<h3 id='query-parameters-33'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -3458,7 +3735,7 @@ order_countries{country="DE"} 8 1560511346509
 <td>ID of event</td>
 </tr>
 </tbody></table>
-<h3 id='failure-codes-17'>Failure codes</h3>
+<h3 id='failure-codes-19'>Failure codes</h3>
 <table><thead>
 <tr>
 <th>Failure Code</th>
@@ -3509,7 +3786,7 @@ order_countries{country="DE"} 8 1560511346509
 <aside style="color: white;">Requires user authentication with right <b>manage_images</b></aside>
 
 <p>This endpoint allows administrators to edit galleries.</p>
-<h3 id='query-parameters-31'>Query parameters</h3>
+<h3 id='query-parameters-34'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -3525,7 +3802,7 @@ order_countries{country="DE"} 8 1560511346509
 </tbody></table>
 
 <p>You can also use the parameters <code>title</code>, <code>public</code> and <code>event</code> to update these properties. Only the properties specified are updated.</p>
-<h3 id='failure-codes-18'>Failure codes</h3>
+<h3 id='failure-codes-20'>Failure codes</h3>
 <table><thead>
 <tr>
 <th>Failure Code</th>
@@ -3565,7 +3842,7 @@ order_countries{country="DE"} 8 1560511346509
 <aside style="color: white;">Requires user authentication with right <b>manage_images</b></aside>
 
 <p>This endpoint allows administrators to delete galleries.</p>
-<h3 id='query-parameters-32'>Query parameters</h3>
+<h3 id='query-parameters-35'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -3579,7 +3856,7 @@ order_countries{country="DE"} 8 1560511346509
 <td>Gallery slug</td>
 </tr>
 </tbody></table>
-<h3 id='failure-codes-19'>Failure codes</h3>
+<h3 id='failure-codes-21'>Failure codes</h3>
 <table><thead>
 <tr>
 <th>Failure Code</th>
@@ -3636,7 +3913,7 @@ order_countries{country="DE"} 8 1560511346509
 <aside style="color: white;">Requires authentication with right <b>manage_images</b></aside>
 
 <p>This endpoint allows administrators to list all images with respect to pagination and filtering.</p>
-<h3 id='query-parameters-33'>Query parameters</h3>
+<h3 id='query-parameters-36'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -3670,7 +3947,7 @@ order_countries{country="DE"} 8 1560511346509
 <td>Sorting direction</td>
 </tr>
 </tbody></table>
-<h3 id='return-values-14'>Return values</h3>
+<h3 id='return-values-15'>Return values</h3>
 <p>The request returns an <code>count</code> which is the number of all images in system. <code>data.images</code> contains the set of requested images according to pagination. The images have these properties:</p>
 
 <table><thead>
@@ -3739,7 +4016,7 @@ order_countries{country="DE"} 8 1560511346509
 <aside style="color: white;">Requires user authentication with right <b>manage_images</b></aside>
 
 <p>This endpoint allows administrators to upload image files and get back the URL.</p>
-<h3 id='query-parameters-34'>Query parameters</h3>
+<h3 id='query-parameters-37'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -3753,7 +4030,7 @@ order_countries{country="DE"} 8 1560511346509
 <td>Image file (as multipart/form-data)</td>
 </tr>
 </tbody></table>
-<h3 id='return-values-15'>Return values</h3>
+<h3 id='return-values-16'>Return values</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -3765,7 +4042,7 @@ order_countries{country="DE"} 8 1560511346509
 <td>Image upload URL</td>
 </tr>
 </tbody></table>
-<h3 id='failure-codes-20'>Failure codes</h3>
+<h3 id='failure-codes-22'>Failure codes</h3>
 <table><thead>
 <tr>
 <th>Failure Code</th>
@@ -3816,7 +4093,7 @@ order_countries{country="DE"} 8 1560511346509
 <p>This is an extension to the previous <code>POST /images/upload</code> endpoint and allows directly creating an image in the system using the uploaded file by specifying more parameters.</p>
 
 <p>The endpoint variants are distinguished by the <code>title</code> element being specified and non-empty.</p>
-<h3 id='query-parameters-35'>Query parameters</h3>
+<h3 id='query-parameters-38'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -3850,7 +4127,7 @@ order_countries{country="DE"} 8 1560511346509
 <td>User ID of image creator</td>
 </tr>
 </tbody></table>
-<h3 id='return-values-16'>Return values</h3>
+<h3 id='return-values-17'>Return values</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -3862,7 +4139,7 @@ order_countries{country="DE"} 8 1560511346509
 <td>ID of newly created image</td>
 </tr>
 </tbody></table>
-<h3 id='failure-codes-21'>Failure codes</h3>
+<h3 id='failure-codes-23'>Failure codes</h3>
 <table><thead>
 <tr>
 <th>Failure Code</th>
@@ -3913,7 +4190,7 @@ order_countries{country="DE"} 8 1560511346509
 <aside style="color: white;">Requires user authentication with right <b>manage_images</b></aside>
 
 <p>This endpoint allows administrators to create an image from an URL.</p>
-<h3 id='query-parameters-36'>Query parameters</h3>
+<h3 id='query-parameters-39'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -3947,7 +4224,7 @@ order_countries{country="DE"} 8 1560511346509
 <td>Array of gallery slugs the image should be assigned to</td>
 </tr>
 </tbody></table>
-<h3 id='return-values-17'>Return values</h3>
+<h3 id='return-values-18'>Return values</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -3959,7 +4236,7 @@ order_countries{country="DE"} 8 1560511346509
 <td>ID of the newly created image</td>
 </tr>
 </tbody></table>
-<h3 id='failure-codes-22'>Failure codes</h3>
+<h3 id='failure-codes-24'>Failure codes</h3>
 <table><thead>
 <tr>
 <th>Failure Code</th>
@@ -4006,7 +4283,7 @@ order_countries{country="DE"} 8 1560511346509
 <aside style="color: white;">Requires user authentication with right <b>manage_images</b></aside>
 
 <p>This endpoint allows administrators to edit images.</p>
-<h3 id='query-parameters-37'>Query parameters</h3>
+<h3 id='query-parameters-40'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -4024,7 +4301,7 @@ order_countries{country="DE"} 8 1560511346509
 <p>You can also use the parameters <code>title</code>, <code>url</code>, <code>public</code>, <code>creator</code> and <code>galleries</code> to update these properties. Only the properties specified are updated.</p>
 
 <p>Hereby, <code>creator</code> should be the user ID of the creator or <code>0</code>. <code>galleries</code> should be an array of gallery slugs the image should be assigned to, this array can also be empty if the image should not be assigned to any gallery. To remove an image from a gallery, simply leave out the gallery slug in the array.</p>
-<h3 id='failure-codes-23'>Failure codes</h3>
+<h3 id='failure-codes-25'>Failure codes</h3>
 <table><thead>
 <tr>
 <th>Failure Code</th>
@@ -4064,7 +4341,7 @@ order_countries{country="DE"} 8 1560511346509
 <aside style="color: white;">Requires user authentication with right <b>manage_images</b></aside>
 
 <p>This endpoint allows administrators to delete images.</p>
-<h3 id='query-parameters-38'>Query parameters</h3>
+<h3 id='query-parameters-41'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -4078,7 +4355,7 @@ order_countries{country="DE"} 8 1560511346509
 <td>Image ID</td>
 </tr>
 </tbody></table>
-<h3 id='failure-codes-24'>Failure codes</h3>
+<h3 id='failure-codes-26'>Failure codes</h3>
 <table><thead>
 <tr>
 <th>Failure Code</th>
@@ -4123,7 +4400,7 @@ order_countries{country="DE"} 8 1560511346509
 <aside style="color: white;">Requires authentication with right <b>manage_images</b></aside>
 
 <p>This endpoint allows getting all users with <code>photographer</code> right, allowing image managers without user access to search for a creator.</p>
-<h3 id='return-values-18'>Return values</h3>
+<h3 id='return-values-19'>Return values</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -4181,7 +4458,7 @@ order_countries{country="DE"} 8 1560511346509
 <p>New orders should be placed using this endpoint.</p>
 
 <p>As soon as a captcha has been solved correctly, this information is saved within the browser session on the API server. This means if there is an error in the order process (excluding captcha error), the captcha must not be solved again. The information is reset as soon as the order was successful. Therefore, another order requires a new captcha.</p>
-<h3 id='query-parameters-39'>Query parameters</h3>
+<h3 id='query-parameters-42'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -4247,7 +4524,7 @@ order_countries{country="DE"} 8 1560511346509
 <td>Hash of used reflink</td>
 </tr>
 </tbody></table>
-<h3 id='return-values-19'>Return values</h3>
+<h3 id='return-values-20'>Return values</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -4267,7 +4544,7 @@ order_countries{country="DE"} 8 1560511346509
 <td>Payment HTML to be displayed to the customer</td>
 </tr>
 </tbody></table>
-<h3 id='failure-codes-25'>Failure codes</h3>
+<h3 id='failure-codes-27'>Failure codes</h3>
 <table><thead>
 <tr>
 <th>Failure Code</th>
@@ -4388,7 +4665,7 @@ order_countries{country="DE"} 8 1560511346509
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
 <p>Use this endpoint to get details of an existing order.</p>
-<h3 id='query-parameters-40'>Query parameters</h3>
+<h3 id='query-parameters-43'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -4407,7 +4684,7 @@ order_countries{country="DE"} 8 1560511346509
 <td>Order token</td>
 </tr>
 </tbody></table>
-<h3 id='return-values-20'>Return values</h3>
+<h3 id='return-values-21'>Return values</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -4477,7 +4754,7 @@ order_countries{country="DE"} 8 1560511346509
 </tbody></table>
 
 <p>If the order is unpaid, an element <code>payment</code> will contain the HTML code to be displayed to the customer for the payment.</p>
-<h3 id='failure-codes-26'>Failure codes</h3>
+<h3 id='failure-codes-28'>Failure codes</h3>
 <table><thead>
 <tr>
 <th>Failure Code</th>
@@ -4556,7 +4833,7 @@ order_countries{country="DE"} 8 1560511346509
 <aside style="color: white;">Requires user authentication with right <b>view_orders</b></aside>
 
 <p>This endpoint allows administrators to get a paginated list of all orders in the system.</p>
-<h3 id='query-parameters-41'>Query parameters</h3>
+<h3 id='query-parameters-44'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -4590,7 +4867,7 @@ order_countries{country="DE"} 8 1560511346509
 <td>Sorting direction</td>
 </tr>
 </tbody></table>
-<h3 id='return-values-21'>Return values</h3>
+<h3 id='return-values-22'>Return values</h3>
 <p>The request returns an <code>itemCount</code> which is the number of all orders in system. <code>paymentsConfirmed</code> is the sum of paid orders whereas <code>paymentsPipeline</code> is the sum of orders waiting for payment (not cancelled orders). <code>items</code> contains the set of requested orders according to pagination. The orders have these properties:</p>
 
 <table><thead>
@@ -4716,7 +4993,7 @@ order_countries{country="DE"} 8 1560511346509
 <aside style="color: white;">Requires user authentication with right <b>view_orders</b></aside>
 
 <p>This endpoint allows administrators to resend the confirmation email for a specific order. This order <strong>must be paid</strong>.</p>
-<h3 id='query-parameters-42'>Query parameters</h3>
+<h3 id='query-parameters-45'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -4736,7 +5013,7 @@ order_countries{country="DE"} 8 1560511346509
 </blockquote>
 
 <p>This endpoint is called directly by the payment provider and calls the IPN routine of the payment module. If the payment was successful, this means automatically provisioning of user account (if not already existing) and tickets.</p>
-<h3 id='query-parameters-43'>Query parameters</h3>
+<h3 id='query-parameters-46'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -4786,7 +5063,7 @@ order_countries{country="DE"} 8 1560511346509
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
 <p>This endpoint is used to capture a confirmed payment via PayPal Express Checkout. The checkout process needs to be implemented in frontend, GroundControl API then fetches the specified Express order from PayPal, creates it in the system and marks it as paid.</p>
-<h3 id='query-parameters-44'>Query parameters</h3>
+<h3 id='query-parameters-47'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -4802,7 +5079,7 @@ order_countries{country="DE"} 8 1560511346509
 <td><strong>Optional</strong> Hash of used reflink</td>
 </tr>
 </tbody></table>
-<h3 id='return-values-22'>Return values</h3>
+<h3 id='return-values-23'>Return values</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -4818,7 +5095,7 @@ order_countries{country="DE"} 8 1560511346509
 <td>Token of order</td>
 </tr>
 </tbody></table>
-<h3 id='failure-codes-27'>Failure codes</h3>
+<h3 id='failure-codes-29'>Failure codes</h3>
 <table><thead>
 <tr>
 <th>Failure Code</th>
@@ -4925,7 +5202,7 @@ order_countries{country="DE"} 8 1560511346509
 <td>Name of the bank</td>
 </tr>
 </tbody></table>
-<h3 id='failure-codes-28'>Failure codes</h3>
+<h3 id='failure-codes-30'>Failure codes</h3>
 <table><thead>
 <tr>
 <th>Failure Code</th>
@@ -5017,9 +5294,9 @@ order_countries{country="DE"} 8 1560511346509
 <aside style="color: white;">Requires user authentication</aside>
 
 <p>Gives back all tickets the user have, grouped by order</p>
-<h3 id='query-parameters-45'>Query parameters</h3>
+<h3 id='query-parameters-48'>Query parameters</h3>
 <p>None</p>
-<h3 id='return-values-23'>Return values</h3>
+<h3 id='return-values-24'>Return values</h3>
 <p>The request returns a list of orders containing order information and the tickets assigned with the order.</p>
 
 <table><thead>
@@ -5135,7 +5412,7 @@ order_countries{country="DE"} 8 1560511346509
 <p>You should use this endpoint to personalize a ticket which needs personalization. A ticket can be personalized as long as defined in the ticket product. Unlimited name changes are allowed.</p>
 
 <p>By default, a ticket is personalized to the buyers name.</p>
-<h3 id='query-parameters-46'>Query parameters</h3>
+<h3 id='query-parameters-49'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -5151,7 +5428,7 @@ order_countries{country="DE"} 8 1560511346509
 <td>Name of ticket owner</td>
 </tr>
 </tbody></table>
-<h3 id='failure-codes-29'>Failure codes</h3>
+<h3 id='failure-codes-31'>Failure codes</h3>
 <table><thead>
 <tr>
 <th>Failure Code</th>
@@ -5214,7 +5491,7 @@ order_countries{country="DE"} 8 1560511346509
 </span><span class="p">]</span><span class="w">
 </span></code></pre>
 <p>This endpoint returns all ranks configured with GroundControl.</p>
-<h3 id='return-values-24'>Return values</h3>
+<h3 id='return-values-25'>Return values</h3>
 <p>Each rank has the following properties:</p>
 
 <table><thead>
@@ -5272,7 +5549,7 @@ order_countries{country="DE"} 8 1560511346509
 <aside style="color: white;">Requires user authentication with right <b>settings</b></aside>
 
 <p>This endpoint allows administrators to create new ranks.</p>
-<h3 id='query-parameters-47'>Query parameters</h3>
+<h3 id='query-parameters-50'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -5291,7 +5568,7 @@ order_countries{country="DE"} 8 1560511346509
 <td>Points required to reach rank</td>
 </tr>
 </tbody></table>
-<h3 id='return-values-25'>Return values</h3>
+<h3 id='return-values-26'>Return values</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -5303,7 +5580,7 @@ order_countries{country="DE"} 8 1560511346509
 <td>ID of newly created rank</td>
 </tr>
 </tbody></table>
-<h3 id='failure-codes-30'>Failure codes</h3>
+<h3 id='failure-codes-32'>Failure codes</h3>
 <table><thead>
 <tr>
 <th>Failure Code</th>
@@ -5350,7 +5627,7 @@ order_countries{country="DE"} 8 1560511346509
 <aside style="color: white;">Requires user authentication with right <b>settings</b></aside>
 
 <p>This endpoint allows administrators to edit ranks.</p>
-<h3 id='query-parameters-48'>Query parameters</h3>
+<h3 id='query-parameters-51'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -5394,7 +5671,7 @@ order_countries{country="DE"} 8 1560511346509
 <aside style="color: white;">Requires user authentication with right <b>settings</b></aside>
 
 <p>This endpoint allows administrators to delete a rank.</p>
-<h3 id='query-parameters-49'>Query parameters</h3>
+<h3 id='query-parameters-52'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -5434,7 +5711,7 @@ order_countries{country="DE"} 8 1560511346509
 </span><span class="p">]</span><span class="w">
 </span></code></pre>
 <p>This endpoint returns all rank features configured with GroundControl.</p>
-<h3 id='return-values-26'>Return values</h3>
+<h3 id='return-values-27'>Return values</h3>
 <p>Each rank has the following properties:</p>
 
 <table><thead>
@@ -5488,7 +5765,7 @@ order_countries{country="DE"} 8 1560511346509
 <aside style="color: white;">Requires user authentication with right <b>settings</b></aside>
 
 <p>This endpoint allows administrators to create new rank features.</p>
-<h3 id='query-parameters-50'>Query parameters</h3>
+<h3 id='query-parameters-53'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -5507,7 +5784,7 @@ order_countries{country="DE"} 8 1560511346509
 <td>Points required to activate feature</td>
 </tr>
 </tbody></table>
-<h3 id='return-values-27'>Return values</h3>
+<h3 id='return-values-28'>Return values</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -5519,7 +5796,7 @@ order_countries{country="DE"} 8 1560511346509
 <td>ID of newly created feature</td>
 </tr>
 </tbody></table>
-<h3 id='failure-codes-31'>Failure codes</h3>
+<h3 id='failure-codes-33'>Failure codes</h3>
 <table><thead>
 <tr>
 <th>Failure Code</th>
@@ -5566,7 +5843,7 @@ order_countries{country="DE"} 8 1560511346509
 <aside style="color: white;">Requires user authentication with right <b>settings</b></aside>
 
 <p>This endpoint allows administrators to edit rank features.</p>
-<h3 id='query-parameters-51'>Query parameters</h3>
+<h3 id='query-parameters-54'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -5610,7 +5887,7 @@ order_countries{country="DE"} 8 1560511346509
 <aside style="color: white;">Requires user authentication with right <b>settings</b></aside>
 
 <p>This endpoint allows administrators to delete a rank feature.</p>
-<h3 id='query-parameters-52'>Query parameters</h3>
+<h3 id='query-parameters-55'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -5670,7 +5947,7 @@ order_countries{country="DE"} 8 1560511346509
 <aside style="color: white;">Requires user authentication</aside>
 
 <p>This endpoint returns all achievements reached with pagination. The last achievements are shown first.</p>
-<h3 id='query-parameters-53'>Query parameters</h3>
+<h3 id='query-parameters-56'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -5689,7 +5966,7 @@ order_countries{country="DE"} 8 1560511346509
 <td>Items to display per page</td>
 </tr>
 </tbody></table>
-<h3 id='return-values-28'>Return values</h3>
+<h3 id='return-values-29'>Return values</h3>
 <p>Each achievement has the following properties:</p>
 
 <table><thead>
@@ -5748,7 +6025,7 @@ order_countries{country="DE"} 8 1560511346509
 <aside style="color: white;">Requires user authentication with right <b>create_achievements</b></aside>
 
 <p>This endpoint allows administrators to create new achievements for a user.</p>
-<h3 id='query-parameters-54'>Query parameters</h3>
+<h3 id='query-parameters-57'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -5772,7 +6049,7 @@ order_countries{country="DE"} 8 1560511346509
 <td>Points to be assigned</td>
 </tr>
 </tbody></table>
-<h3 id='return-values-29'>Return values</h3>
+<h3 id='return-values-30'>Return values</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -5784,7 +6061,7 @@ order_countries{country="DE"} 8 1560511346509
 <td>Array of push tokens (strings) of user</td>
 </tr>
 </tbody></table>
-<h3 id='failure-codes-32'>Failure codes</h3>
+<h3 id='failure-codes-34'>Failure codes</h3>
 <table><thead>
 <tr>
 <th>Failure Code</th>
@@ -5866,7 +6143,7 @@ order_countries{country="DE"} 8 1560511346509
 <aside style="color: white;">Requires user authentication with right <b>promoter</b></aside>
 
 <p>This endpoint allows promoters to view orders they have placed. As they have entered the customer data by theirselves, there is no privacy problem in showing this data to promoters.</p>
-<h3 id='query-parameters-55'>Query parameters</h3>
+<h3 id='query-parameters-58'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -5900,7 +6177,7 @@ order_countries{country="DE"} 8 1560511346509
 <td>Sort direction</td>
 </tr>
 </tbody></table>
-<h3 id='return-values-30'>Return values</h3>
+<h3 id='return-values-31'>Return values</h3>
 <p>The request returns an <code>itemCount</code> which is the number of all orders of this promoter in system. <code>items</code> contains the set of requested orders according to pagination. The orders have these properties:</p>
 
 <table><thead>
@@ -6006,7 +6283,7 @@ order_countries{country="DE"} 8 1560511346509
 <aside style="color: white;">Requires user authentication with right <b>affiliate</b></aside>
 
 <p>This endpoint allows affiliates to view their reflinks and statistics.</p>
-<h3 id='return-values-31'>Return values</h3>
+<h3 id='return-values-32'>Return values</h3>
 <p>The reflinks are listed in the <code>data</code> element. Each reflink has these properties:</p>
 
 <table><thead>
@@ -6075,7 +6352,7 @@ order_countries{country="DE"} 8 1560511346509
 <aside style="color: white;">Requires user authentication with right <b>affiliate</b></aside>
 
 <p>This endpoint allows affiliates to create new reflinks.</p>
-<h3 id='query-parameters-56'>Query parameters</h3>
+<h3 id='query-parameters-59'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -6089,7 +6366,7 @@ order_countries{country="DE"} 8 1560511346509
 <td>Reflink description</td>
 </tr>
 </tbody></table>
-<h3 id='return-values-32'>Return values</h3>
+<h3 id='return-values-33'>Return values</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -6135,7 +6412,7 @@ order_countries{country="DE"} 8 1560511346509
 <p>This endpoint allows affiliates to edit their reflinks.</p>
 
 <p>Administrators with <strong>reflinks</strong> right can use this endpoint to update any reflink.</p>
-<h3 id='query-parameters-57'>Query parameters</h3>
+<h3 id='query-parameters-60'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -6189,7 +6466,7 @@ order_countries{country="DE"} 8 1560511346509
 <p>This endpoint allows affiliates to delete their reflinks.</p>
 
 <p>Administrators with <strong>reflinks</strong> right can use this endpoint to delete any reflink.</p>
-<h3 id='query-parameters-58'>Query parameters</h3>
+<h3 id='query-parameters-61'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -6226,7 +6503,7 @@ order_countries{country="DE"} 8 1560511346509
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
 <p>This endpoint increases a reflink click count by 1.</p>
-<h3 id='query-parameters-59'>Query parameters</h3>
+<h3 id='query-parameters-62'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -6240,7 +6517,7 @@ order_countries{country="DE"} 8 1560511346509
 <td>Reflink hash</td>
 </tr>
 </tbody></table>
-<h3 id='failure-codes-33'>Failure codes</h3>
+<h3 id='failure-codes-35'>Failure codes</h3>
 <table><thead>
 <tr>
 <th>Failure Code</th>
@@ -6311,7 +6588,7 @@ order_countries{country="DE"} 8 1560511346509
 <aside style="color: white;">Requires user authentication with right <b>promoter</b></aside>
 
 <p>This endpoint allows affiliates to view orders that were placed using their reflink. Only paid orders are shown. The newest orders are shown first.</p>
-<h3 id='query-parameters-60'>Query parameters</h3>
+<h3 id='query-parameters-63'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -6330,7 +6607,7 @@ order_countries{country="DE"} 8 1560511346509
 <td>Elements per page</td>
 </tr>
 </tbody></table>
-<h3 id='return-values-33'>Return values</h3>
+<h3 id='return-values-34'>Return values</h3>
 <p>The request returns an <code>itemCount</code> which is the number of all paid orders of this affiliate in system. <code>items</code> contains the set of requested orders according to pagination. The orders have these properties:</p>
 
 <table><thead>
@@ -6424,7 +6701,7 @@ order_countries{country="DE"} 8 1560511346509
 <aside style="color: white;">Requires user authentication with right <b>reflinks</b></aside>
 
 <p>This endpoint allows administrators to view all reflinks in system and their statistics.</p>
-<h3 id='return-values-34'>Return values</h3>
+<h3 id='return-values-35'>Return values</h3>
 <p>The reflinks are listed in the <code>data</code> element. Each reflink has these properties:</p>
 
 <table><thead>
@@ -6507,7 +6784,7 @@ order_countries{country="DE"} 8 1560511346509
 <aside style="color: white;">Requires user authentication with right <b>send_notifications</b></aside>
 
 <p>This endpoint allows administrators to see notifications that have been sent to a user. The newest notifications are shown first.</p>
-<h3 id='query-parameters-61'>Query parameters</h3>
+<h3 id='query-parameters-64'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -6531,7 +6808,7 @@ order_countries{country="DE"} 8 1560511346509
 <td>Elements per page</td>
 </tr>
 </tbody></table>
-<h3 id='return-values-35'>Return values</h3>
+<h3 id='return-values-36'>Return values</h3>
 <p>Every notification has these properties:</p>
 
 <table><thead>
@@ -6596,7 +6873,7 @@ order_countries{country="DE"} 8 1560511346509
 <aside style="color: white;">Requires user authentication with right <b>send_notifications</b></aside>
 
 <p>This endpoint allows administrators to send a notification to the specified user</p>
-<h3 id='query-parameters-62'>Query parameters</h3>
+<h3 id='query-parameters-65'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -6620,7 +6897,7 @@ order_countries{country="DE"} 8 1560511346509
 <td><strong>Optional</strong> App deeplink</td>
 </tr>
 </tbody></table>
-<h3 id='failure-codes-34'>Failure codes</h3>
+<h3 id='failure-codes-36'>Failure codes</h3>
 <table><thead>
 <tr>
 <th>Failure Code</th>
@@ -6666,7 +6943,7 @@ order_countries{country="DE"} 8 1560511346509
 <aside style="color: white;">Requires user authentication</aside>
 
 <p>Assign push token to user profile</p>
-<h3 id='query-parameters-63'>Query parameters</h3>
+<h3 id='query-parameters-66'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -6678,7 +6955,7 @@ order_countries{country="DE"} 8 1560511346509
 <td>Push token</td>
 </tr>
 </tbody></table>
-<h3 id='failure-codes-35'>Failure codes</h3>
+<h3 id='failure-codes-37'>Failure codes</h3>
 <table><thead>
 <tr>
 <th>Failure Code</th>
@@ -6721,7 +6998,7 @@ order_countries{country="DE"} 8 1560511346509
 <aside style="color: white;">Requires user authentication</aside>
 
 <p>Remove push token from user profile</p>
-<h3 id='query-parameters-64'>Query parameters</h3>
+<h3 id='query-parameters-67'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -6733,7 +7010,7 @@ order_countries{country="DE"} 8 1560511346509
 <td>Push token</td>
 </tr>
 </tbody></table>
-<h3 id='failure-codes-36'>Failure codes</h3>
+<h3 id='failure-codes-38'>Failure codes</h3>
 <table><thead>
 <tr>
 <th>Failure Code</th>
@@ -6783,7 +7060,7 @@ order_countries{country="DE"} 8 1560511346509
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
 <p>This endpoint returns information about the requested RFID tag.</p>
-<h3 id='query-parameters-65'>Query parameters</h3>
+<h3 id='query-parameters-68'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -6799,7 +7076,7 @@ order_countries{country="DE"} 8 1560511346509
 <td>The ID of the RFID tag scanned</td>
 </tr>
 </tbody></table>
-<h3 id='return-values-36'>Return values</h3>
+<h3 id='return-values-37'>Return values</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -6815,7 +7092,7 @@ order_countries{country="DE"} 8 1560511346509
 <td>LED color (age based)</td>
 </tr>
 </tbody></table>
-<h3 id='failure-codes-37'>Failure codes</h3>
+<h3 id='failure-codes-39'>Failure codes</h3>
 <table><thead>
 <tr>
 <th>Failure Code</th>
@@ -6857,7 +7134,7 @@ order_countries{country="DE"} 8 1560511346509
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
 <p>This endpoint returns all tags available for a specific device. Also, it returns config options for the requesting device.</p>
-<h3 id='query-parameters-66'>Query parameters</h3>
+<h3 id='query-parameters-69'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -6869,7 +7146,7 @@ order_countries{country="DE"} 8 1560511346509
 <td>The UUID of the device requesting</td>
 </tr>
 </tbody></table>
-<h3 id='return-values-37'>Return values</h3>
+<h3 id='return-values-38'>Return values</h3>
 <p>The return value is a list of tags available and the device options:</p>
 
 <table><thead>
@@ -6883,7 +7160,7 @@ order_countries{country="DE"} 8 1560511346509
 <td>Specifies if the device should beep when RFID scan is finished</td>
 </tr>
 </tbody></table>
-<h3 id='failure-codes-38'>Failure codes</h3>
+<h3 id='failure-codes-40'>Failure codes</h3>
 <table><thead>
 <tr>
 <th>Failure Code</th>
@@ -6922,7 +7199,7 @@ order_countries{country="DE"} 8 1560511346509
 <aside style="color: white;">Requires user authentication with right <b>scan_tickets</b></aside>
 
 <p>This endpoint is used to scan tickets at entry. It either returns a success response or a failure if the ticket is invalid or was already scanned. If the scan was successful, it saves the time of the scan and the staff member who has scanned.</p>
-<h3 id='query-parameters-67'>Query parameters</h3>
+<h3 id='query-parameters-70'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -6934,7 +7211,7 @@ order_countries{country="DE"} 8 1560511346509
 <td>QR code content / hash of ticket</td>
 </tr>
 </tbody></table>
-<h3 id='failure-codes-39'>Failure codes</h3>
+<h3 id='failure-codes-41'>Failure codes</h3>
 <table><thead>
 <tr>
 <th>Failure Code</th>
@@ -6995,7 +7272,7 @@ order_countries{country="DE"} 8 1560511346509
 <aside style="color: white;">Requires user authentication with right <b>view_tickets</b></aside>
 
 <p>This endpoint returns details about the ticket scanned and any associated entry.</p>
-<h3 id='query-parameters-68'>Query parameters</h3>
+<h3 id='query-parameters-71'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -7007,7 +7284,7 @@ order_countries{country="DE"} 8 1560511346509
 <td>QR code content / hash of ticket</td>
 </tr>
 </tbody></table>
-<h3 id='return-values-38'>Return values</h3>
+<h3 id='return-values-39'>Return values</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -7031,7 +7308,7 @@ order_countries{country="DE"} 8 1560511346509
 <td><strong>If entry</strong> Name of staff member <strong>Otherwise</strong> <em>null</em></td>
 </tr>
 </tbody></table>
-<h3 id='failure-codes-40'>Failure codes</h3>
+<h3 id='failure-codes-42'>Failure codes</h3>
 <table><thead>
 <tr>
 <th>Failure Code</th>
@@ -7079,7 +7356,7 @@ order_countries{country="DE"} 8 1560511346509
 <aside style="color: white;">Requires user authentication with right <b>reset_tickets</b></aside>
 
 <p>This endpoint resets any scan of the specified ticket.</p>
-<h3 id='query-parameters-69'>Query parameters</h3>
+<h3 id='query-parameters-72'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -7091,7 +7368,7 @@ order_countries{country="DE"} 8 1560511346509
 <td>QR code content / hash of ticket</td>
 </tr>
 </tbody></table>
-<h3 id='failure-codes-41'>Failure codes</h3>
+<h3 id='failure-codes-43'>Failure codes</h3>
 <table><thead>
 <tr>
 <th>Failure Code</th>
@@ -7148,7 +7425,7 @@ order_countries{country="DE"} 8 1560511346509
 <aside style="color: white;">Requires user authentication with right <b>manage_devices</b></aside>
 
 <p>This endpoint allows administrators to get a paginated list of all devices in the system.</p>
-<h3 id='query-parameters-70'>Query parameters</h3>
+<h3 id='query-parameters-73'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -7167,7 +7444,7 @@ order_countries{country="DE"} 8 1560511346509
 <td>Items to display per page</td>
 </tr>
 </tbody></table>
-<h3 id='return-values-39'>Return values</h3>
+<h3 id='return-values-40'>Return values</h3>
 <p>The request returns an <code>itemCount</code> which is the number of all devices in system. <code>items</code> contains the set of requested devices according to pagination. The devices have these properties:</p>
 
 <table><thead>
@@ -7228,7 +7505,7 @@ order_countries{country="DE"} 8 1560511346509
 <aside style="color: white;">Requires user authentication with right <b>manage_devices</b></aside>
 
 <p>This endpoint allows administrators to create new devices.</p>
-<h3 id='query-parameters-71'>Query parameters</h3>
+<h3 id='query-parameters-74'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -7247,7 +7524,7 @@ order_countries{country="DE"} 8 1560511346509
 <td>Age required for green LED</td>
 </tr>
 </tbody></table>
-<h3 id='return-values-40'>Return values</h3>
+<h3 id='return-values-41'>Return values</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -7290,7 +7567,7 @@ order_countries{country="DE"} 8 1560511346509
 <aside style="color: white;">Requires user authentication with right <b>manage_devices</b></aside>
 
 <p>This endpoint allows administrators to edit a device.</p>
-<h3 id='query-parameters-72'>Query parameters</h3>
+<h3 id='query-parameters-75'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -7334,7 +7611,7 @@ order_countries{country="DE"} 8 1560511346509
 <aside style="color: white;">Requires user authentication with right <b>manage_devices</b></aside>
 
 <p>This endpoint allows administrators to delete a device.</p>
-<h3 id='query-parameters-73'>Query parameters</h3>
+<h3 id='query-parameters-76'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -7418,7 +7695,7 @@ order_countries{country="DE"} 8 1560511346509
 <aside style="color: white;">Requires user authentication with right <b>settings</b></aside>
 
 <p>This endpoint can be used to update settings. It expects as many key-value pairs as you want. Only elements which exists in the <code>settings</code> table are updated, there are no elements newly created.</p>
-<h3 id='return-values-41'>Return values</h3>
+<h3 id='return-values-42'>Return values</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -7468,7 +7745,7 @@ order_countries{country="DE"} 8 1560511346509
 <aside style="color: white;">Requires user authentication with right <b>settings</b></aside>
 
 <p>This endpoint allows administrators to create new FAQs.</p>
-<h3 id='query-parameters-74'>Query parameters</h3>
+<h3 id='query-parameters-77'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -7492,7 +7769,7 @@ order_countries{country="DE"} 8 1560511346509
 <td>Array with localized content (optional)</td>
 </tr>
 </tbody></table>
-<h3 id='return-values-42'>Return values</h3>
+<h3 id='return-values-43'>Return values</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -7504,7 +7781,7 @@ order_countries{country="DE"} 8 1560511346509
 <td>ID of newly created FAQ</td>
 </tr>
 </tbody></table>
-<h3 id='failure-codes-42'>Failure codes</h3>
+<h3 id='failure-codes-44'>Failure codes</h3>
 <table><thead>
 <tr>
 <th>Failure Code</th>
@@ -7551,7 +7828,7 @@ order_countries{country="DE"} 8 1560511346509
 <aside style="color: white;">Requires user authentication with right <b>settings</b></aside>
 
 <p>This endpoint allows administrators to edit FAQs.</p>
-<h3 id='query-parameters-75'>Query parameters</h3>
+<h3 id='query-parameters-78'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -7597,7 +7874,7 @@ order_countries{country="DE"} 8 1560511346509
 <aside style="color: white;">Requires user authentication with right <b>settings</b></aside>
 
 <p>This endpoint allows administrators to delete a FAQ.</p>
-<h3 id='query-parameters-76'>Query parameters</h3>
+<h3 id='query-parameters-79'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
