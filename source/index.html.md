@@ -20,12 +20,13 @@ We provide example codes in PHP. You can view code examples in the dark area to 
 
 # Changelog
 
-This is the changelog of this API documentation.
+This is the changelog of the GroundControl API and this API documentation.
 
-Date | Changes
----- | -------
-2019-06-13 | <ul style="margin: 0;"><li>Added GET /users/rights</li><li>Added GET /devices</li><li>Added POST /devices</li><li>Added PUT /devices/{id}</li><li>Added DELETE /devices/{id}</li></ul>
-2019-06-12 | <ul style="margin: 0;"><li>Added GET /photographers</li><li>Added POST /orders/{id}</li><li>Updated GET /faq</li><li>Added POST /faq</li><li>Added PUT /faq/{id}</li><li>Added DELETE /faq/{id}</li><li>Updated GET /ranks</li><li>Added POST /ranks</li><li>Added PUT /ranks/{id}</li><li>Added DELETE /ranks/{id}</li><li>Added GET /ranks/features</li><li>Added POST /ranks/features</li><li>Added PUT /ranks/features/{id}</li><li>Added DELETE /ranks/features/{id}</li></ul>
+Date | Staging | Production | Changes
+---- | ------- | ---------- | -------
+2019-06-14 | 2019-06-14 | - | <ul style="margin: 0;"><li>Updated GET /events</li><li>Updated GET /events/{slug}</li><li>Added POST /events</li><li>Added PUT /events/{slug}</li><li>Added DELETE /events/{slug}</li><li>Added POST /events/{slug}/artists</li><li>Added PUT /evetns/{slug}/artists/{id}</li><li>Added DELETE /events/{slug}/artists/{id}</li></ul>
+2019-06-13 | 2019-06-13 | - | <ul style="margin: 0;"><li>Added GET /users/rights</li><li>Added GET /devices</li><li>Added POST /devices</li><li>Added PUT /devices/{id}</li><li>Added DELETE /devices/{id}</li></ul>
+2019-06-12 | 2019-06-12 | - | <ul style="margin: 0;"><li>Added GET /photographers</li><li>Added POST /orders/{id}</li><li>Updated GET /faq</li><li>Added POST /faq</li><li>Added PUT /faq/{id}</li><li>Added DELETE /faq/{id}</li><li>Updated GET /ranks</li><li>Added POST /ranks</li><li>Added PUT /ranks/{id}</li><li>Added DELETE /ranks/{id}</li><li>Added GET /ranks/features</li><li>Added POST /ranks/features</li><li>Added PUT /ranks/features/{id}</li><li>Added DELETE /ranks/features/{id}</li></ul>
 
 # Return values & error handling
 
@@ -1357,18 +1358,21 @@ print_r($res);
         "design": 1,
         "artists": [  
           {  
+            "id": 1,
             "name": "D-Block & S-te-fan",
             "img": "assets/artists/dblock_stefan.jpg",
             "set_time": "xx:xx - xx:xx",
             "tier": 1
           },
           {  
+            "id": 2,
             "name": "Frequencerz",
             "img": "assets/artists/frequencerz.jpg",
             "set_time": "xx:xx - xx:xx",
             "tier": 1
           }
           {  
+            "id": 3,
             "name": "Le Shuuk",
             "img": "assets/artists/leshuuk.jpg",
             "set_time": "xx:xx - xx:xx",
@@ -1446,18 +1450,21 @@ print_r($res);
     "design": 1,
     "artists": [  
       {  
+        "id": 1,
         "name": "D-Block & S-te-fan",
         "img": "assets/artists/dblock_stefan.jpg",
         "set_time": "xx:xx - xx:xx",
         "tier": 1
       },
       {  
+        "id": 2,
         "name": "Frequencerz",
         "img": "assets/artists/frequencerz.jpg",
         "set_time": "xx:xx - xx:xx",
         "tier": 1
       }
       {  
+        "id": 3,
         "name": "Le Shuuk",
         "img": "assets/artists/leshuuk.jpg",
         "set_time": "xx:xx - xx:xx",
@@ -1503,6 +1510,292 @@ design | ID of website design
 artists[] | List of artists performing
 products[] | List of tickets/products available
 galleries[] | List of assigned galleries
+
+## POST /events
+```php
+<?php
+$ch = curl_init("https://api.hyperspace.one/events");
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+  "Authorization: Bearer xxx",
+]);
+curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query([
+  "slug" => "my-event",
+  "date" => "2019-12-30 10:00:00",
+  "name" => "My event",
+  "active" => true,
+]));
+$res = curl_exec($ch);
+
+if (curl_errno($ch)) {
+  die(curl_error($ch));
+}
+
+curl_close($ch);
+$res = json_decode($res, true);
+
+print_r($res);
+```
+
+> The above request returns JSON structured like this:
+
+```json
+{
+  "success": true
+}
+```
+
+<aside style="color: white;">Requires user authentication with right <b>manage_events</b></aside>
+
+This endpoint allows administrators to create new events.
+
+### Query parameters
+
+Parameter | Default | Description
+--------- | ------- | -----------
+slug | - | Event slug
+name | - | Event name
+date | - | Event date
+name2 | "" | Event subtitle
+location | "" | Event location
+active | false | Event is active / visible
+background_image | "" | Event background on homepage
+design | 1 | Homepage design ID
+
+### Failure codes
+
+Failure Code | Meaning
+---------- | -------
+1000 | No slug specified
+1001 | Slug already exists
+1002 | No name specified
+1003 | Invalid date specified
+1004 | Invalid design specified
+
+## PUT /events/{slug}
+```php
+<?php
+$ch = curl_init("https://api.hyperspace.one/events/{slug}");
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query([
+  "active" => true,
+]));
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+  "Authorization: Bearer xxx",
+]);
+curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
+$res = curl_exec($ch);
+
+if (curl_errno($ch)) {
+  die(curl_error($ch));
+}
+
+curl_close($ch);
+$res = json_decode($res, true);
+
+print_r($res);
+```
+
+> The above request returns JSON structured like this:
+
+```json
+{
+  "success": true
+}
+```
+
+<aside style="color: white;">Requires user authentication with right <b>manage_events</b></aside>
+
+This endpoint allows administrators to edit events.
+
+### Query parameters
+
+Parameter | Default | Description
+--------- | ------- | -----------
+slug | - | Event slug / ID
+
+You can also use the parameters `name`, `name2`, `date`, `localtion`, `active`, `background_image` and `design` to update these properties. Only the properties specified are updated.
+
+## DELETE /events/{slug}
+```php
+<?php
+$ch = curl_init("https://api.hyperspace.one/events/{slug}");
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+  "Authorization: Bearer xxx",
+]);
+curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "DELETE");
+$res = curl_exec($ch);
+
+if (curl_errno($ch)) {
+  die(curl_error($ch));
+}
+
+curl_close($ch);
+$res = json_decode($res, true);
+
+print_r($res);
+```
+
+> The above request returns JSON structured like this:
+
+```json
+{
+  "success": true
+}
+```
+
+<aside style="color: white;">Requires user authentication with right <b>manage_events</b></aside>
+
+This endpoint allows administrators to delete an event.
+
+### Query parameters
+
+Parameter | Default | Description
+--------- | ------- | -----------
+slug | - | Event slug / ID
+
+## POST /events/{slug}/artists
+```php
+<?php
+$ch = curl_init("https://api.hyperspace.one/events/{slug}/artists");
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+  "Authorization: Bearer xxx",
+]);
+curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query([
+  "name" => "Frequencerz",
+]));
+$res = curl_exec($ch);
+
+if (curl_errno($ch)) {
+  die(curl_error($ch));
+}
+
+curl_close($ch);
+$res = json_decode($res, true);
+
+print_r($res);
+```
+
+> The above request returns JSON structured like this:
+
+```json
+{
+  "success": true,
+  "id": 10
+}
+```
+
+<aside style="color: white;">Requires user authentication with right <b>manage_events</b></aside>
+
+This endpoint allows administrators to create new artists for events.
+
+### Query parameters
+
+Parameter | Default | Description
+--------- | ------- | -----------
+name | - | Artist name
+image | "" | URL to image
+set_time | "" | Set time
+tier | 1 | Artist tier
+
+### Return values
+
+Parameter | Description
+--------- | -----------
+id | ID of newly created artist
+
+### Failure codes
+
+Failure Code | Meaning
+---------- | -------
+1000 | No name specified
+
+## PUT /events/{slug}/artists/{id}
+```php
+<?php
+$ch = curl_init("https://api.hyperspace.one/events/{slug}/artists/{id}");
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query([
+  "set_time" => "22:00 - 23:30",
+]));
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+  "Authorization: Bearer xxx",
+]);
+curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
+$res = curl_exec($ch);
+
+if (curl_errno($ch)) {
+  die(curl_error($ch));
+}
+
+curl_close($ch);
+$res = json_decode($res, true);
+
+print_r($res);
+```
+
+> The above request returns JSON structured like this:
+
+```json
+{
+  "success": true
+}
+```
+
+<aside style="color: white;">Requires user authentication with right <b>manage_images</b></aside>
+
+This endpoint allows administrators to edit artists.
+
+### Query parameters
+
+Parameter | Default | Description
+--------- | ------- | -----------
+slug | - | Event slug / ID
+id | - | Artist ID
+
+You can also use the parameters `name`, `image` and `set_time` to update these properties. Only the properties specified are updated.
+
+## DELETE /events/{slug}/artists/{id}
+```php
+<?php
+$ch = curl_init("https://api.hyperspace.one/events/{slug}/artists/{id}");
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+  "Authorization: Bearer xxx",
+]);
+curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "DELETE");
+$res = curl_exec($ch);
+
+if (curl_errno($ch)) {
+  die(curl_error($ch));
+}
+
+curl_close($ch);
+$res = json_decode($res, true);
+
+print_r($res);
+```
+
+> The above request returns JSON structured like this:
+
+```json
+{
+  "success": true
+}
+```
+
+<aside style="color: white;">Requires user authentication with right <b>manage_events</b></aside>
+
+This endpoint allows administrators to delete an artist for an event.
+
+### Query parameters
+
+Parameter | Default | Description
+--------- | ------- | -----------
+slug | - | Event slug / ID
+id | - | Artist ID
 
 # Galleries
 
