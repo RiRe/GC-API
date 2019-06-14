@@ -24,7 +24,7 @@ This is the changelog of the GroundControl API and this API documentation.
 
 Date | Staging | Production | Changes
 ---- | ------- | ---------- | -------
-2019-06-14 | 2019-06-14 | - | <ul style="margin: 0;"><li>Updated GET /events</li><li>Updated GET /events/{slug}</li><li>Added POST /events</li><li>Added PUT /events/{slug}</li><li>Added DELETE /events/{slug}</li><li>Added POST /events/{slug}/artists</li><li>Added PUT /evetns/{slug}/artists/{id}</li><li>Added DELETE /events/{slug}/artists/{id}</li><li>Added GET /metrics</lI></ul>
+2019-06-14 | 2019-06-14 | - | <ul style="margin: 0;"><li>Updated GET /events</li><li>Updated GET /events/{slug}</li><li>Added POST /events</li><li>Added PUT /events/{slug}</li><li>Added DELETE /events/{slug}</li><li>Added POST /events/{slug}/artists</li><li>Added PUT /events/{slug}/artists/{id}</li><li>Added DELETE /events/{slug}/artists/{id}</li><li>Added GET /metrics</li><li>Added POST /products</li><li>Added PUT /products/{id}</li><li>Added DELETE /products/{id}</li></ul>
 2019-06-13 | 2019-06-13 | - | <ul style="margin: 0;"><li>Added GET /users/rights</li><li>Added GET /devices</li><li>Added POST /devices</li><li>Added PUT /devices/{id}</li><li>Added DELETE /devices/{id}</li></ul>
 2019-06-12 | 2019-06-12 | - | <ul style="margin: 0;"><li>Added GET /photographers</li><li>Added POST /orders/{id}</li><li>Updated GET /faq</li><li>Added POST /faq</li><li>Added PUT /faq/{id}</li><li>Added DELETE /faq/{id}</li><li>Updated GET /ranks</li><li>Added POST /ranks</li><li>Added PUT /ranks/{id}</li><li>Added DELETE /ranks/{id}</li><li>Added GET /ranks/features</li><li>Added POST /ranks/features</li><li>Added PUT /ranks/features/{id}</li><li>Added DELETE /ranks/features/{id}</li></ul>
 
@@ -187,75 +187,6 @@ maintenanceMode | Maintenance mode active
 user | **If authenticated** Details about user
 
 <aside style="color: white;">Additional values are possible based on your system configuration</aside>
-
-## GET /products
-```php
-<?php
-$ch = curl_init("https://api.hyperspace.one/products");
-curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-$res = curl_exec($ch);
-
-if (curl_errno($ch)) {
-  die(curl_error($ch));
-}
-
-curl_close($ch);
-$res = json_decode($res, true);
-
-print_r($res);
-```
-
-> The above request returns JSON structured like this:
-
-```json
-[
-  {
-    "id":1,
-    "name":"Early Bird",
-    "description":"What do you get with this ticket?\r\n\r\n+ Access to the festival\r\n+ Wristband\r\n+ Parking\r\n+ Some more stuff\r\n- Some more stuff",
-    "net_price":4.2,
-    "gross_price":5,
-    "price":5,
-    "taxrate":19,
-    "tax":0.8,
-    "net_shipping":0.04,
-    "gross_shipping":0.05,
-    "tax_shipping":0.01,
-    "pricePrefix":"",
-    "priceSuffix":"\u20ac",
-    "end_personalization":"0000-00-00 00:00:00",
-    "sale_start":"0000-00-00 00:00:00",
-    "sale_end":"0000-00-00 00:00:00",
-    "available":true
-  }
-]
-```
-
-This endpoint returns the products defined in GroundControl.
-
-### Return values
-
-Each product has the following parameters:
-
-Parameter | Description
---------- | -----------
-id | Product ID
-name | Product name (localized)
-description | Product description (localized)
-net_price | Price without tax
-gross_price | Price with tax
-price | End price
-taxrate | Tax rate in percent
-tax | Tax included in price
-net_shipping | Shipping costs without tax
-gross_shipping | Shipping costs including tax
-tax_shipping | Tax included in shipping
-pricePrefix | Prefix for pricing (e.g. $)
-priceSuffix | Suffix for pricing (e.g. €)
-end_personalization | End of ticket personalization timeframe
-sale_start | Start date of sale (can be in future)
-sale_end | End date of sale (can be in past)
-available | Product in stock
 
 ## GET /faq
 ```php
@@ -1855,6 +1786,259 @@ Parameter | Default | Description
 --------- | ------- | -----------
 slug | - | Event slug / ID
 id | - | Artist ID
+
+# Products
+
+## GET /products
+```php
+<?php
+$ch = curl_init("https://api.hyperspace.one/products");
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$res = curl_exec($ch);
+
+if (curl_errno($ch)) {
+  die(curl_error($ch));
+}
+
+curl_close($ch);
+$res = json_decode($res, true);
+
+print_r($res);
+```
+
+> The above request returns JSON structured like this:
+
+```json
+[
+  {
+    "id": 1,
+    "name": "Early Bird",
+    "description": "What do you get with this ticket?\r\n\r\n+ Access to the festival\r\n+ Wristband\r\n+ Parking\r\n+ Some more stuff\r\n- Some more stuff",
+    "net_price": 4.2,
+    "gross_price": 5,
+    "price": 5,
+    "taxrate": 19,
+    "tax": 0.8,
+    "net_shipping": 0.04,
+    "gross_shipping": 0.05,
+    "tax_shipping": 0.01,
+    "pricePrefix": "",
+    "priceSuffix": "\u20ac",
+    "end_personalization": "0000-00-00 00:00:00",
+    "sale_start": "0000-00-00 00:00:00",
+    "sale_end": "0000-00-00 00:00:00",
+    "available": true,
+    "localization": {
+      "en": {
+        "name": "Regular",
+        "description": "Buy Your Ticket for HYPERSPACE - The Abandoned Dome now!\r\n\r\n+ Festival-Feeling\r\n+ Free Parking"
+      },
+      "de": {
+        "name": "Regular",
+        "description": "Sichere Dir jetzt Dein Ticket für HYPERSPACE - The Abandoned Dome!\r\n\r\n+ Festival-Feeling\r\n+ Kostenloses Parken"
+      }
+    }
+  }
+]
+```
+
+This endpoint returns the products defined in GroundControl.
+
+<aside style="color: white;">Viewing disabled products requires user authentication with right <b>products</b></aside>
+
+### Return values
+
+Each product has the following parameters:
+
+Parameter | Description
+--------- | -----------
+id | Product ID
+name | Product name (localized)
+description | Product description (localized)
+net_price | Price without tax
+gross_price | Price with tax
+price | End price
+taxrate | Tax rate in percent
+tax | Tax included in price
+net_shipping | Shipping costs without tax
+gross_shipping | Shipping costs including tax
+tax_shipping | Tax included in shipping
+pricePrefix | Prefix for pricing (e.g. $)
+priceSuffix | Suffix for pricing (e.g. €)
+end_personalization | End of ticket personalization timeframe
+sale_start | Start date of sale (can be in future)
+sale_end | End date of sale (can be in past)
+available | Product in stock
+localization[] | Array of product localizations
+
+## POST /products
+```php
+<?php
+$ch = curl_init("https://api.hyperspace.one/products");
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+  "Authorization: Bearer xxx",
+]);
+curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query([
+  "name" => "My products",
+  "description" => "My description",
+  "amount" => 5.99,
+  "taxrate" => 19.00,
+  "shipping" => 4.99,
+  "event" => "the-abandoned-dome",
+  "localization" => [
+    "de" => [
+      "name" => "Mein Produkt",
+      "description" => "Meine Beschreibung"
+    ],
+  ],
+]));
+$res = curl_exec($ch);
+
+if (curl_errno($ch)) {
+  die(curl_error($ch));
+}
+
+curl_close($ch);
+$res = json_decode($res, true);
+
+print_r($res);
+```
+
+> The above request returns JSON structured like this:
+
+```json
+{
+  "success": true,
+  "id": 1
+}
+```
+
+<aside style="color: white;">Requires user authentication with right <b>products</b></aside>
+
+This endpoint allows administrators to create new products.
+
+### Query parameters
+
+Parameter | Default | Description
+--------- | ------- | -----------
+name | - | Product name
+description | "" | Product description
+amount | - | Product price
+taxrate | 0.00 | Taxrate in percent (19 % = 19.00)
+shipping | 0.00 | Shipping costs
+event | No event | Event ID or slug
+available | Unlimited | Available ticket number
+sale_start | Immediately | If datetime specified, ticket sale starts then
+sale_end | Never | If datetime specified, ticket sale ends then
+product_before | No product | If product ID specified, sale will start earlier if specified product is sold out
+end_personalization | No personalization | If datetime specified, tickets can be personalized until then
+points | 0 | Points achieved for each ticket buyed
+localization | [] | Array with localized content (optional)
+
+### Return values
+
+Parameter | Description
+--------- | -----------
+id | ID of newly created product
+
+### Failure codes
+
+Failure Code | Meaning
+---------- | -------
+1000 | No name specified
+1001 | Invalid amount specified
+
+## PUT /products/{id}
+```php
+<?php
+$ch = curl_init("https://api.hyperspace.one/products/{id}");
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query([
+  "name" => "Other name",
+]));
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+  "Authorization: Bearer xxx",
+]);
+curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
+$res = curl_exec($ch);
+
+if (curl_errno($ch)) {
+  die(curl_error($ch));
+}
+
+curl_close($ch);
+$res = json_decode($res, true);
+
+print_r($res);
+```
+
+> The above request returns JSON structured like this:
+
+```json
+{
+  "success": true
+}
+```
+
+<aside style="color: white;">Requires user authentication with right <b>products</b></aside>
+
+This endpoint allows administrators to edit products.
+
+### Query parameters
+
+Parameter | Default | Description
+--------- | ------- | -----------
+id | - | Product ID
+
+You can also use the parameters `name`, `description`, `amount`, `taxrate`, `shipping`, `event`, `available`, `sale_start`, `sale_end`, `product_before`, `end_personalization` and `points` to update these properties. Parameters not specified are ignored and not updated.
+
+If you specify an array named `localization` as in `POST /products`, the values for the specified languages are updated. Localizations not specified are deleted.
+
+## DELETE /products/{id}
+```php
+<?php
+$ch = curl_init("https://api.hyperspace.one/products/{id}");
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+  "Authorization: Bearer xxx",
+]);
+curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "DELETE");
+$res = curl_exec($ch);
+
+if (curl_errno($ch)) {
+  die(curl_error($ch));
+}
+
+curl_close($ch);
+$res = json_decode($res, true);
+
+print_r($res);
+```
+
+> The above request returns JSON structured like this:
+
+```json
+{
+  "success": true
+}
+```
+
+<aside style="color: white;">Requires user authentication with right <b>products</b></aside>
+
+This endpoint allows administrators to delete a product.
+
+### Query parameters
+
+Parameter | Default | Description
+--------- | ------- | -----------
+id | - | Product ID
+
+### Failure codes
+
+Failure Code | Meaning
+---------- | -------
+1000 | Product deletion failed (existing orders or tickets)
 
 # Galleries
 
