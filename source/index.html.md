@@ -24,7 +24,7 @@ This is the changelog of the GroundControl API and this API documentation.
 
 Date | Staging | Production | Changes
 ---- | ------- | ---------- | -------
-2019-06-14 | 2019-06-14 | - | <ul style="margin: 0;"><li>Updated GET /events</li><li>Updated GET /events/{slug}</li><li>Added POST /events</li><li>Added PUT /events/{slug}</li><li>Added DELETE /events/{slug}</li><li>Added POST /events/{slug}/artists</li><li>Added PUT /evetns/{slug}/artists/{id}</li><li>Added DELETE /events/{slug}/artists/{id}</li></ul>
+2019-06-14 | 2019-06-14 | - | <ul style="margin: 0;"><li>Updated GET /events</li><li>Updated GET /events/{slug}</li><li>Added POST /events</li><li>Added PUT /events/{slug}</li><li>Added DELETE /events/{slug}</li><li>Added POST /events/{slug}/artists</li><li>Added PUT /evetns/{slug}/artists/{id}</li><li>Added DELETE /events/{slug}/artists/{id}</li><li>Added GET /metrics</lI></ul>
 2019-06-13 | 2019-06-13 | - | <ul style="margin: 0;"><li>Added GET /users/rights</li><li>Added GET /devices</li><li>Added POST /devices</li><li>Added PUT /devices/{id}</li><li>Added DELETE /devices/{id}</li></ul>
 2019-06-12 | 2019-06-12 | - | <ul style="margin: 0;"><li>Added GET /photographers</li><li>Added POST /orders/{id}</li><li>Updated GET /faq</li><li>Added POST /faq</li><li>Added PUT /faq/{id}</li><li>Added DELETE /faq/{id}</li><li>Updated GET /ranks</li><li>Added POST /ranks</li><li>Added PUT /ranks/{id}</li><li>Added DELETE /ranks/{id}</li><li>Added GET /ranks/features</li><li>Added POST /ranks/features</li><li>Added PUT /ranks/features/{id}</li><li>Added DELETE /ranks/features/{id}</li></ul>
 
@@ -306,6 +306,65 @@ This endpoint returns the defined Frequently Asked Questions (FAQ).
 Parameter | Description
 --------- | -----------
 faq[] | Array with questions and answer
+
+## GET /metrics
+```php
+<?php
+$ch = curl_init("https://api.hyperspace.one/metrics");
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+  "Authorization: Bearer xxx",
+]);
+$res = curl_exec($ch);
+
+if (curl_errno($ch)) {
+  die(curl_error($ch));
+}
+
+curl_close($ch);
+echo nl2br($res);
+```
+
+> The above request will generate metrics like this:
+
+```text
+# HELP users_total The total number of users.
+# TYPE users_total counter
+users_total 1 1560511346492
+# HELP orders_total The total number of orders.
+# TYPE orders_total counter
+orders_total{status="paid"} 5 1560511346493
+orders_total{status="unpaid"} 1 1560511346493
+orders_total{status="cancelled"} 2 1560511346493
+# HELP tickets_total The total number of tickets.
+# TYPE tickets_total counter
+tickets_total{product="Early Bird",event="The Abandoned Dome"} 2 1560511346502
+tickets_total{product="Regular",event="The Abandoned Dome"} 1 1560511346504
+# HELP tickets_usage The number of tickets used.
+# TYPE tickets_usage counter
+tickets_usage{used="yes"} 0 1560511346504
+tickets_usage{used="no"} 3 1560511346504
+# HELP reflink_clicks The number of reflink clicks.
+# TYPE reflink_clicks counter
+reflink_clicks 50 1560511346505
+# HELP push_tokens The number of push tokens.
+# TYPE push_tokens counter
+push_tokens 5 1560511346506
+# HELP pre_registrations The number of preregistration.
+# TYPE pre_registration counter
+pre_registrations{confirmed="yes"} 0 1560511346507
+pre_registrations{confirmed="no"} 1 1560511346507
+# HELP achievement_points The total number of achievement points.
+# TYPE achievement_points counter
+achievement_points 420 1560511346508
+# HELP order_countries The order number by countries.
+# TYPE order_countries counter
+order_countries{country="DE"} 8 1560511346509
+```
+
+<aside style="color: white;">Requires user authentication with right <b>metrics</b></aside>
+
+This endpoint generates system metrics for Prometheus.
 
 ## GET /qrcode/{content}
 ```php
