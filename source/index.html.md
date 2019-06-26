@@ -24,6 +24,7 @@ This is the changelog of the GroundControl API and this API documentation.
 
 Date | Staging | Production | Changes
 ---- | ------- | ---------- | -------
+2019-06-26 | 2019-06-26 | - | <ul style="margin: 0;"><li>Updated GET /orders</li></ul>
 2019-06-14 | 2019-06-14 | - | <ul style="margin: 0;"><li>Updated GET /events</li><li>Updated GET /events/{slug}</li><li>Added POST /events</li><li>Added PUT /events/{slug}</li><li>Added DELETE /events/{slug}</li><li>Added POST /events/{slug}/artists</li><li>Added PUT /events/{slug}/artists/{id}</li><li>Added DELETE /events/{slug}/artists/{id}</li><li>Added GET /metrics</li><li>Added POST /products</li><li>Added PUT /products/{id}</li><li>Added DELETE /products/{id}</li></ul>
 2019-06-13 | 2019-06-13 | - | <ul style="margin: 0;"><li>Added GET /users/rights</li><li>Added GET /devices</li><li>Added POST /devices</li><li>Added PUT /devices/{id}</li><li>Added DELETE /devices/{id}</li></ul>
 2019-06-12 | 2019-06-12 | - | <ul style="margin: 0;"><li>Added GET /photographers</li><li>Added POST /orders/{id}</li><li>Updated GET /faq</li><li>Added POST /faq</li><li>Added PUT /faq/{id}</li><li>Added DELETE /faq/{id}</li><li>Updated GET /ranks</li><li>Added POST /ranks</li><li>Added PUT /ranks/{id}</li><li>Added DELETE /ranks/{id}</li><li>Added GET /ranks/features</li><li>Added POST /ranks/features</li><li>Added PUT /ranks/features/{id}</li><li>Added DELETE /ranks/features/{id}</li></ul>
@@ -3037,6 +3038,7 @@ Parameter | Default | Description
 page | 1 | Page number
 per_page | 20 | Items to display per page
 filter | - | Wildcard filter for firstname, lastname, email, token, payment_id
+event | - | If event ID or slug specified, only show orders containing products for this event
 sort_field | created_at | Field to sort by
 sort_direction | asc | Sorting direction
 
