@@ -279,6 +279,9 @@
                     <a href="#put-password" class="toc-h2 toc-link" data-title="PUT /password">PUT /password</a>
                   </li>
                   <li>
+                    <a href="#put-spectrum" class="toc-h2 toc-link" data-title="PUT /spectrum">PUT /spectrum</a>
+                  </li>
+                  <li>
                     <a href="#post-password-email" class="toc-h2 toc-link" data-title="POST /password/email">POST /password/email</a>
                   </li>
                   <li>
@@ -630,7 +633,7 @@
 <td>2019-06-26</td>
 <td>2019-06-26</td>
 <td>-</td>
-<td><ul style="margin: 0;"><li>Updated GET /orders</li></ul></td>
+<td><ul style="margin: 0;"><li>Updated GET /orders</li><li>Added PUT /spectrum</li></ul></td>
 </tr>
 <tr>
 <td>2019-06-14</td>
@@ -1150,6 +1153,49 @@ order_countries{country="DE"} 8 1560511346509
 <td>Old password is invalid</td>
 </tr>
 </tbody></table>
+<h2 id='put-spectrum'>PUT /spectrum</h2><pre class="highlight php tab-php"><code><span class="cp">&lt;?php</span>
+<span class="nv">$ch</span> <span class="o">=</span> <span class="nb">curl_init</span><span class="p">(</span><span class="s2">"https://api.hyperspace.one/spectrum"</span><span class="p">);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_RETURNTRANSFER</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_POSTFIELDS</span><span class="p">,</span> <span class="nb">http_build_query</span><span class="p">([</span>
+  <span class="s2">"token"</span> <span class="o">=&gt;</span> <span class="s2">"xxx"</span><span class="p">,</span>
+<span class="p">]));</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_CUSTOMREQUEST</span><span class="p">,</span> <span class="s2">"PUT"</span><span class="p">);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_HTTPHEADER</span><span class="p">,</span> <span class="p">[</span>
+  <span class="s2">"Authorization: Bearer xxx"</span><span class="p">,</span>
+<span class="p">]);</span>
+<span class="nv">$res</span> <span class="o">=</span> <span class="nb">curl_exec</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="nb">curl_errno</span><span class="p">(</span><span class="nv">$ch</span><span class="p">))</span> <span class="p">{</span>
+  <span class="k">die</span><span class="p">(</span><span class="nb">curl_error</span><span class="p">(</span><span class="nv">$ch</span><span class="p">));</span>
+<span class="p">}</span>
+
+<span class="nb">curl_close</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
+<span class="nv">$res</span> <span class="o">=</span> <span class="nb">json_decode</span><span class="p">(</span><span class="nv">$res</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+
+<span class="nb">print_r</span><span class="p">(</span><span class="nv">$res</span><span class="p">);</span>
+</code></pre>
+<blockquote>
+<p>The above request returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"success"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<aside style="color: white;">User authentication required</aside>
+
+<p>This endpoint allows saving the current Spectrum access token (JWT). Only the most recent Spectrum token is saved and can be retrieved via the info endpoint.</p>
+<h3 id='query-parameters-6'>Query parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>token</td>
+<td>Spectrum token</td>
+</tr>
+</tbody></table>
 <h2 id='post-password-email'>POST /password/email</h2><pre class="highlight php tab-php"><code><span class="cp">&lt;?php</span>
 <span class="nv">$ch</span> <span class="o">=</span> <span class="nb">curl_init</span><span class="p">(</span><span class="s2">"https://api.hyperspace.one/password/email"</span><span class="p">);</span>
 <span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_RETURNTRANSFER</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
@@ -1180,7 +1226,7 @@ order_countries{country="DE"} 8 1560511346509
 <p>As soon as a captcha has been solved correctly, this information is saved within the browser session on the API server. This means if there is an error in the password request process (excluding captcha error), the captcha must not be solved again. The information is reset as soon as the reset request was successful. Therefore, another reset request requires a new captcha.</p>
 
 <p>After a successful reset request, the user gets an email from GC-API containing a reset link leading to the frontend configured in GroundControl.</p>
-<h3 id='query-parameters-6'>Query parameters</h3>
+<h3 id='query-parameters-7'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -1247,7 +1293,7 @@ order_countries{country="DE"} 8 1560511346509
 <p>This endpoint can be used to verify a password reset token. This is useful to pre-check the token before actually requesting a new password from the user.</p>
 
 <p>Please note that the reset token has a validity of 30 minutes.</p>
-<h3 id='query-parameters-7'>Query parameters</h3>
+<h3 id='query-parameters-8'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -1292,7 +1338,7 @@ order_countries{country="DE"} 8 1560511346509
 <p>This endpoint is used to actually reset a users password. Therefore, the reset process data and the new password is needed. The password is instantly saved and a login with the new password is possible. Please note that the password reset token is valid only once and expires 30 minutes after issuance.</p>
 
 <p>As soon as a captcha has been solved correctly, this information is saved within the browser session on the API server. This means if there is an error in the password reset process (excluding captcha error), the captcha must not be solved again. The information is reset as soon as the reset process was successful. Therefore, another reset process requires a new captcha.</p>
-<h3 id='query-parameters-8'>Query parameters</h3>
+<h3 id='query-parameters-9'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -1384,7 +1430,7 @@ order_countries{country="DE"} 8 1560511346509
 <aside style="color: white;">Requires user authentication with right <b>get_users</b></aside>
 
 <p>This endpoint allows administrators to get a paginated list of all users in the system.</p>
-<h3 id='query-parameters-9'>Query parameters</h3>
+<h3 id='query-parameters-10'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -1517,7 +1563,7 @@ order_countries{country="DE"} 8 1560511346509
 <p>This endpoint allows administrators to get details of a user.</p>
 
 <p>Administrators are only allowed to access users who have less or equal amount of rights. Administrator with wildcard right are allowed to access every user.</p>
-<h3 id='query-parameters-10'>Query parameters</h3>
+<h3 id='query-parameters-11'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -1636,7 +1682,7 @@ order_countries{country="DE"} 8 1560511346509
 <p>This endpoint allows administrators to edit user details.</p>
 
 <p>Administrators are only allowed to access users who have less or equal amount of rights. Administrator with wildcard right are allowed to access every user.</p>
-<h3 id='query-parameters-11'>Query parameters</h3>
+<h3 id='query-parameters-12'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -1704,7 +1750,7 @@ order_countries{country="DE"} 8 1560511346509
 <p>This endpoint allows administrators to delete a user.</p>
 
 <p>Administrators are only allowed to access users who have less or equal amount of rights. Administrator with wildcard right are allowed to access every user.</p>
-<h3 id='query-parameters-12'>Query parameters</h3>
+<h3 id='query-parameters-13'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -1756,7 +1802,7 @@ order_countries{country="DE"} 8 1560511346509
 <aside style="color: white;">Requires user authentication with right <b>create_user</b></aside>
 
 <p>This endpoint allows administrators to create new users.</p>
-<h3 id='query-parameters-13'>Query parameters</h3>
+<h3 id='query-parameters-14'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -1914,7 +1960,7 @@ order_countries{country="DE"} 8 1560511346509
 <p>As soon as a captcha has been solved correctly, this information is saved within the browser session on the API server. This means if there is an error in the registration process (excluding captcha error), the captcha must not be solved again. The information is reset as soon as the registration was successful. Therefore, another registration requires a new captcha.</p>
 
 <p>To confirm a preregistration, the user gets an email with a link to do this. The link uses the frontend configured in GroundControl.</p>
-<h3 id='query-parameters-14'>Query parameters</h3>
+<h3 id='query-parameters-15'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -1996,7 +2042,7 @@ order_countries{country="DE"} 8 1560511346509
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
 <p>This endpoint is used to confirm pending preregistrations with the token from the registration email sent to the user.</p>
-<h3 id='query-parameters-15'>Query parameters</h3>
+<h3 id='query-parameters-16'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -2057,7 +2103,7 @@ order_countries{country="DE"} 8 1560511346509
 <p>This endpoint is used to resend an email for an existing preregistration and is called by the end user.</p>
 
 <p>As soon as a captcha has been solved correctly, this information is saved within the browser session on the API server. This means if there is an error in the resend process (excluding captcha error), the captcha must not be solved again. The information is reset as soon as the resend was successful. Therefore, another resend requires a new captcha.</p>
-<h3 id='query-parameters-16'>Query parameters</h3>
+<h3 id='query-parameters-17'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -2137,7 +2183,7 @@ order_countries{country="DE"} 8 1560511346509
 <aside style="color: white;">Requires user authentication with right <b>get_preregistrations</b></aside>
 
 <p>This endpoint allows administrators to get a paginated list of all preregistrations in the system.</p>
-<h3 id='query-parameters-17'>Query parameters</h3>
+<h3 id='query-parameters-18'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -2244,7 +2290,7 @@ order_countries{country="DE"} 8 1560511346509
 <aside style="color: white;">Requires user authentication with right <b>edit_preregistrations</b></aside>
 
 <p>This endpoint is used by staff to edit existing preregistrations.</p>
-<h3 id='query-parameters-18'>Query parameters</h3>
+<h3 id='query-parameters-19'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -2298,7 +2344,7 @@ order_countries{country="DE"} 8 1560511346509
 <aside style="color: white;">Requires user authentication with right <b>edit_preregistrations</b></aside>
 
 <p>This endpoint is used by staff to resend email for unconfirmed preregistrations.</p>
-<h3 id='query-parameters-19'>Query parameters</h3>
+<h3 id='query-parameters-20'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -2350,7 +2396,7 @@ order_countries{country="DE"} 8 1560511346509
 <aside style="color: white;">Requires user authentication with right <b>edit_preregistrations</b></aside>
 
 <p>This endpoint is used by staff to remove preregistrations.</p>
-<h3 id='query-parameters-20'>Query parameters</h3>
+<h3 id='query-parameters-21'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -2568,7 +2614,7 @@ order_countries{country="DE"} 8 1560511346509
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
 <p>This endpoint returns the event requested by slug.</p>
-<h3 id='query-parameters-21'>Query parameters</h3>
+<h3 id='query-parameters-22'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -2667,7 +2713,7 @@ order_countries{country="DE"} 8 1560511346509
 <aside style="color: white;">Requires user authentication with right <b>manage_events</b></aside>
 
 <p>This endpoint allows administrators to create new events.</p>
-<h3 id='query-parameters-22'>Query parameters</h3>
+<h3 id='query-parameters-23'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -2775,7 +2821,7 @@ order_countries{country="DE"} 8 1560511346509
 <aside style="color: white;">Requires user authentication with right <b>manage_events</b></aside>
 
 <p>This endpoint allows administrators to edit events.</p>
-<h3 id='query-parameters-23'>Query parameters</h3>
+<h3 id='query-parameters-24'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -2819,7 +2865,7 @@ order_countries{country="DE"} 8 1560511346509
 <aside style="color: white;">Requires user authentication with right <b>manage_events</b></aside>
 
 <p>This endpoint allows administrators to delete an event.</p>
-<h3 id='query-parameters-24'>Query parameters</h3>
+<h3 id='query-parameters-25'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -2864,7 +2910,7 @@ order_countries{country="DE"} 8 1560511346509
 <aside style="color: white;">Requires user authentication with right <b>manage_events</b></aside>
 
 <p>This endpoint allows administrators to create new artists for events.</p>
-<h3 id='query-parameters-25'>Query parameters</h3>
+<h3 id='query-parameters-26'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -2948,7 +2994,7 @@ order_countries{country="DE"} 8 1560511346509
 <aside style="color: white;">Requires user authentication with right <b>manage_images</b></aside>
 
 <p>This endpoint allows administrators to edit artists.</p>
-<h3 id='query-parameters-26'>Query parameters</h3>
+<h3 id='query-parameters-27'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -2997,7 +3043,7 @@ order_countries{country="DE"} 8 1560511346509
 <aside style="color: white;">Requires user authentication with right <b>manage_events</b></aside>
 
 <p>This endpoint allows administrators to delete an artist for an event.</p>
-<h3 id='query-parameters-27'>Query parameters</h3>
+<h3 id='query-parameters-28'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -3192,7 +3238,7 @@ order_countries{country="DE"} 8 1560511346509
 <aside style="color: white;">Requires user authentication with right <b>products</b></aside>
 
 <p>This endpoint allows administrators to create new products.</p>
-<h3 id='query-parameters-28'>Query parameters</h3>
+<h3 id='query-parameters-29'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -3325,7 +3371,7 @@ order_countries{country="DE"} 8 1560511346509
 <aside style="color: white;">Requires user authentication with right <b>products</b></aside>
 
 <p>This endpoint allows administrators to edit products.</p>
-<h3 id='query-parameters-29'>Query parameters</h3>
+<h3 id='query-parameters-30'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -3371,7 +3417,7 @@ order_countries{country="DE"} 8 1560511346509
 <aside style="color: white;">Requires user authentication with right <b>products</b></aside>
 
 <p>This endpoint allows administrators to delete a product.</p>
-<h3 id='query-parameters-30'>Query parameters</h3>
+<h3 id='query-parameters-31'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -3441,7 +3487,7 @@ order_countries{country="DE"} 8 1560511346509
 <aside style="color: white;">Hidden galleries are only shown for authenticated users with right <b>manage_images</b></aside>
 
 <p>This endpoint lists all galleries.</p>
-<h3 id='query-parameters-31'>Query parameters</h3>
+<h3 id='query-parameters-32'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -3570,7 +3616,7 @@ order_countries{country="DE"} 8 1560511346509
 <aside style="color: white;">Hidden galleries are only available for authenticated users with right <b>manage_images</b>, hidden images are also shown only to users with this right</aside>
 
 <p>This endpoint get the details and the images of a specific gallery. The images are paginated and can be filtered. </p>
-<h3 id='query-parameters-32'>Query parameters</h3>
+<h3 id='query-parameters-33'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -3714,7 +3760,7 @@ order_countries{country="DE"} 8 1560511346509
 <aside style="color: white;">Requires user authentication with right <b>manage_images</b></aside>
 
 <p>This endpoint allows administrators to create new galleries.</p>
-<h3 id='query-parameters-33'>Query parameters</h3>
+<h3 id='query-parameters-34'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -3794,7 +3840,7 @@ order_countries{country="DE"} 8 1560511346509
 <aside style="color: white;">Requires user authentication with right <b>manage_images</b></aside>
 
 <p>This endpoint allows administrators to edit galleries.</p>
-<h3 id='query-parameters-34'>Query parameters</h3>
+<h3 id='query-parameters-35'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -3850,7 +3896,7 @@ order_countries{country="DE"} 8 1560511346509
 <aside style="color: white;">Requires user authentication with right <b>manage_images</b></aside>
 
 <p>This endpoint allows administrators to delete galleries.</p>
-<h3 id='query-parameters-35'>Query parameters</h3>
+<h3 id='query-parameters-36'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -3921,7 +3967,7 @@ order_countries{country="DE"} 8 1560511346509
 <aside style="color: white;">Requires authentication with right <b>manage_images</b></aside>
 
 <p>This endpoint allows administrators to list all images with respect to pagination and filtering.</p>
-<h3 id='query-parameters-36'>Query parameters</h3>
+<h3 id='query-parameters-37'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -4024,7 +4070,7 @@ order_countries{country="DE"} 8 1560511346509
 <aside style="color: white;">Requires user authentication with right <b>manage_images</b></aside>
 
 <p>This endpoint allows administrators to upload image files and get back the URL.</p>
-<h3 id='query-parameters-37'>Query parameters</h3>
+<h3 id='query-parameters-38'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -4101,7 +4147,7 @@ order_countries{country="DE"} 8 1560511346509
 <p>This is an extension to the previous <code>POST /images/upload</code> endpoint and allows directly creating an image in the system using the uploaded file by specifying more parameters.</p>
 
 <p>The endpoint variants are distinguished by the <code>title</code> element being specified and non-empty.</p>
-<h3 id='query-parameters-38'>Query parameters</h3>
+<h3 id='query-parameters-39'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -4198,7 +4244,7 @@ order_countries{country="DE"} 8 1560511346509
 <aside style="color: white;">Requires user authentication with right <b>manage_images</b></aside>
 
 <p>This endpoint allows administrators to create an image from an URL.</p>
-<h3 id='query-parameters-39'>Query parameters</h3>
+<h3 id='query-parameters-40'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -4291,7 +4337,7 @@ order_countries{country="DE"} 8 1560511346509
 <aside style="color: white;">Requires user authentication with right <b>manage_images</b></aside>
 
 <p>This endpoint allows administrators to edit images.</p>
-<h3 id='query-parameters-40'>Query parameters</h3>
+<h3 id='query-parameters-41'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -4349,7 +4395,7 @@ order_countries{country="DE"} 8 1560511346509
 <aside style="color: white;">Requires user authentication with right <b>manage_images</b></aside>
 
 <p>This endpoint allows administrators to delete images.</p>
-<h3 id='query-parameters-41'>Query parameters</h3>
+<h3 id='query-parameters-42'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -4466,7 +4512,7 @@ order_countries{country="DE"} 8 1560511346509
 <p>New orders should be placed using this endpoint.</p>
 
 <p>As soon as a captcha has been solved correctly, this information is saved within the browser session on the API server. This means if there is an error in the order process (excluding captcha error), the captcha must not be solved again. The information is reset as soon as the order was successful. Therefore, another order requires a new captcha.</p>
-<h3 id='query-parameters-42'>Query parameters</h3>
+<h3 id='query-parameters-43'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -4673,7 +4719,7 @@ order_countries{country="DE"} 8 1560511346509
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
 <p>Use this endpoint to get details of an existing order.</p>
-<h3 id='query-parameters-43'>Query parameters</h3>
+<h3 id='query-parameters-44'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -4841,7 +4887,7 @@ order_countries{country="DE"} 8 1560511346509
 <aside style="color: white;">Requires user authentication with right <b>view_orders</b></aside>
 
 <p>This endpoint allows administrators to get a paginated list of all orders in the system.</p>
-<h3 id='query-parameters-44'>Query parameters</h3>
+<h3 id='query-parameters-45'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -5006,7 +5052,7 @@ order_countries{country="DE"} 8 1560511346509
 <aside style="color: white;">Requires user authentication with right <b>view_orders</b></aside>
 
 <p>This endpoint allows administrators to resend the confirmation email for a specific order. This order <strong>must be paid</strong>.</p>
-<h3 id='query-parameters-45'>Query parameters</h3>
+<h3 id='query-parameters-46'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -5026,7 +5072,7 @@ order_countries{country="DE"} 8 1560511346509
 </blockquote>
 
 <p>This endpoint is called directly by the payment provider and calls the IPN routine of the payment module. If the payment was successful, this means automatically provisioning of user account (if not already existing) and tickets.</p>
-<h3 id='query-parameters-46'>Query parameters</h3>
+<h3 id='query-parameters-47'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -5076,7 +5122,7 @@ order_countries{country="DE"} 8 1560511346509
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
 <p>This endpoint is used to capture a confirmed payment via PayPal Express Checkout. The checkout process needs to be implemented in frontend, GroundControl API then fetches the specified Express order from PayPal, creates it in the system and marks it as paid.</p>
-<h3 id='query-parameters-47'>Query parameters</h3>
+<h3 id='query-parameters-48'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -5307,7 +5353,7 @@ order_countries{country="DE"} 8 1560511346509
 <aside style="color: white;">Requires user authentication</aside>
 
 <p>Gives back all tickets the user have, grouped by order</p>
-<h3 id='query-parameters-48'>Query parameters</h3>
+<h3 id='query-parameters-49'>Query parameters</h3>
 <p>None</p>
 <h3 id='return-values-24'>Return values</h3>
 <p>The request returns a list of orders containing order information and the tickets assigned with the order.</p>
@@ -5425,7 +5471,7 @@ order_countries{country="DE"} 8 1560511346509
 <p>You should use this endpoint to personalize a ticket which needs personalization. A ticket can be personalized as long as defined in the ticket product. Unlimited name changes are allowed.</p>
 
 <p>By default, a ticket is personalized to the buyers name.</p>
-<h3 id='query-parameters-49'>Query parameters</h3>
+<h3 id='query-parameters-50'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -5562,7 +5608,7 @@ order_countries{country="DE"} 8 1560511346509
 <aside style="color: white;">Requires user authentication with right <b>settings</b></aside>
 
 <p>This endpoint allows administrators to create new ranks.</p>
-<h3 id='query-parameters-50'>Query parameters</h3>
+<h3 id='query-parameters-51'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -5640,7 +5686,7 @@ order_countries{country="DE"} 8 1560511346509
 <aside style="color: white;">Requires user authentication with right <b>settings</b></aside>
 
 <p>This endpoint allows administrators to edit ranks.</p>
-<h3 id='query-parameters-51'>Query parameters</h3>
+<h3 id='query-parameters-52'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -5684,7 +5730,7 @@ order_countries{country="DE"} 8 1560511346509
 <aside style="color: white;">Requires user authentication with right <b>settings</b></aside>
 
 <p>This endpoint allows administrators to delete a rank.</p>
-<h3 id='query-parameters-52'>Query parameters</h3>
+<h3 id='query-parameters-53'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -5778,7 +5824,7 @@ order_countries{country="DE"} 8 1560511346509
 <aside style="color: white;">Requires user authentication with right <b>settings</b></aside>
 
 <p>This endpoint allows administrators to create new rank features.</p>
-<h3 id='query-parameters-53'>Query parameters</h3>
+<h3 id='query-parameters-54'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -5856,7 +5902,7 @@ order_countries{country="DE"} 8 1560511346509
 <aside style="color: white;">Requires user authentication with right <b>settings</b></aside>
 
 <p>This endpoint allows administrators to edit rank features.</p>
-<h3 id='query-parameters-54'>Query parameters</h3>
+<h3 id='query-parameters-55'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -5900,7 +5946,7 @@ order_countries{country="DE"} 8 1560511346509
 <aside style="color: white;">Requires user authentication with right <b>settings</b></aside>
 
 <p>This endpoint allows administrators to delete a rank feature.</p>
-<h3 id='query-parameters-55'>Query parameters</h3>
+<h3 id='query-parameters-56'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -5960,7 +6006,7 @@ order_countries{country="DE"} 8 1560511346509
 <aside style="color: white;">Requires user authentication</aside>
 
 <p>This endpoint returns all achievements reached with pagination. The last achievements are shown first.</p>
-<h3 id='query-parameters-56'>Query parameters</h3>
+<h3 id='query-parameters-57'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -6038,7 +6084,7 @@ order_countries{country="DE"} 8 1560511346509
 <aside style="color: white;">Requires user authentication with right <b>create_achievements</b></aside>
 
 <p>This endpoint allows administrators to create new achievements for a user.</p>
-<h3 id='query-parameters-57'>Query parameters</h3>
+<h3 id='query-parameters-58'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -6156,7 +6202,7 @@ order_countries{country="DE"} 8 1560511346509
 <aside style="color: white;">Requires user authentication with right <b>promoter</b></aside>
 
 <p>This endpoint allows promoters to view orders they have placed. As they have entered the customer data by theirselves, there is no privacy problem in showing this data to promoters.</p>
-<h3 id='query-parameters-58'>Query parameters</h3>
+<h3 id='query-parameters-59'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -6365,7 +6411,7 @@ order_countries{country="DE"} 8 1560511346509
 <aside style="color: white;">Requires user authentication with right <b>affiliate</b></aside>
 
 <p>This endpoint allows affiliates to create new reflinks.</p>
-<h3 id='query-parameters-59'>Query parameters</h3>
+<h3 id='query-parameters-60'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -6425,7 +6471,7 @@ order_countries{country="DE"} 8 1560511346509
 <p>This endpoint allows affiliates to edit their reflinks.</p>
 
 <p>Administrators with <strong>reflinks</strong> right can use this endpoint to update any reflink.</p>
-<h3 id='query-parameters-60'>Query parameters</h3>
+<h3 id='query-parameters-61'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -6479,7 +6525,7 @@ order_countries{country="DE"} 8 1560511346509
 <p>This endpoint allows affiliates to delete their reflinks.</p>
 
 <p>Administrators with <strong>reflinks</strong> right can use this endpoint to delete any reflink.</p>
-<h3 id='query-parameters-61'>Query parameters</h3>
+<h3 id='query-parameters-62'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -6516,7 +6562,7 @@ order_countries{country="DE"} 8 1560511346509
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
 <p>This endpoint increases a reflink click count by 1.</p>
-<h3 id='query-parameters-62'>Query parameters</h3>
+<h3 id='query-parameters-63'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -6601,7 +6647,7 @@ order_countries{country="DE"} 8 1560511346509
 <aside style="color: white;">Requires user authentication with right <b>promoter</b></aside>
 
 <p>This endpoint allows affiliates to view orders that were placed using their reflink. Only paid orders are shown. The newest orders are shown first.</p>
-<h3 id='query-parameters-63'>Query parameters</h3>
+<h3 id='query-parameters-64'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -6797,7 +6843,7 @@ order_countries{country="DE"} 8 1560511346509
 <aside style="color: white;">Requires user authentication with right <b>send_notifications</b></aside>
 
 <p>This endpoint allows administrators to see notifications that have been sent to a user. The newest notifications are shown first.</p>
-<h3 id='query-parameters-64'>Query parameters</h3>
+<h3 id='query-parameters-65'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -6886,7 +6932,7 @@ order_countries{country="DE"} 8 1560511346509
 <aside style="color: white;">Requires user authentication with right <b>send_notifications</b></aside>
 
 <p>This endpoint allows administrators to send a notification to the specified user</p>
-<h3 id='query-parameters-65'>Query parameters</h3>
+<h3 id='query-parameters-66'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -6956,7 +7002,7 @@ order_countries{country="DE"} 8 1560511346509
 <aside style="color: white;">Requires user authentication</aside>
 
 <p>Assign push token to user profile</p>
-<h3 id='query-parameters-66'>Query parameters</h3>
+<h3 id='query-parameters-67'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -7011,7 +7057,7 @@ order_countries{country="DE"} 8 1560511346509
 <aside style="color: white;">Requires user authentication</aside>
 
 <p>Remove push token from user profile</p>
-<h3 id='query-parameters-67'>Query parameters</h3>
+<h3 id='query-parameters-68'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -7073,7 +7119,7 @@ order_countries{country="DE"} 8 1560511346509
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
 <p>This endpoint returns information about the requested RFID tag.</p>
-<h3 id='query-parameters-68'>Query parameters</h3>
+<h3 id='query-parameters-69'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -7147,7 +7193,7 @@ order_countries{country="DE"} 8 1560511346509
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
 <p>This endpoint returns all tags available for a specific device. Also, it returns config options for the requesting device.</p>
-<h3 id='query-parameters-69'>Query parameters</h3>
+<h3 id='query-parameters-70'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -7212,7 +7258,7 @@ order_countries{country="DE"} 8 1560511346509
 <aside style="color: white;">Requires user authentication with right <b>scan_tickets</b></aside>
 
 <p>This endpoint is used to scan tickets at entry. It either returns a success response or a failure if the ticket is invalid or was already scanned. If the scan was successful, it saves the time of the scan and the staff member who has scanned.</p>
-<h3 id='query-parameters-70'>Query parameters</h3>
+<h3 id='query-parameters-71'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -7285,7 +7331,7 @@ order_countries{country="DE"} 8 1560511346509
 <aside style="color: white;">Requires user authentication with right <b>view_tickets</b></aside>
 
 <p>This endpoint returns details about the ticket scanned and any associated entry.</p>
-<h3 id='query-parameters-71'>Query parameters</h3>
+<h3 id='query-parameters-72'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -7369,7 +7415,7 @@ order_countries{country="DE"} 8 1560511346509
 <aside style="color: white;">Requires user authentication with right <b>reset_tickets</b></aside>
 
 <p>This endpoint resets any scan of the specified ticket.</p>
-<h3 id='query-parameters-72'>Query parameters</h3>
+<h3 id='query-parameters-73'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -7438,7 +7484,7 @@ order_countries{country="DE"} 8 1560511346509
 <aside style="color: white;">Requires user authentication with right <b>manage_devices</b></aside>
 
 <p>This endpoint allows administrators to get a paginated list of all devices in the system.</p>
-<h3 id='query-parameters-73'>Query parameters</h3>
+<h3 id='query-parameters-74'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -7518,7 +7564,7 @@ order_countries{country="DE"} 8 1560511346509
 <aside style="color: white;">Requires user authentication with right <b>manage_devices</b></aside>
 
 <p>This endpoint allows administrators to create new devices.</p>
-<h3 id='query-parameters-74'>Query parameters</h3>
+<h3 id='query-parameters-75'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -7580,7 +7626,7 @@ order_countries{country="DE"} 8 1560511346509
 <aside style="color: white;">Requires user authentication with right <b>manage_devices</b></aside>
 
 <p>This endpoint allows administrators to edit a device.</p>
-<h3 id='query-parameters-75'>Query parameters</h3>
+<h3 id='query-parameters-76'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -7624,7 +7670,7 @@ order_countries{country="DE"} 8 1560511346509
 <aside style="color: white;">Requires user authentication with right <b>manage_devices</b></aside>
 
 <p>This endpoint allows administrators to delete a device.</p>
-<h3 id='query-parameters-76'>Query parameters</h3>
+<h3 id='query-parameters-77'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -7758,7 +7804,7 @@ order_countries{country="DE"} 8 1560511346509
 <aside style="color: white;">Requires user authentication with right <b>settings</b></aside>
 
 <p>This endpoint allows administrators to create new FAQs.</p>
-<h3 id='query-parameters-77'>Query parameters</h3>
+<h3 id='query-parameters-78'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -7841,7 +7887,7 @@ order_countries{country="DE"} 8 1560511346509
 <aside style="color: white;">Requires user authentication with right <b>settings</b></aside>
 
 <p>This endpoint allows administrators to edit FAQs.</p>
-<h3 id='query-parameters-78'>Query parameters</h3>
+<h3 id='query-parameters-79'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -7887,7 +7933,7 @@ order_countries{country="DE"} 8 1560511346509
 <aside style="color: white;">Requires user authentication with right <b>settings</b></aside>
 
 <p>This endpoint allows administrators to delete a FAQ.</p>
-<h3 id='query-parameters-79'>Query parameters</h3>
+<h3 id='query-parameters-80'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
