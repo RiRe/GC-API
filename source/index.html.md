@@ -1913,6 +1913,7 @@ sale_start | Start date of sale (can be in future)
 sale_end | End date of sale (can be in past)
 available | Product in stock
 stock | **Requires right products** Quantity in stock
+sold | **Requires right products** Sold quantity
 localization[] | Array of product localizations
 
 ## POST /products
