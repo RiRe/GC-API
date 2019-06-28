@@ -24,6 +24,7 @@ This is the changelog of the GroundControl API and this API documentation.
 
 Date | Staging | Production | Changes
 ---- | ------- | ---------- | -------
+2019-06-28 | 2019-06-28 | - | <ul style="margin: 0;"><li>Updated GET /devices</li><li>Updated POST /devices</li><li>Updated PUT /devices/{id}</li></ul>
 2019-06-26 | 2019-06-26 | - | <ul style="margin: 0;"><li>Updated GET /orders</li><li>Added PUT /spectrum</li><li>Updated GET /products</li></ul>
 2019-06-14 | 2019-06-14 | - | <ul style="margin: 0;"><li>Updated GET /events</li><li>Updated GET /events/{slug}</li><li>Added POST /events</li><li>Added PUT /events/{slug}</li><li>Added DELETE /events/{slug}</li><li>Added POST /events/{slug}/artists</li><li>Added PUT /events/{slug}/artists/{id}</li><li>Added DELETE /events/{slug}/artists/{id}</li><li>Added GET /metrics</li><li>Added POST /products</li><li>Added PUT /products/{id}</li><li>Added DELETE /products/{id}</li></ul>
 2019-06-13 | 2019-06-13 | - | <ul style="margin: 0;"><li>Added GET /users/rights</li><li>Added GET /devices</li><li>Added POST /devices</li><li>Added PUT /devices/{id}</li><li>Added DELETE /devices/{id}</li></ul>
@@ -4976,6 +4977,7 @@ print_r($res);
   "items": [
     {
       "id": "4f0ca3a3-c729-467a-adfd-75ef58029ac3",
+      "name": "my-raspberry",
       "beep": 1,
       "age_green": 18,
       "created_at": "2019-06-13 04:09:08",
@@ -4995,6 +4997,9 @@ Parameter | Default | Description
 --------- | ------- | -----------
 page | 1 | Page number
 per_page | 20 | Items to display per page
+filter | - | Wildcard filter for id, name
+sort_field | created_at | Field to sort by
+sort_direction | desc | Sorting direction
 
 ### Return values
 
@@ -5048,6 +5053,7 @@ This endpoint allows administrators to create new devices.
 
 Parameter | Default | Description
 --------- | ------- | -----------
+name | "" | Device name
 beep | false | Scan beep activated
 age_green | 18 | Age required for green LED
 
@@ -5099,7 +5105,7 @@ Parameter | Default | Description
 --------- | ------- | -----------
 id | - | Device ID
 
-You can also use the parameters `beep`, and `age_green` to update these properties. Parameters not specified are ignored and not updated.
+You can also use the parameters `name`, `beep`, and `age_green` to update these properties. Parameters not specified are ignored and not updated.
 
 ## DELETE /devices/{id}
 ```php
