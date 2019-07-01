@@ -24,6 +24,7 @@ This is the changelog of the GroundControl API and this API documentation.
 
 Date | Staging | Production | Changes
 ---- | ------- | ---------- | -------
+2019-07-02 | 2019-07-02 | - | <ul style="margin: 0;"><li>Updated GET /products</li></ul>
 2019-06-28 | 2019-06-28 | - | <ul style="margin: 0;"><li>Updated GET /devices</li><li>Updated POST /devices</li><li>Updated PUT /devices/{id}</li></ul>
 2019-06-26 | 2019-06-26 | - | <ul style="margin: 0;"><li>Updated GET /orders</li><li>Added PUT /spectrum</li><li>Updated GET /products</li></ul>
 2019-06-14 | 2019-06-14 | - | <ul style="margin: 0;"><li>Updated GET /events</li><li>Updated GET /events/{slug}</li><li>Added POST /events</li><li>Added PUT /events/{slug}</li><li>Added DELETE /events/{slug}</li><li>Added POST /events/{slug}/artists</li><li>Added PUT /events/{slug}/artists/{id}</li><li>Added DELETE /events/{slug}/artists/{id}</li><li>Added GET /metrics</li><li>Added POST /products</li><li>Added PUT /products/{id}</li><li>Added DELETE /products/{id}</li></ul>
@@ -1890,6 +1891,12 @@ This endpoint returns the products defined in GroundControl.
 
 <aside style="color: white;">Viewing disabled products requires user authentication with right <b>products</b></aside>
 
+### Query parameters
+
+Parameter | Default | Description
+--------- | ------- | -----------
+event | - | If event ID or slug specified, only 
+
 ### Return values
 
 Each product has the following parameters:
@@ -1913,6 +1920,7 @@ end_personalization | End of ticket personalization timeframe
 sale_start | Start date of sale (can be in future)
 sale_end | End date of sale (can be in past)
 available | Product in stock
+product_before | **Requires right products** Sale will start earlier if specified product is sold out
 stock | **Requires right products** Quantity in stock
 sold | **Requires right products** Sold quantity
 localization[] | Array of product localizations
