@@ -24,6 +24,7 @@ This is the changelog of the GroundControl API and this API documentation.
 
 Date | Staging | Production | Changes
 ---- | ------- | ---------- | -------
+2020-01-24 | 2020-01-24 | - | <ul style="margin: 0;"><li>New version GET /settings/v2</li></ul>
 2019-07-02 | 2019-07-02 | - | <ul style="margin: 0;"><li>Updated GET /products</li></ul>
 2019-06-28 | 2019-06-28 | - | <ul style="margin: 0;"><li>Updated GET /devices</li><li>Updated POST /devices</li><li>Updated PUT /devices/{id}</li></ul>
 2019-06-26 | 2019-06-26 | - | <ul style="margin: 0;"><li>Updated GET /orders</li><li>Added PUT /spectrum</li><li>Updated GET /products</li></ul>
@@ -5192,6 +5193,61 @@ print_r($res);
 <aside style="color: white;">Requires user authentication with right <b>settings</b></aside>
 
 This endpoint returns key-value pairs of all system settings.
+
+## GET /settings/v2
+```php
+<?php
+$ch = curl_init("https://api.hyperspace.one/settings/v2");
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+  "Authorization: Bearer xxx",
+]);
+$res = curl_exec($ch);
+
+if (curl_errno($ch)) {
+  die(curl_error($ch));
+}
+
+curl_close($ch);
+$res = json_decode($res, true);
+
+print_r($res);
+```
+
+> The above request returns JSON structured like this:
+
+```json
+{
+  "General": {
+    "backendUrl": {
+      "value": "https://staging.api.hyperspace.one/",
+      "type": "text"
+    }  
+  },
+  "Security": {
+    "blacklistTime": {
+      "value": "10",
+      "type": "integer"
+    }
+  }
+}
+```
+<aside style="color: white;">Requires user authentication with right <b>settings</b></aside>
+
+This endpoint returns the system settings according to their categories, including their type.
+
+### Available types
+
+Type | Description
+---- | -----------
+text | Plain text
+textarea | Textarea (large data fields)
+password | Password field (masked text)
+date | Date (YYYY-MM-DD)
+integer | Integer values (e.g. 5)
+double | Double values (e.g. 0.5)
+boolean | Boolean values (0/1)
+color | Hex colors (e.g. #bf3e11)
 
 ## PUT /settings
 ```php
