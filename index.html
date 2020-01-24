@@ -591,6 +591,9 @@
                     <a href="#get-settings" class="toc-h2 toc-link" data-title="GET /settings">GET /settings</a>
                   </li>
                   <li>
+                    <a href="#get-settings-v2" class="toc-h2 toc-link" data-title="GET /settings/v2">GET /settings/v2</a>
+                  </li>
+                  <li>
                     <a href="#put-settings" class="toc-h2 toc-link" data-title="PUT /settings">PUT /settings</a>
                   </li>
                   <li>
@@ -629,6 +632,12 @@
 <th>Changes</th>
 </tr>
 </thead><tbody>
+<tr>
+<td>2020-01-24</td>
+<td>2020-01-24</td>
+<td>-</td>
+<td><ul style="margin: 0;"><li>New version GET /settings/v2</li></ul></td>
+</tr>
 <tr>
 <td>2019-07-02</td>
 <td>2019-07-02</td>
@@ -7776,6 +7785,84 @@ order_countries{country="DE"} 8 1560511346509
 <aside style="color: white;">Requires user authentication with right <b>settings</b></aside>
 
 <p>This endpoint returns key-value pairs of all system settings.</p>
+<h2 id='get-settings-v2'>GET /settings/v2</h2><pre class="highlight php tab-php"><code><span class="cp">&lt;?php</span>
+<span class="nv">$ch</span> <span class="o">=</span> <span class="nb">curl_init</span><span class="p">(</span><span class="s2">"https://api.hyperspace.one/settings/v2"</span><span class="p">);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_RETURNTRANSFER</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_HTTPHEADER</span><span class="p">,</span> <span class="p">[</span>
+  <span class="s2">"Authorization: Bearer xxx"</span><span class="p">,</span>
+<span class="p">]);</span>
+<span class="nv">$res</span> <span class="o">=</span> <span class="nb">curl_exec</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="nb">curl_errno</span><span class="p">(</span><span class="nv">$ch</span><span class="p">))</span> <span class="p">{</span>
+  <span class="k">die</span><span class="p">(</span><span class="nb">curl_error</span><span class="p">(</span><span class="nv">$ch</span><span class="p">));</span>
+<span class="p">}</span>
+
+<span class="nb">curl_close</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
+<span class="nv">$res</span> <span class="o">=</span> <span class="nb">json_decode</span><span class="p">(</span><span class="nv">$res</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+
+<span class="nb">print_r</span><span class="p">(</span><span class="nv">$res</span><span class="p">);</span>
+</code></pre>
+<blockquote>
+<p>The above request returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"General"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"backendUrl"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://staging.api.hyperspace.one/"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"text"</span><span class="w">
+    </span><span class="p">}</span><span class="w">  
+  </span><span class="p">},</span><span class="w">
+  </span><span class="s2">"Security"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"blacklistTime"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"10"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"integer"</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<aside style="color: white;">Requires user authentication with right <b>settings</b></aside>
+
+<p>This endpoint returns the system settings according to their categories, including their type.</p>
+<h3 id='available-types'>Available types</h3>
+<table><thead>
+<tr>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>text</td>
+<td>Plain text</td>
+</tr>
+<tr>
+<td>textarea</td>
+<td>Textarea (large data fields)</td>
+</tr>
+<tr>
+<td>password</td>
+<td>Password field (masked text)</td>
+</tr>
+<tr>
+<td>date</td>
+<td>Date (YYYY-MM-DD)</td>
+</tr>
+<tr>
+<td>integer</td>
+<td>Integer values (e.g. 5)</td>
+</tr>
+<tr>
+<td>double</td>
+<td>Double values (e.g. 0.5)</td>
+</tr>
+<tr>
+<td>boolean</td>
+<td>Boolean values (0/1)</td>
+</tr>
+<tr>
+<td>color</td>
+<td>Hex colors (e.g. #bf3e11)</td>
+</tr>
+</tbody></table>
 <h2 id='put-settings'>PUT /settings</h2><pre class="highlight php tab-php"><code><span class="cp">&lt;?php</span>
 <span class="nv">$ch</span> <span class="o">=</span> <span class="nb">curl_init</span><span class="p">(</span><span class="s2">"https://api.hyperspace.one/settings"</span><span class="p">);</span>
 <span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_RETURNTRANSFER</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
