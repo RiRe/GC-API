@@ -24,6 +24,7 @@ This is the changelog of the GroundControl API and this API documentation.
 
 Date | Staging | Production | Changes
 ---- | ------- | ---------- | -------
+2020-01-25 | 2020-01-25 | - | <ul style="margin: 0;"><li>GET /links</li><li>GET /links/{id}</li><li>PUT /links/{id}</li><li>DELETE /links/{id}</li><li>POST /links</li><li>GET /links/cat</li><li>GET /links/cat/{id}</li><li>PUT /links/cat/{id}</li><li>DELETE /links/cat/{id}</li><li>POST /links/cat</li></ul>
 2020-01-24 | 2020-01-24 | - | <ul style="margin: 0;"><li>New version GET /settings/v2</li></ul>
 2019-07-02 | 2019-07-02 | - | <ul style="margin: 0;"><li>Updated GET /products</li></ul>
 2019-06-28 | 2019-06-28 | - | <ul style="margin: 0;"><li>Updated GET /devices</li><li>Updated POST /devices</li><li>Updated PUT /devices/{id}</li></ul>
@@ -5154,6 +5155,552 @@ This endpoint allows administrators to delete a device.
 Parameter | Default | Description
 --------- | ------- | -----------
 id | - | Device ID
+
+# Links
+
+## GET /links
+```php
+<?php
+$ch = curl_init("https://api.hyperspace.one/links");
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$res = curl_exec($ch);
+
+if (curl_errno($ch)) {
+  die(curl_error($ch));
+}
+
+curl_close($ch);
+$res = json_decode($res, true);
+
+print_r($res);
+```
+
+> The above request returns JSON structured like this:
+
+```json
+[
+  {
+    "id": 1,
+    "link_category_id": 1,
+    "active": 1,
+    "order": 0,
+    "name": "Instagram",
+    "url": "https://www.instagram.com/hyperspacefestival/",
+    "created_at": "2019-03-07 17:09:13",
+    "updated_at": "2019-03-07 21:10:49",
+    "localization": {
+      "en": {
+        "name": "Instagram"
+      },
+      "de": {
+        "name": "Instagram"
+      }
+    }
+  }
+]
+```
+
+This endpoint returns the links defined in GroundControl.
+
+<aside style="color: white;">Requires user authentication with right <b>manage_links</b></aside>
+
+### Return values
+
+Each link has the following parameters:
+
+Parameter | Description
+--------- | -----------
+id | Link ID
+link_category_id | Link category ID
+active | Link is active
+order | Link order
+name | Link name (localized)
+url | Link URL
+localization[] | Array of link localizations
+
+## POST /links
+```php
+<?php
+$ch = curl_init("https://api.hyperspace.one/links");
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+  "Authorization: Bearer xxx",
+]);
+curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query([
+  "name" => "Test link",
+  "url" => "https://www.google.com",
+  "category" => "1",
+  "active" => true,
+  "order" => 99,
+  "localization" => [
+    "de" => [
+      "name" => "Mein Link",
+    ],
+  ],
+]));
+$res = curl_exec($ch);
+
+if (curl_errno($ch)) {
+  die(curl_error($ch));
+}
+
+curl_close($ch);
+$res = json_decode($res, true);
+
+print_r($res);
+```
+
+> The above request returns JSON structured like this:
+
+```json
+{
+  "success": true,
+  "id": 1
+}
+```
+
+<aside style="color: white;">Requires user authentication with right <b>manage_links</b></aside>
+
+This endpoint allows administrators to create new links.
+
+### Query parameters
+
+Parameter | Default | Description
+--------- | ------- | -----------
+name | - | Link name
+url | - | Link URL
+category | - | Link category
+active | true | Link is active
+order | 0 | Link order
+localization | [] | Array with localized content (optional)
+
+### Return values
+
+Parameter | Description
+--------- | -----------
+id | ID of newly created link
+
+### Failure codes
+
+Failure Code | Meaning
+---------- | -------
+1000 | No name specified
+1001 | No URL specified
+1002 | No category specified
+
+## GET /links/{id}
+```php
+<?php
+$ch = curl_init("https://api.hyperspace.one/links/{id}");
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$res = curl_exec($ch);
+
+if (curl_errno($ch)) {
+  die(curl_error($ch));
+}
+
+curl_close($ch);
+$res = json_decode($res, true);
+
+print_r($res);
+```
+
+> The above request returns JSON structured like this:
+
+```json
+{
+  "id": 1,
+  "link_category_id": 1,
+  "active": 1,
+  "order": 0,
+  "name": "Instagram",
+  "url": "https://www.instagram.com/hyperspacefestival/",
+  "created_at": "2019-03-07 17:09:13",
+  "updated_at": "2019-03-07 21:10:49",
+  "localization": {
+    "en": {
+      "name": "Instagram"
+    },
+    "de": {
+      "name": "Instagram"
+    }
+  }
+}
+```
+
+This endpoint returns the link requested by ID.
+
+<aside style="color: white;">Requires user authentication with right <b>manage_links</b></aside>
+
+### Return values
+
+A link has the following parameters:
+
+Parameter | Description
+--------- | -----------
+id | Link ID
+link_category_id | Link category ID
+active | Link is active
+order | Link order
+name | Link name (localized)
+url | Link URL
+localization[] | Array of link localizations
+
+## PUT /links/{id}
+```php
+<?php
+$ch = curl_init("https://api.hyperspace.one/links/{id}");
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query([
+  "name" => "Other name",
+]));
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+  "Authorization: Bearer xxx",
+]);
+curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
+$res = curl_exec($ch);
+
+if (curl_errno($ch)) {
+  die(curl_error($ch));
+}
+
+curl_close($ch);
+$res = json_decode($res, true);
+
+print_r($res);
+```
+
+> The above request returns JSON structured like this:
+
+```json
+{
+  "success": true
+}
+```
+
+<aside style="color: white;">Requires user authentication with right <b>manage_links</b></aside>
+
+This endpoint allows administrators to edit links.
+
+### Query parameters
+
+Parameter | Default | Description
+--------- | ------- | -----------
+id | - | Link ID
+
+You can also use the parameters `name`, `url`, `order`, `category` and `active` to update these properties. Parameters not specified are ignored and not updated.
+
+If you specify an array named `localization` as in `POST /links`, the values for the specified languages are updated. Localizations not specified are deleted.
+
+## DELETE /links/{id}
+```php
+<?php
+$ch = curl_init("https://api.hyperspace.one/links/{id}");
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+  "Authorization: Bearer xxx",
+]);
+curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "DELETE");
+$res = curl_exec($ch);
+
+if (curl_errno($ch)) {
+  die(curl_error($ch));
+}
+
+curl_close($ch);
+$res = json_decode($res, true);
+
+print_r($res);
+```
+
+> The above request returns JSON structured like this:
+
+```json
+{
+  "success": true
+}
+```
+
+<aside style="color: white;">Requires user authentication with right <b>manage_links</b></aside>
+
+This endpoint allows administrators to delete a link.
+
+### Query parameters
+
+Parameter | Default | Description
+--------- | ------- | -----------
+id | - | Link ID
+
+### Failure codes
+
+Failure Code | Meaning
+---------- | -------
+1000 | Link deletion failed
+
+## GET /links/cat
+```php
+<?php
+$ch = curl_init("https://api.hyperspace.one/links/cat");
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$res = curl_exec($ch);
+
+if (curl_errno($ch)) {
+  die(curl_error($ch));
+}
+
+curl_close($ch);
+$res = json_decode($res, true);
+
+print_r($res);
+```
+
+> The above request returns JSON structured like this:
+
+```json
+[
+  {
+    "id": 1,
+    "active": 1,
+    "order": 0,
+    "name": "Social Media",
+    "created_at": "2019-03-07 17:09:13",
+    "updated_at": "2019-03-07 21:10:49",
+    "localization": {
+      "en": {
+        "name": "Social Media"
+      },
+      "de": {
+        "name": "Social Media"
+      }
+    }
+  }
+]
+```
+
+This endpoint returns the link categories defined in GroundControl.
+
+<aside style="color: white;">Requires user authentication with right <b>manage_links</b></aside>
+
+### Return values
+
+Each link category has the following parameters:
+
+Parameter | Description
+--------- | -----------
+id | Category ID
+active | Category is active
+order | Category order
+name | Category name (localized)
+localization[] | Array of category localizations
+
+## POST /links/cat
+```php
+<?php
+$ch = curl_init("https://api.hyperspace.one/links/cat");
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+  "Authorization: Bearer xxx",
+]);
+curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query([
+  "name" => "Test category",
+  "active" => true,
+  "order" => 10,
+  "localization" => [
+    "de" => [
+      "name" => "Meine Kategorie",
+    ],
+  ],
+]));
+$res = curl_exec($ch);
+
+if (curl_errno($ch)) {
+  die(curl_error($ch));
+}
+
+curl_close($ch);
+$res = json_decode($res, true);
+
+print_r($res);
+```
+
+> The above request returns JSON structured like this:
+
+```json
+{
+  "success": true,
+  "id": 1
+}
+```
+
+<aside style="color: white;">Requires user authentication with right <b>manage_links</b></aside>
+
+This endpoint allows administrators to create new link categories.
+
+### Query parameters
+
+Parameter | Default | Description
+--------- | ------- | -----------
+name | - | Category name
+active | true | Category is active
+order | 0 | Category order
+localization | [] | Array with localized content (optional)
+
+### Return values
+
+Parameter | Description
+--------- | -----------
+id | ID of newly created category
+
+### Failure codes
+
+Failure Code | Meaning
+---------- | -------
+1000 | No name specified
+
+## GET /links/cat/{id}
+```php
+<?php
+$ch = curl_init("https://api.hyperspace.one/links/cat/{id}");
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$res = curl_exec($ch);
+
+if (curl_errno($ch)) {
+  die(curl_error($ch));
+}
+
+curl_close($ch);
+$res = json_decode($res, true);
+
+print_r($res);
+```
+
+> The above request returns JSON structured like this:
+
+```json
+{
+  "id": 1,
+  "active": 1,
+  "order": 0,
+  "name": "Social Media",
+  "created_at": "2019-03-07 17:09:13",
+  "updated_at": "2019-03-07 21:10:49",
+  "localization": {
+    "en": {
+      "name": "Social Media"
+    },
+    "de": {
+      "name": "Social Media"
+    }
+  }
+}
+```
+
+This endpoint returns the link category requested by ID.
+
+<aside style="color: white;">Requires user authentication with right <b>manage_links</b></aside>
+
+### Return values
+
+A link category has the following parameters:
+
+Parameter | Description
+--------- | -----------
+id | Category ID
+active | Category is active
+order | Category order
+name | Category name (localized)
+localization[] | Array of category localizations
+
+## PUT /links/cat/{id}
+```php
+<?php
+$ch = curl_init("https://api.hyperspace.one/links/cat/{id}");
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query([
+  "name" => "Other name",
+]));
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+  "Authorization: Bearer xxx",
+]);
+curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
+$res = curl_exec($ch);
+
+if (curl_errno($ch)) {
+  die(curl_error($ch));
+}
+
+curl_close($ch);
+$res = json_decode($res, true);
+
+print_r($res);
+```
+
+> The above request returns JSON structured like this:
+
+```json
+{
+  "success": true
+}
+```
+
+<aside style="color: white;">Requires user authentication with right <b>manage_links</b></aside>
+
+This endpoint allows administrators to edit link categories.
+
+### Query parameters
+
+Parameter | Default | Description
+--------- | ------- | -----------
+id | - | Category ID
+
+You can also use the parameters `name`, `order` and `active` to update these properties. Parameters not specified are ignored and not updated.
+
+If you specify an array named `localization` as in `POST /links/cat`, the values for the specified languages are updated. Localizations not specified are deleted.
+
+## DELETE /links/cat/{id}
+```php
+<?php
+$ch = curl_init("https://api.hyperspace.one/links/cat/{id}");
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+  "Authorization: Bearer xxx",
+]);
+curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "DELETE");
+$res = curl_exec($ch);
+
+if (curl_errno($ch)) {
+  die(curl_error($ch));
+}
+
+curl_close($ch);
+$res = json_decode($res, true);
+
+print_r($res);
+```
+
+> The above request returns JSON structured like this:
+
+```json
+{
+  "success": true
+}
+```
+
+<aside style="color: white;">Requires user authentication with right <b>manage_links</b></aside>
+
+This endpoint allows administrators to delete a category.
+
+### Query parameters
+
+Parameter | Default | Description
+--------- | ------- | -----------
+id | - | Category ID
+
+### Failure codes
+
+Failure Code | Meaning
+---------- | -------
+1000 | Category deletion failed
 
 # Settings
 
