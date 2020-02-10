@@ -259,6 +259,9 @@
                     <a href="#get-info" class="toc-h2 toc-link" data-title="GET /info">GET /info</a>
                   </li>
                   <li>
+                    <a href="#get-config" class="toc-h2 toc-link" data-title="GET /config">GET /config</a>
+                  </li>
+                  <li>
                     <a href="#get-faq" class="toc-h2 toc-link" data-title="GET /faq">GET /faq</a>
                   </li>
                   <li>
@@ -688,7 +691,7 @@
 <td>2020-02-10</td>
 <td>2020-02-10</td>
 <td>-</td>
-<td><ul style="margin: 0;"><li>GET /news</li><li>PUT /news/{id}</li><li>DELETE /news/{id}</li><li>POST /news</li></ul></td>
+<td><ul style="margin: 0;"><li>GET /config</li><li>GET /news</li><li>PUT /news/{id}</li><li>DELETE /news/{id}</li><li>POST /news</li></ul></td>
 </tr>
 <tr>
 <td>2020-01-25</td>
@@ -952,6 +955,60 @@
 </tbody></table>
 
 <aside style="color: white;">Additional values are possible based on your system configuration</aside>
+<h2 id='get-config'>GET /config</h2><pre class="highlight php tab-php"><code><span class="cp">&lt;?php</span>
+<span class="nv">$ch</span> <span class="o">=</span> <span class="nb">curl_init</span><span class="p">(</span><span class="s2">"https://api.hyperspace.one/config"</span><span class="p">);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_RETURNTRANSFER</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+<span class="nv">$res</span> <span class="o">=</span> <span class="nb">curl_exec</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="nb">curl_errno</span><span class="p">(</span><span class="nv">$ch</span><span class="p">))</span> <span class="p">{</span>
+  <span class="k">die</span><span class="p">(</span><span class="nb">curl_error</span><span class="p">(</span><span class="nv">$ch</span><span class="p">));</span>
+<span class="p">}</span>
+
+<span class="nb">curl_close</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
+<span class="nv">$res</span> <span class="o">=</span> <span class="nb">json_decode</span><span class="p">(</span><span class="nv">$res</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+
+<span class="nb">print_r</span><span class="p">(</span><span class="nv">$res</span><span class="p">);</span>
+</code></pre>
+<blockquote>
+<p>The above request returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"details"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"HYPERSPACE"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"company"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Spacion GmbH"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="s2">"textLogo"</span><span class="p">:</span><span class="w"> </span><span class="s2">"assets</span><span class="se">\/</span><span class="s2">logo_white.svg"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"logo"</span><span class="p">:</span><span class="w"> </span><span class="s2">"assets</span><span class="se">\/</span><span class="s2">icon_white.svg"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="s2">"colors"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"primary"</span><span class="p">:</span><span class="w"> </span><span class="s2">"#D14627"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="s2">"menu"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span><span class="w">
+  </span><span class="s2">"landingPage"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"heading"</span><span class="p">:</span><span class="w"> </span><span class="s2">"JOIN THE CREW."</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"buttons"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+      </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"secondary-inverted"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"buttonText"</span><span class="p">:</span><span class="w"> </span><span class="s2">"PRE-REGISTER"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"routerLink"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+            </span><span class="s2">"</span><span class="se">\/</span><span class="s2">preregister"</span><span class="w">
+        </span><span class="p">]</span><span class="w">
+      </span><span class="p">},</span><span class="w">
+      </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"secondary-stroked-inverted"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"buttonText"</span><span class="p">:</span><span class="w"> </span><span class="s2">"DISCOVER MORE"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"routerLink"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+            </span><span class="s2">"</span><span class="se">\/</span><span class="s2">events"</span><span class="w">
+        </span><span class="p">]</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">]</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="s2">"eventsPage"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span><span class="w">
+  </span><span class="s2">"news"</span><span class="p">:</span><span class="w"> </span><span class="p">[]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<p>This endpoint allows the frontend to get information neccessary for its configuration.</p>
 <h2 id='get-faq'>GET /faq</h2><pre class="highlight php tab-php"><code><span class="cp">&lt;?php</span>
 <span class="nv">$ch</span> <span class="o">=</span> <span class="nb">curl_init</span><span class="p">(</span><span class="s2">"https://api.hyperspace.one/faq"</span><span class="p">);</span>
 <span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_RETURNTRANSFER</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
