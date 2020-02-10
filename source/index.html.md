@@ -24,7 +24,7 @@ This is the changelog of the GroundControl API and this API documentation.
 
 Date | Staging | Production | Changes
 ---- | ------- | ---------- | -------
-2020-02-10 | 2020-02-10 | - | <ul style="margin: 0;"><li>GET /news</li><li>PUT /news/{id}</li><li>DELETE /news/{id}</li><li>POST /news</li></ul>
+2020-02-10 | 2020-02-10 | - | <ul style="margin: 0;"><li>GET /config</li><li>GET /news</li><li>PUT /news/{id}</li><li>DELETE /news/{id}</li><li>POST /news</li></ul>
 2020-01-25 | 2020-01-25 | - | <ul style="margin: 0;"><li>GET /links</li><li>GET /links/{id}</li><li>PUT /links/{id}</li><li>DELETE /links/{id}</li><li>POST /links</li><li>GET /links/cat</li><li>GET /links/cat/{id}</li><li>PUT /links/cat/{id}</li><li>DELETE /links/cat/{id}</li><li>POST /links/cat</li></ul>
 2020-01-24 | 2020-01-24 | - | <ul style="margin: 0;"><li>New version GET /settings/v2</li></ul>
 2019-07-02 | 2019-07-02 | - | <ul style="margin: 0;"><li>Updated GET /products</li></ul>
@@ -193,6 +193,65 @@ maintenanceMode | Maintenance mode active
 user | **If authenticated** Details about user
 
 <aside style="color: white;">Additional values are possible based on your system configuration</aside>
+
+## GET /config
+```php
+<?php
+$ch = curl_init("https://api.hyperspace.one/config");
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$res = curl_exec($ch);
+
+if (curl_errno($ch)) {
+  die(curl_error($ch));
+}
+
+curl_close($ch);
+$res = json_decode($res, true);
+
+print_r($res);
+```
+
+> The above request returns JSON structured like this:
+
+```json
+{
+  "details": {
+    "name": "HYPERSPACE",
+    "company": {
+        "name": "Spacion GmbH"
+    },
+    "textLogo": "assets\/logo_white.svg",
+    "logo": "assets\/icon_white.svg"
+  },
+  "colors": {
+    "primary": "#D14627"
+  },
+  "menu": [],
+  "landingPage": {
+    "heading": "JOIN THE CREW.",
+    "buttons": [
+      {
+        "type": "secondary-inverted",
+        "buttonText": "PRE-REGISTER",
+        "routerLink": [
+            "\/preregister"
+        ]
+      },
+      {
+        "type": "secondary-stroked-inverted",
+        "buttonText": "DISCOVER MORE",
+        "routerLink": [
+            "\/events"
+        ]
+      }
+    ]
+  },
+  "eventsPage": [],
+  "news": []
+}
+```
+
+This endpoint allows the frontend to get information neccessary for its configuration.
 
 ## GET /faq
 ```php
