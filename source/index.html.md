@@ -5703,7 +5703,7 @@ Failure Code | Meaning
 ---------- | -------
 1000 | Category deletion failed
 
-# NEWS
+# News
 
 ## GET /news
 ```php
@@ -5741,8 +5741,6 @@ print_r($res);
 ```
 
 This endpoint returns the news existing in GroundControl.
-
-<aside style="color: white;">Requires user authentication with right <b>manage_news</b></aside>
 
 ### Return values
 
