@@ -620,7 +620,7 @@
               </ul>
           </li>
           <li>
-            <a href="#news" class="toc-h1 toc-link" data-title="NEWS">NEWS</a>
+            <a href="#news" class="toc-h1 toc-link" data-title="News">News</a>
               <ul class="toc-list-h2">
                   <li>
                     <a href="#get-news" class="toc-h2 toc-link" data-title="GET /news">GET /news</a>
@@ -8516,7 +8516,7 @@ order_countries{country="DE"} 8 1560511346509
 <td>Category deletion failed</td>
 </tr>
 </tbody></table>
-<h1 id='news'>NEWS</h1><h2 id='get-news'>GET /news</h2><pre class="highlight php tab-php"><code><span class="cp">&lt;?php</span>
+<h1 id='news'>News</h1><h2 id='get-news'>GET /news</h2><pre class="highlight php tab-php"><code><span class="cp">&lt;?php</span>
 <span class="nv">$ch</span> <span class="o">=</span> <span class="nb">curl_init</span><span class="p">(</span><span class="s2">"https://api.hyperspace.one/news"</span><span class="p">);</span>
 <span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_RETURNTRANSFER</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
 <span class="nv">$res</span> <span class="o">=</span> <span class="nb">curl_exec</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
@@ -8548,8 +8548,6 @@ order_countries{country="DE"} 8 1560511346509
 </span><span class="p">]</span><span class="w">
 </span></code></pre>
 <p>This endpoint returns the news existing in GroundControl.</p>
-
-<aside style="color: white;">Requires user authentication with right <b>manage_news</b></aside>
 <h3 id='return-values-48'>Return values</h3>
 <p>Each link has the following parameters:</p>
 
