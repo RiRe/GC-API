@@ -620,6 +620,23 @@
               </ul>
           </li>
           <li>
+            <a href="#news" class="toc-h1 toc-link" data-title="NEWS">NEWS</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#get-news" class="toc-h2 toc-link" data-title="GET /news">GET /news</a>
+                  </li>
+                  <li>
+                    <a href="#post-news" class="toc-h2 toc-link" data-title="POST /news">POST /news</a>
+                  </li>
+                  <li>
+                    <a href="#put-news-id" class="toc-h2 toc-link" data-title="PUT /news/{id}">PUT /news/{id}</a>
+                  </li>
+                  <li>
+                    <a href="#delete-news-id" class="toc-h2 toc-link" data-title="DELETE /news/{id}">DELETE /news/{id}</a>
+                  </li>
+              </ul>
+          </li>
+          <li>
             <a href="#settings" class="toc-h1 toc-link" data-title="Settings">Settings</a>
               <ul class="toc-list-h2">
                   <li>
@@ -667,6 +684,12 @@
 <th>Changes</th>
 </tr>
 </thead><tbody>
+<tr>
+<td>2020-02-10</td>
+<td>2020-02-10</td>
+<td>-</td>
+<td><ul style="margin: 0;"><li>GET /news</li><li>PUT /news/{id}</li><li>DELETE /news/{id}</li><li>POST /news</li></ul></td>
+</tr>
 <tr>
 <td>2020-01-25</td>
 <td>2020-01-25</td>
@@ -8493,6 +8516,296 @@ order_countries{country="DE"} 8 1560511346509
 <td>Category deletion failed</td>
 </tr>
 </tbody></table>
+<h1 id='news'>NEWS</h1><h2 id='get-news'>GET /news</h2><pre class="highlight php tab-php"><code><span class="cp">&lt;?php</span>
+<span class="nv">$ch</span> <span class="o">=</span> <span class="nb">curl_init</span><span class="p">(</span><span class="s2">"https://api.hyperspace.one/news"</span><span class="p">);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_RETURNTRANSFER</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+<span class="nv">$res</span> <span class="o">=</span> <span class="nb">curl_exec</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="nb">curl_errno</span><span class="p">(</span><span class="nv">$ch</span><span class="p">))</span> <span class="p">{</span>
+  <span class="k">die</span><span class="p">(</span><span class="nb">curl_error</span><span class="p">(</span><span class="nv">$ch</span><span class="p">));</span>
+<span class="p">}</span>
+
+<span class="nb">curl_close</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
+<span class="nv">$res</span> <span class="o">=</span> <span class="nb">json_decode</span><span class="p">(</span><span class="nv">$res</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+
+<span class="nb">print_r</span><span class="p">(</span><span class="nv">$res</span><span class="p">);</span>
+</code></pre>
+<blockquote>
+<p>The above request returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">[</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"image_id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"image_url"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://..."</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"title"</span><span class="p">:</span><span class="w"> </span><span class="s2">"My news"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"subtitle"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Some subtitle"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"button_text"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Call to action"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"button_link"</span><span class="p">:</span><span class="w"> </span><span class="s2">"events/the-abandoned-dome"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"created_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2019-03-07 17:09:13"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"updated_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2019-03-07 21:10:49"</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">]</span><span class="w">
+</span></code></pre>
+<p>This endpoint returns the news existing in GroundControl.</p>
+
+<aside style="color: white;">Requires user authentication with right <b>manage_news</b></aside>
+<h3 id='return-values-48'>Return values</h3>
+<p>Each link has the following parameters:</p>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>id</td>
+<td>News ID</td>
+</tr>
+<tr>
+<td>image_id</td>
+<td>Image ID</td>
+</tr>
+<tr>
+<td>image_url</td>
+<td>Image URL</td>
+</tr>
+<tr>
+<td>title</td>
+<td>News title</td>
+</tr>
+<tr>
+<td>subtitle</td>
+<td>News subtitle</td>
+</tr>
+<tr>
+<td>button_text</td>
+<td>Text of button</td>
+</tr>
+<tr>
+<td>button_link</td>
+<td>Link of button</td>
+</tr>
+<tr>
+<td>created_at</td>
+<td>Time of creation</td>
+</tr>
+<tr>
+<td>updated_at</td>
+<td>Time of last update</td>
+</tr>
+</tbody></table>
+<h2 id='post-news'>POST /news</h2><pre class="highlight php tab-php"><code><span class="cp">&lt;?php</span>
+<span class="nv">$ch</span> <span class="o">=</span> <span class="nb">curl_init</span><span class="p">(</span><span class="s2">"https://api.hyperspace.one/news"</span><span class="p">);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_RETURNTRANSFER</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_HTTPHEADER</span><span class="p">,</span> <span class="p">[</span>
+  <span class="s2">"Authorization: Bearer xxx"</span><span class="p">,</span>
+<span class="p">]);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_POSTFIELDS</span><span class="p">,</span> <span class="nb">http_build_query</span><span class="p">([</span>
+  <span class="s2">"image"</span> <span class="o">=&gt;</span> <span class="mi">1</span><span class="p">,</span>
+  <span class="s2">"title"</span> <span class="o">=&gt;</span> <span class="s2">"New news"</span><span class="p">,</span>
+  <span class="s2">"subtitle"</span> <span class="o">=&gt;</span> <span class="s2">"Something big happened"</span><span class="p">,</span>
+  <span class="s2">"button_text"</span> <span class="o">=&gt;</span> <span class="s2">"LEARN MORE"</span><span class="p">,</span>
+  <span class="s2">"button_url"</span> <span class="o">=&gt;</span> <span class="s2">"https://facebook.com/..."</span><span class="p">,</span>
+<span class="p">]));</span>
+<span class="nv">$res</span> <span class="o">=</span> <span class="nb">curl_exec</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="nb">curl_errno</span><span class="p">(</span><span class="nv">$ch</span><span class="p">))</span> <span class="p">{</span>
+  <span class="k">die</span><span class="p">(</span><span class="nb">curl_error</span><span class="p">(</span><span class="nv">$ch</span><span class="p">));</span>
+<span class="p">}</span>
+
+<span class="nb">curl_close</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
+<span class="nv">$res</span> <span class="o">=</span> <span class="nb">json_decode</span><span class="p">(</span><span class="nv">$res</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+
+<span class="nb">print_r</span><span class="p">(</span><span class="nv">$res</span><span class="p">);</span>
+</code></pre>
+<blockquote>
+<p>The above request returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"success"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<aside style="color: white;">Requires user authentication with right <b>manage_news</b></aside>
+
+<p>This endpoint allows administrators to create new news.</p>
+<h3 id='query-parameters-85'>Query parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>image</td>
+<td>-</td>
+<td>Image ID</td>
+</tr>
+<tr>
+<td>title</td>
+<td>-</td>
+<td>News title</td>
+</tr>
+<tr>
+<td>subtitle</td>
+<td>-</td>
+<td>News subtitle</td>
+</tr>
+<tr>
+<td>button_text</td>
+<td>-</td>
+<td>Text of button</td>
+</tr>
+<tr>
+<td>button_link</td>
+<td>-</td>
+<td>Link of button</td>
+</tr>
+</tbody></table>
+<h3 id='return-values-49'>Return values</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>id</td>
+<td>ID of newly created news entry</td>
+</tr>
+</tbody></table>
+<h3 id='failure-codes-48'>Failure codes</h3>
+<table><thead>
+<tr>
+<th>Failure Code</th>
+<th>Meaning</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>1000</td>
+<td>No/invalid image specified</td>
+</tr>
+<tr>
+<td>1001</td>
+<td>No title specified</td>
+</tr>
+<tr>
+<td>1002</td>
+<td>No subtitle specified</td>
+</tr>
+<tr>
+<td>1003</td>
+<td>No button text specified</td>
+</tr>
+<tr>
+<td>1004</td>
+<td>No button link specified</td>
+</tr>
+</tbody></table>
+<h2 id='put-news-id'>PUT /news/{id}</h2><pre class="highlight php tab-php"><code><span class="cp">&lt;?php</span>
+<span class="nv">$ch</span> <span class="o">=</span> <span class="nb">curl_init</span><span class="p">(</span><span class="s2">"https://api.hyperspace.one/news/</span><span class="si">{</span><span class="nv">id</span><span class="si">}</span><span class="s2">"</span><span class="p">);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_RETURNTRANSFER</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_POSTFIELDS</span><span class="p">,</span> <span class="nb">http_build_query</span><span class="p">([</span>
+  <span class="s2">"title"</span> <span class="o">=&gt;</span> <span class="s2">"Other title"</span><span class="p">,</span>
+<span class="p">]));</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_HTTPHEADER</span><span class="p">,</span> <span class="p">[</span>
+  <span class="s2">"Authorization: Bearer xxx"</span><span class="p">,</span>
+<span class="p">]);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_CUSTOMREQUEST</span><span class="p">,</span> <span class="s2">"PUT"</span><span class="p">);</span>
+<span class="nv">$res</span> <span class="o">=</span> <span class="nb">curl_exec</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="nb">curl_errno</span><span class="p">(</span><span class="nv">$ch</span><span class="p">))</span> <span class="p">{</span>
+  <span class="k">die</span><span class="p">(</span><span class="nb">curl_error</span><span class="p">(</span><span class="nv">$ch</span><span class="p">));</span>
+<span class="p">}</span>
+
+<span class="nb">curl_close</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
+<span class="nv">$res</span> <span class="o">=</span> <span class="nb">json_decode</span><span class="p">(</span><span class="nv">$res</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+
+<span class="nb">print_r</span><span class="p">(</span><span class="nv">$res</span><span class="p">);</span>
+</code></pre>
+<blockquote>
+<p>The above request returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"success"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<aside style="color: white;">Requires user authentication with right <b>manage_news</b></aside>
+
+<p>This endpoint allows administrators to edit news.</p>
+<h3 id='query-parameters-86'>Query parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>id</td>
+<td>-</td>
+<td>News ID</td>
+</tr>
+</tbody></table>
+
+<p>You can also use the parameters <code>image</code>, <code>title</code>, <code>subtitle</code>, <code>button_text</code> and <code>button_link</code> to update these properties. Parameters not specified are ignored and not updated.</p>
+<h2 id='delete-news-id'>DELETE /news/{id}</h2><pre class="highlight php tab-php"><code><span class="cp">&lt;?php</span>
+<span class="nv">$ch</span> <span class="o">=</span> <span class="nb">curl_init</span><span class="p">(</span><span class="s2">"https://api.hyperspace.one/news/</span><span class="si">{</span><span class="nv">id</span><span class="si">}</span><span class="s2">"</span><span class="p">);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_RETURNTRANSFER</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_HTTPHEADER</span><span class="p">,</span> <span class="p">[</span>
+  <span class="s2">"Authorization: Bearer xxx"</span><span class="p">,</span>
+<span class="p">]);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_CUSTOMREQUEST</span><span class="p">,</span> <span class="s2">"DELETE"</span><span class="p">);</span>
+<span class="nv">$res</span> <span class="o">=</span> <span class="nb">curl_exec</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="nb">curl_errno</span><span class="p">(</span><span class="nv">$ch</span><span class="p">))</span> <span class="p">{</span>
+  <span class="k">die</span><span class="p">(</span><span class="nb">curl_error</span><span class="p">(</span><span class="nv">$ch</span><span class="p">));</span>
+<span class="p">}</span>
+
+<span class="nb">curl_close</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
+<span class="nv">$res</span> <span class="o">=</span> <span class="nb">json_decode</span><span class="p">(</span><span class="nv">$res</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+
+<span class="nb">print_r</span><span class="p">(</span><span class="nv">$res</span><span class="p">);</span>
+</code></pre>
+<blockquote>
+<p>The above request returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"success"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<aside style="color: white;">Requires user authentication with right <b>manage_news</b></aside>
+
+<p>This endpoint allows administrators to delete a news entry.</p>
+<h3 id='query-parameters-87'>Query parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>id</td>
+<td>-</td>
+<td>News ID</td>
+</tr>
+</tbody></table>
+<h3 id='failure-codes-49'>Failure codes</h3>
+<table><thead>
+<tr>
+<th>Failure Code</th>
+<th>Meaning</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>1000</td>
+<td>News deletion failed</td>
+</tr>
+</tbody></table>
 <h1 id='settings'>Settings</h1><h2 id='get-settings'>GET /settings</h2><pre class="highlight php tab-php"><code><span class="cp">&lt;?php</span>
 <span class="nv">$ch</span> <span class="o">=</span> <span class="nb">curl_init</span><span class="p">(</span><span class="s2">"https://api.hyperspace.one/settings"</span><span class="p">);</span>
 <span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_RETURNTRANSFER</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
@@ -8641,7 +8954,7 @@ order_countries{country="DE"} 8 1560511346509
 <aside style="color: white;">Requires user authentication with right <b>settings</b></aside>
 
 <p>This endpoint can be used to update settings. It expects as many key-value pairs as you want. Only elements which exists in the <code>settings</code> table are updated, there are no elements newly created.</p>
-<h3 id='return-values-48'>Return values</h3>
+<h3 id='return-values-50'>Return values</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -8691,7 +9004,7 @@ order_countries{country="DE"} 8 1560511346509
 <aside style="color: white;">Requires user authentication with right <b>settings</b></aside>
 
 <p>This endpoint allows administrators to create new FAQs.</p>
-<h3 id='query-parameters-85'>Query parameters</h3>
+<h3 id='query-parameters-88'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -8715,7 +9028,7 @@ order_countries{country="DE"} 8 1560511346509
 <td>Array with localized content (optional)</td>
 </tr>
 </tbody></table>
-<h3 id='return-values-49'>Return values</h3>
+<h3 id='return-values-51'>Return values</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -8727,7 +9040,7 @@ order_countries{country="DE"} 8 1560511346509
 <td>ID of newly created FAQ</td>
 </tr>
 </tbody></table>
-<h3 id='failure-codes-48'>Failure codes</h3>
+<h3 id='failure-codes-50'>Failure codes</h3>
 <table><thead>
 <tr>
 <th>Failure Code</th>
@@ -8774,7 +9087,7 @@ order_countries{country="DE"} 8 1560511346509
 <aside style="color: white;">Requires user authentication with right <b>settings</b></aside>
 
 <p>This endpoint allows administrators to edit FAQs.</p>
-<h3 id='query-parameters-86'>Query parameters</h3>
+<h3 id='query-parameters-89'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -8820,7 +9133,7 @@ order_countries{country="DE"} 8 1560511346509
 <aside style="color: white;">Requires user authentication with right <b>settings</b></aside>
 
 <p>This endpoint allows administrators to delete a FAQ.</p>
-<h3 id='query-parameters-87'>Query parameters</h3>
+<h3 id='query-parameters-90'>Query parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
