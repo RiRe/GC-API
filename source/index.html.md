@@ -24,6 +24,7 @@ This is the changelog of the GroundControl API and this API documentation.
 
 Date | Staging | Production | Changes
 ---- | ------- | ---------- | -------
+2020-02-10 | 2020-02-10 | - | <ul style="margin: 0;"><li>GET /news</li><li>PUT /news/{id}</li><li>DELETE /news/{id}</li><li>POST /news</li></ul>
 2020-01-25 | 2020-01-25 | - | <ul style="margin: 0;"><li>GET /links</li><li>GET /links/{id}</li><li>PUT /links/{id}</li><li>DELETE /links/{id}</li><li>POST /links</li><li>GET /links/cat</li><li>GET /links/cat/{id}</li><li>PUT /links/cat/{id}</li><li>DELETE /links/cat/{id}</li><li>POST /links/cat</li></ul>
 2020-01-24 | 2020-01-24 | - | <ul style="margin: 0;"><li>New version GET /settings/v2</li></ul>
 2019-07-02 | 2019-07-02 | - | <ul style="margin: 0;"><li>Updated GET /products</li></ul>
@@ -5701,6 +5702,218 @@ id | - | Category ID
 Failure Code | Meaning
 ---------- | -------
 1000 | Category deletion failed
+
+# NEWS
+
+## GET /news
+```php
+<?php
+$ch = curl_init("https://api.hyperspace.one/news");
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$res = curl_exec($ch);
+
+if (curl_errno($ch)) {
+  die(curl_error($ch));
+}
+
+curl_close($ch);
+$res = json_decode($res, true);
+
+print_r($res);
+```
+
+> The above request returns JSON structured like this:
+
+```json
+[
+  {
+    "id": 1,
+    "image_id": 1,
+    "image_url": "https://...",
+    "title": "My news",
+    "subtitle": "Some subtitle",
+    "button_text": "Call to action",
+    "button_link": "events/the-abandoned-dome",
+    "created_at": "2019-03-07 17:09:13",
+    "updated_at": "2019-03-07 21:10:49"
+  }
+]
+```
+
+This endpoint returns the news existing in GroundControl.
+
+<aside style="color: white;">Requires user authentication with right <b>manage_news</b></aside>
+
+### Return values
+
+Each link has the following parameters:
+
+Parameter | Description
+--------- | -----------
+id | News ID
+image_id | Image ID
+image_url | Image URL
+title | News title
+subtitle | News subtitle
+button_text | Text of button
+button_link | Link of button
+created_at | Time of creation
+updated_at | Time of last update
+
+## POST /news
+```php
+<?php
+$ch = curl_init("https://api.hyperspace.one/news");
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+  "Authorization: Bearer xxx",
+]);
+curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query([
+  "image" => 1,
+  "title" => "New news",
+  "subtitle" => "Something big happened",
+  "button_text" => "LEARN MORE",
+  "button_url" => "https://facebook.com/...",
+]));
+$res = curl_exec($ch);
+
+if (curl_errno($ch)) {
+  die(curl_error($ch));
+}
+
+curl_close($ch);
+$res = json_decode($res, true);
+
+print_r($res);
+```
+
+> The above request returns JSON structured like this:
+
+```json
+{
+  "success": true,
+  "id": 1
+}
+```
+
+<aside style="color: white;">Requires user authentication with right <b>manage_news</b></aside>
+
+This endpoint allows administrators to create new news.
+
+### Query parameters
+
+Parameter | Default | Description
+--------- | ------- | -----------
+image | - | Image ID
+title | - | News title
+subtitle | - | News subtitle
+button_text | - | Text of button
+button_link | - | Link of button
+
+### Return values
+
+Parameter | Description
+--------- | -----------
+id | ID of newly created news entry
+
+### Failure codes
+
+Failure Code | Meaning
+---------- | -------
+1000 | No/invalid image specified
+1001 | No title specified
+1002 | No subtitle specified
+1003 | No button text specified
+1004 | No button link specified
+
+## PUT /news/{id}
+```php
+<?php
+$ch = curl_init("https://api.hyperspace.one/news/{id}");
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query([
+  "title" => "Other title",
+]));
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+  "Authorization: Bearer xxx",
+]);
+curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
+$res = curl_exec($ch);
+
+if (curl_errno($ch)) {
+  die(curl_error($ch));
+}
+
+curl_close($ch);
+$res = json_decode($res, true);
+
+print_r($res);
+```
+
+> The above request returns JSON structured like this:
+
+```json
+{
+  "success": true
+}
+```
+
+<aside style="color: white;">Requires user authentication with right <b>manage_news</b></aside>
+
+This endpoint allows administrators to edit news.
+
+### Query parameters
+
+Parameter | Default | Description
+--------- | ------- | -----------
+id | - | News ID
+
+You can also use the parameters `image`, `title`, `subtitle`, `button_text` and `button_link` to update these properties. Parameters not specified are ignored and not updated.
+
+## DELETE /news/{id}
+```php
+<?php
+$ch = curl_init("https://api.hyperspace.one/news/{id}");
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+  "Authorization: Bearer xxx",
+]);
+curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "DELETE");
+$res = curl_exec($ch);
+
+if (curl_errno($ch)) {
+  die(curl_error($ch));
+}
+
+curl_close($ch);
+$res = json_decode($res, true);
+
+print_r($res);
+```
+
+> The above request returns JSON structured like this:
+
+```json
+{
+  "success": true
+}
+```
+
+<aside style="color: white;">Requires user authentication with right <b>manage_news</b></aside>
+
+This endpoint allows administrators to delete a news entry.
+
+### Query parameters
+
+Parameter | Default | Description
+--------- | ------- | -----------
+id | - | News ID
+
+### Failure codes
+
+Failure Code | Meaning
+---------- | -------
+1000 | News deletion failed
 
 # Settings
 
